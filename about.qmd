@@ -6,11 +6,10 @@ about:
   links:
     - icon: github
       text: Github
-      href: https://github.com/blog-statisfaction
-
+      href: https://github.com/statisfaction-blog
 ---
 
 A blog initially started, a long time ago, by PhD students at ENSAE interested
 in Bayesian computation and related topics. Used to be hosted on Wordpress
 [here](https://statisfaction.wordpress.com), but now lives a happier life on
-github. 
+github.  

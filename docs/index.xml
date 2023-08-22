@@ -6,15 +6,15 @@
       version="2.0">
 <channel>
 <title>Statisfaction - Bayes and stuff</title>
-<link>https://github.com/statisfaction-blog/shared-blog/index.html</link>
-<atom:link href="https://github.com/statisfaction-blog/shared-blog/index.xml" rel="self" type="application/rss+xml"/>
+<link>https://github.com/statisfaction-blog/index.html</link>
+<atom:link href="https://github.com/statisfaction-blog/index.xml" rel="self" type="application/rss+xml"/>
 <description></description>
 <generator>quarto-1.3.433</generator>
 <lastBuildDate>Fri, 18 Aug 2023 22:00:00 GMT</lastBuildDate>
 <item>
   <title>Better than Monte Carlo (this post is not about QMC)</title>
   <dc:creator>Nicolas Chopin</dc:creator>
-  <link>https://github.com/statisfaction-blog/shared-blog/posts/22-08-2023-monte-carlo-rates/monte_carlo_rates.html</link>
+  <link>https://github.com/statisfaction-blog/posts/22-08-2023-monte-carlo-rates/monte_carlo_rates.html</link>
   <description><![CDATA[ 
 
 
@@ -35,13 +35,13 @@
   <category>monte-carlo</category>
   <category>qmc</category>
   <category>rates</category>
-  <guid>https://github.com/statisfaction-blog/shared-blog/posts/22-08-2023-monte-carlo-rates/monte_carlo_rates.html</guid>
+  <guid>https://github.com/statisfaction-blog/posts/22-08-2023-monte-carlo-rates/monte_carlo_rates.html</guid>
   <pubDate>Fri, 18 Aug 2023 22:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Welcome to the new, quarto-based version of Statisfaction</title>
   <dc:creator>Nicolas Chopin</dc:creator>
-  <link>https://github.com/statisfaction-blog/shared-blog/posts/welcome/index.html</link>
+  <link>https://github.com/statisfaction-blog/posts/welcome/index.html</link>
   <description><![CDATA[ 
 
 
@@ -73,7 +73,7 @@ font-style: inherit;">1</span>))</span></code></pre></div>
 
  ]]></description>
   <category>news</category>
-  <guid>https://github.com/statisfaction-blog/shared-blog/posts/welcome/index.html</guid>
+  <guid>https://github.com/statisfaction-blog/posts/welcome/index.html</guid>
   <pubDate>Fri, 18 Aug 2023 22:00:00 GMT</pubDate>
 </item>
 </channel>
