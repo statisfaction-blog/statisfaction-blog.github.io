@@ -1,5 +1,6 @@
 ---
-title: "Statisfaction"
+title: "Statisfaction - a collaborative blog about Bayesian computation and
+related topics"
 listing:
   contents: posts
   sort: "date desc"

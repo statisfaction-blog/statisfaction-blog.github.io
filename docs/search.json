@@ -9,7 +9,7 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Statisfaction",
+    "title": "Statisfaction - a collaborative blog about Bayesian computation and related topics",
     "section": "",
     "text": "Welcome to the new, quarto-based version of Statisfaction\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nAug 19, 2023\n\n\nNicolas Chopin\n\n\n\n\n\n\nNo matching items"
   },
@@ -18,6 +18,6 @@
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "Blog shared by a few friends interested in Bayesian computation and related things. Used to be hosted on Wordpress here."
+    "text": "A blog initially started, a long time ago, by PhD students at CREST, Paris, interested in Bayesian computation and related topics. Used to be hosted on Wordpress here, but now lives a happier life on github."
   }
 ]

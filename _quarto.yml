@@ -3,16 +3,18 @@ project:
   output-dir: docs
 
 website:
-  title: "Statisfaction - a blog shared by a few Bayesian friends"
-  site-url: https://github.com/statisfaction-blog 
+  title: "Statisfaction - Bayes and stuff"
+  site-url: https://github.com/statisfaction-blog/shared-blog
   navbar:
     right:
       - about.qmd
+      - icon: rss
+        href: index.xml
       - icon: github
-        href: https://github.com/blog-statisfaction
+        href: https://github.com/statisfaction-blog
 format:
   html:
-    theme: solar
+    theme: darkly
     css: styles.css
 
 
