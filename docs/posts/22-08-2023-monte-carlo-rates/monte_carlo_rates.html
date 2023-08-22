@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Nicolas Chopin">
+<meta name="dcterms.date" content="2023-08-19">
 
-<title>Statisfaction - Bayes and stuff - Statisfaction - a collaborative blog about Bayesian computation and related topics</title>
+<title>Statisfaction - Bayes and stuff - Better than Monte Carlo (this post is not about QMC)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,24 +25,22 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -61,50 +61,21 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="styles.css">
-<link rel="alternate" type="application/rss+xml" title="Statisfaction - Bayes and stuff" href="index.xml"></head>
+<link rel="stylesheet" href="../../styles.css">
+</head>
 
-<body class="nav-fixed">
+<body class="nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Statisfaction - Bayes and stuff</span>
     </a>
   </div>
@@ -115,11 +86,11 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html" rel="" target="">
+    <a class="nav-link" href="../../about.html" rel="" target="">
  <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="./index.xml" rel="" target=""><i class="bi bi-rss" role="img">
+    <a class="nav-link" href="../../index.xml" rel="" target=""><i class="bi bi-rss" role="img">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
@@ -138,119 +109,64 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
-      <h1 class="title">Statisfaction - a collaborative blog about Bayesian computation and related topics</h1>
-                      </div>
+    <div class="quarto-title column-body">
+      <h1 class="title">Better than Monte Carlo (this post is not about QMC)</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">monte-carlo</div>
+                <div class="quarto-category">qmc</div>
+                <div class="quarto-category">rates</div>
+              </div>
+                  </div>
   </div>
     
   
   <div class="quarto-title-meta">
 
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Nicolas Chopin </p>
+            </div>
+    </div>
       
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">August 19, 2023</p>
+      </div>
+    </div>
     
       
     </div>
     
   
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(2)</span></div><div class="category" data-category="monte-carlo">monte-carlo <span class="quarto-category-count">(1)</span></div><div class="category" data-category="news">news <span class="quarto-category-count">(1)</span></div><div class="category" data-category="qmc">qmc <span class="quarto-category-count">(1)</span></div><div class="category" data-category="rates">rates <span class="quarto-category-count">(1)</span></div></div></div>
+    
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
 
 
+<p>(This is repost from this December 2022 <a href="https://statisfaction.wordpress.com/2022/12/22/how-to-beat-monte-carlo-no-qmc/">post</a> on the old website, but since math support is so poor on Wordpress, I’d rather have this post published here.)</p>
+<p>Say I want to approximate the integral <span class="math display">\[I(f) := \int_{[0, 1]^s} f(u) du\]</span> based on <span class="math inline">\(n\)</span> evaluations of function <span class="math inline">\(f\)</span>. I could use plain old Monte Carlo: <span class="math display">\[\hat{I}(f) = \frac 1 n \sum_{i=1}^n f(U_i),\quad U_i \sim \mathrm{U}([0,
+1]^s).\]</span> whose RMSE (root mean square error) is <span class="math inline">\(O(n^{-1/2})\)</span>.</p>
+<p>Can I do better? That is, can I design an alternative estimator/algorithm, which performs <span class="math inline">\(n\)</span> evaluations and returns a random output, such that its RMSE converge quicker?</p>
+<p>Surprisingly, the answer to this question has been known for a long time. If I am ready to focus on functions <span class="math inline">\(f\in\mathcal{C}^r([0, 1]^s)\)</span>, Bakhvalov (1959) showed that the best rate I can hope for is <span class="math inline">\(O(n^{-1/2-r/s}).\)</span> That is, there exist algorithms that achieve this rate, and algorithms achieving a better rate simply do not exist.</p>
+<p>Ok, but how can I actually design such an algorithm? The proof of Bakhvalov contains a very simple recipe. Say I am able to construct a good approximation <span class="math inline">\(f_n\)</span> of <span class="math inline">\(f\)</span>, based on <span class="math inline">\(n\)</span> evaluations; assume the approximation error is <span class="math inline">\(\|f-f_n\|_\infty = O(n^{-\alpha})\)</span>, <span class="math inline">\(\alpha&gt;0\)</span>. Then I could compute the following estimator, based on a second batch of <span class="math inline">\(n\)</span> evaluations: <span class="math display">\[ \hat{I}(f)
+:= I(f_n) +  \frac 1 n \sum_{i=1}^n (f-f_n)(U_i),\quad U_i \sim
+\mathrm{Uniform}([0, 1]^s).\]</span> and it is easy to check that this new estimator is unbiased, that its variance is <span class="math inline">\(O(n^{-1-2\alpha})\)</span>, and therefore its RMSE is <span class="math inline">\(O(n^{-1/2-\alpha})\)</span>. (It is based on <span class="math inline">\(2n\)</span> evaluations.)</p>
+<p>So there is strong relation between Bakhvalov results and function approximation. In fact, the best rate you can achieve for the latter is <span class="math inline">\(\alpha=r/s\)</span>, which explain the rate above for stochastic quadrature. You can see now why I gave this title to this post. QMC is about using points that are better than random points. But here I’m using IID points, and the improved rate comes from the fact I use a better approximation of <span class="math inline">\(f\)</span>.</p>
+<p>Here is a simple example of a good function approximation. Take <span class="math inline">\(s=1\)</span>, and <span class="math display">\[
+f_n(u) = \sum_{i=1}^n f( \frac{2i-1}{2n} ) \mathbf{1}_{[(i-1)/n, i/n]}(u);
+\]</span> that is, split <span class="math inline">\([0, 1]\)</span> into <span class="math inline">\(n\)</span> intervals <span class="math inline">\([(i-1)/n, i/n]\)</span>, and approximate <span class="math inline">\(f\)</span> inside a given interval by its value at the centre of the interval. You can quickly check that the approximation error is then <span class="math inline">\(O(n^{-1})\)</span> provided <span class="math inline">\(f\)</span> is <span class="math inline">\(C^1\)</span>. So you get a simple recipe to get the optimal rate for <span class="math inline">\(s=1\)</span> and <span class="math inline">\(r=1\)</span>.</p>
+<p>Is it possible to generalise this type of construction to any <span class="math inline">\(r\)</span> and any <span class="math inline">\(s\)</span>? The answer is in our recent paper with Mathieu Gerber, which you can find <a href="https://arxiv.org/abs/2210.01554">here</a>. You may also want to read <a href="https://arxiv.org/abs/1409.6714">Novak (2016)</a>, which is a very good entry on stochastic quadrature, and in particular gives a nice overview of Bakhvalov’s and related results.</p>
 
 
 
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="monte-carlo,qmc,rates" data-listing-date-sort="1692396000000" data-listing-file-modified-sort="1692697189340" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3">
-<div class="thumbnail">
-<p><a href="./posts/22-08-2023-monte-carlo-rates/monte_carlo_rates.html"> <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div> </a></p>
-</div>
-<div class="body">
-<a href="./posts/22-08-2023-monte-carlo-rates/monte_carlo_rates.html">
-<h3 class="no-anchor listing-title">
-Better than Monte Carlo (this post is not about QMC)
-</h3>
-<div class="listing-subtitle">
-
-</div>
-</a>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('monte-carlo'); return false;">
-monte-carlo
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('qmc'); return false;">
-qmc
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('rates'); return false;">
-rates
-</div>
-</div>
-<a href="./posts/22-08-2023-monte-carlo-rates/monte_carlo_rates.html">
-<div class="listing-description">
-(This is repost from this December 2022 post on the old website, but since math support is so poor on Wordpress, I’d rather have this post published here.)
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/22-08-2023-monte-carlo-rates/monte_carlo_rates.html">
-<div class="listing-date">
-Aug 19, 2023
-</div>
-<div class="listing-author">
-Nicolas Chopin
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="news" data-listing-date-sort="1692396000000" data-listing-file-modified-sort="1692691763560" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1">
-<div class="thumbnail">
-<p><a href="./posts/welcome/index.html"> <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div> </a></p>
-</div>
-<div class="body">
-<a href="./posts/welcome/index.html">
-<h3 class="no-anchor listing-title">
-Welcome to the new, quarto-based version of Statisfaction
-</h3>
-<div class="listing-subtitle">
-
-</div>
-</a>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('news'); return false;">
-news
-</div>
-</div>
-<a href="./posts/welcome/index.html">
-<div class="listing-description">
-Hey! We have just moved this blog from Wordpress to github. The old version is still available here. The new version is based on quarto, which will make…<span class="math inline"></span>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/welcome/index.html">
-<div class="listing-date">
-Aug 19, 2023
-</div>
-<div class="listing-author">
-Nicolas Chopin
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

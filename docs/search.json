@@ -7,17 +7,24 @@
     "text": "Hey! We have just moved this blog from Wordpress to github. The old version is still available here. The new version is based on quarto, which will make it much easier to write mathematics, e.g. \\(\\pi(\\theta|x) \\propto \\pi(\\theta) L(x|\\theta)\\), and code, e.g. \nimport numpy as np\n\ndef fact(n):\n    return np.prod(range(1, n + 1))"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Statisfaction - a collaborative blog about Bayesian computation and related topics",
-    "section": "",
-    "text": "Welcome to the new, quarto-based version of Statisfaction\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nAug 19, 2023\n\n\nNicolas Chopin\n\n\n\n\n\n\nNo matching items"
-  },
-  {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",
     "section": "",
     "text": "A blog initially started, a long time ago, by PhD students at CREST, Paris, interested in Bayesian computation and related topics. Used to be hosted on Wordpress here, but now lives a happier life on github."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Statisfaction - a collaborative blog about Bayesian computation and related topics",
+    "section": "",
+    "text": "Better than Monte Carlo (this post is not about QMC)\n\n\n\n\n\n\n\nmonte-carlo\n\n\nqmc\n\n\nrates\n\n\n\n\n\n\n\n\n\n\n\nAug 19, 2023\n\n\nNicolas Chopin\n\n\n\n\n\n\n  \n\n\n\n\nWelcome to the new, quarto-based version of Statisfaction\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nAug 19, 2023\n\n\nNicolas Chopin\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/22-08-2023-monte-carlo-rates/monte_carlo_rates.html",
+    "href": "posts/22-08-2023-monte-carlo-rates/monte_carlo_rates.html",
+    "title": "Better than Monte Carlo (this post is not about QMC)",
+    "section": "",
+    "text": "(This is repost from this December 2022 post on the old website, but since math support is so poor on Wordpress, I’d rather have this post published here.)\nSay I want to approximate the integral \\[I(f) := \\int_{[0, 1]^s} f(u) du\\] based on \\(n\\) evaluations of function \\(f\\). I could use plain old Monte Carlo: \\[\\hat{I}(f) = \\frac 1 n \\sum_{i=1}^n f(U_i),\\quad U_i \\sim \\mathrm{U}([0,\n1]^s).\\] whose RMSE (root mean square error) is \\(O(n^{-1/2})\\).\nCan I do better? That is, can I design an alternative estimator/algorithm, which performs \\(n\\) evaluations and returns a random output, such that its RMSE converge quicker?\nSurprisingly, the answer to this question has been known for a long time. If I am ready to focus on functions \\(f\\in\\mathcal{C}^r([0, 1]^s)\\), Bakhvalov (1959) showed that the best rate I can hope for is \\(O(n^{-1/2-r/s}).\\) That is, there exist algorithms that achieve this rate, and algorithms achieving a better rate simply do not exist.\nOk, but how can I actually design such an algorithm? The proof of Bakhvalov contains a very simple recipe. Say I am able to construct a good approximation \\(f_n\\) of \\(f\\), based on \\(n\\) evaluations; assume the approximation error is \\(\\|f-f_n\\|_\\infty = O(n^{-\\alpha})\\), \\(\\alpha&gt;0\\). Then I could compute the following estimator, based on a second batch of \\(n\\) evaluations: \\[ \\hat{I}(f)\n:= I(f_n) +  \\frac 1 n \\sum_{i=1}^n (f-f_n)(U_i),\\quad U_i \\sim\n\\mathrm{Uniform}([0, 1]^s).\\] and it is easy to check that this new estimator is unbiased, that its variance is \\(O(n^{-1-2\\alpha})\\), and therefore its RMSE is \\(O(n^{-1/2-\\alpha})\\). (It is based on \\(2n\\) evaluations.)\nSo there is strong relation between Bakhvalov results and function approximation. In fact, the best rate you can achieve for the latter is \\(\\alpha=r/s\\), which explain the rate above for stochastic quadrature. You can see now why I gave this title to this post. QMC is about using points that are better than random points. But here I’m using IID points, and the improved rate comes from the fact I use a better approximation of \\(f\\).\nHere is a simple example of a good function approximation. Take \\(s=1\\), and \\[\nf_n(u) = \\sum_{i=1}^n f( \\frac{2i-1}{2n} ) \\mathbf{1}_{[(i-1)/n, i/n]}(u);\n\\] that is, split \\([0, 1]\\) into \\(n\\) intervals \\([(i-1)/n, i/n]\\), and approximate \\(f\\) inside a given interval by its value at the centre of the interval. You can quickly check that the approximation error is then \\(O(n^{-1})\\) provided \\(f\\) is \\(C^1\\). So you get a simple recipe to get the optimal rate for \\(s=1\\) and \\(r=1\\).\nIs it possible to generalise this type of construction to any \\(r\\) and any \\(s\\)? The answer is in our recent paper with Mathieu Gerber, which you can find here. You may also want to read Novak (2016), which is a very good entry on stochastic quadrature, and in particular gives a nice overview of Bakhvalov’s and related results."
   }
 ]
