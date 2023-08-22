@@ -2,7 +2,7 @@
 title: "Better than Monte Carlo (this post is not about QMC)"
 author: "Nicolas Chopin"
 date: "2023-08-19"
-categories: [monte-carlo, qmc, rates]
+categories: [Monte Carlo, QMC, rates]
 ---
 
 (This is repost from this December 2022

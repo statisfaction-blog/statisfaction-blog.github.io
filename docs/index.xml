@@ -32,8 +32,8 @@
 
 
  ]]></description>
-  <category>monte-carlo</category>
-  <category>qmc</category>
+  <category>Monte Carlo</category>
+  <category>QMC</category>
   <category>rates</category>
   <guid>https://github.com/statisfaction-blog/posts/22-08-2023-monte-carlo-rates/monte_carlo_rates.html</guid>
   <pubDate>Fri, 18 Aug 2023 22:00:00 GMT</pubDate>
