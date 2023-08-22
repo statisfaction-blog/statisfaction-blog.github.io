@@ -7,4 +7,4 @@ To add a new post, follow these steps:
 
 3. Compile, `quarto render .`, check the result in your browser, e.g. `firefox docs/index.html`
 
-4. `git commit -a` and `git push`
+4. `git add` new files,  `git commit -a` and `git push`
