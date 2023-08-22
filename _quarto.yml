@@ -1,0 +1,19 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Statisfaction - a blog shared by a few Bayesian friends"
+  site-url: https://github.com/statisfaction-blog 
+  navbar:
+    right:
+      - about.qmd
+      - icon: github
+        href: https://github.com/blog-statisfaction
+format:
+  html:
+    theme: solar
+    css: styles.css
+
+
+
