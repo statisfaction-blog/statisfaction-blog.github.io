@@ -10,7 +10,74 @@
 <atom:link href="https://github.com/statisfaction-blog/index.xml" rel="self" type="application/rss+xml"/>
 <description></description>
 <generator>quarto-1.3.433</generator>
-<lastBuildDate>Fri, 18 Aug 2023 22:00:00 GMT</lastBuildDate>
+<lastBuildDate>Thu, 31 Aug 2023 22:00:00 GMT</lastBuildDate>
+<item>
+  <title>particles version 0.4: single-run variance estimates, FFBS variants, nested sampling</title>
+  <dc:creator>Nicolas Chopin</dc:creator>
+  <link>https://github.com/statisfaction-blog/posts/01-09-2023-particles-v0.4/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Version 0.4 of <a href="https://github.com/nchopin/particles">particles</a> have just been released. Here are the main changes:</p>
+<section id="single-run-variance-estimation-for-waste-free-smc" class="level1">
+<h1>Single-run variance estimation for waste-free SMC</h1>
+<p>Waste-free SMC <a href="https://academic.oup.com/jrsssb/article/84/1/114/7056097">(Dau &amp; Chopin, 2020)</a> was already implemented in particles (since version 0.3), and even proposed by default. This is a variant of SMC samplers where you resample only <img src="https://latex.codecogs.com/png.latex?M%20%5Cll%20N"> particles, apply to each resampled particle <img src="https://latex.codecogs.com/png.latex?P-1"> MCMC steps, and then gather these <img src="https://latex.codecogs.com/png.latex?M%5Ctimes%20P"> states to form the next particle sample; see the paper if you want to know why this is a good idea (short version: this tends to perform better than standard SMC samplers, and to be more robust to the choice of the number of MCMC steps).</p>
+<p>What was not yet implemented (but is, in this version) is the <strong>single-run</strong> variance estimates proposed in the same paper. Here is a simple illustration:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://github.com/statisfaction-blog/posts/01-09-2023-particles-v0.4/ibis_pima_var_post.png" class="img-fluid figure-img" style="width:60.0%"></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://github.com/statisfaction-blog/posts/01-09-2023-particles-v0.4/ibis_pima_var_logLt.png" class="img-fluid figure-img" style="width:60.0%"></p>
+</figure>
+</div>
+<p>Both plots were obtained from <img src="https://latex.codecogs.com/png.latex?10%5E3"> runs of waste-free IBIS (i.e.&nbsp;target at time <img src="https://latex.codecogs.com/png.latex?t"> is the posterior based on the first <img src="https://latex.codecogs.com/png.latex?t+1"> observations, <img src="https://latex.codecogs.com/png.latex?p(%5Ctheta%7Cy_%7B0:t%7D)">) applied to Bayesian logistic regression and the Pima Indians dataset. The red line is the empirical variance of the output, and, since the number of runs is large, it should be close to the true variance. The lower (resp. upper) limit of the grey area is the <img src="https://latex.codecogs.com/png.latex?5%5C%25"> (resp. <img src="https://latex.codecogs.com/png.latex?95%5C%25">) quantile of the single-run variance estimates obtained from these <img src="https://latex.codecogs.com/png.latex?10%5E3"> runs. The considered output is either the posterior mean of the intercept (top) or the log marginal likelihood (bottom).</p>
+<p>We can see from these plots that these single-run estimates are quite reliable, and make it possible, in case one uses IBIS, to obtain error bars even from a single run. See the documention of module <code>smc_samplers</code> (or the scripts in <code>papers/wastefreeSMC</code>) for more details on how you may get such estimates.</p>
+</section>
+<section id="new-ffbs-variants" class="level1">
+<h1>New FFBS variants</h1>
+<p>I have already mentioned in a previous <a href="https://statisfaction.wordpress.com/2022/11/09/new-smoothing-algorithms-in-particles/">post</a>, on the old blog, that particles now implement new FFBS algorithms (i.e.&nbsp;particle smoothing algorithms that rely on a backward step) that were proposed in <a href="https://arxiv.org/abs/2207.00976">this paper</a>. On top of that, particles now also includes a hybrid version of the Paris algorithm.</p>
+</section>
+<section id="nested-sampling" class="level1">
+<h1>Nested sampling</h1>
+<p>I was invited to <a href="https://www.ipp.mpg.de/maxent2023">this</a> nested sampling workshop in Munich, so this gave me some incentive to:</p>
+<ul>
+<li><p>clean up and document the “vanilla” nested sampling implementation which was in module <code>nested</code>.</p></li>
+<li><p>add to the same module the NS-SMC samplers of <a href="https://arxiv.org/abs/1805.03924">Salomone et al (2018)</a> to play with them and do some numerical experiments to illustrate my talk.</p></li>
+</ul>
+<p>I will blog shortly about the interesting results I found (which essentiaZZlly are in line with Salmone et al).</p>
+</section>
+<section id="other-minor-changes" class="level1">
+<h1>Other minor changes</h1>
+<p>Several distributions and a dataset (Liver) were added, see the <a href="https://github.com/nchopin/particles/releases/tag/v0.4">change log</a>.</p>
+</section>
+<section id="logo" class="level1">
+<h1>Logo</h1>
+<p>I’ve added a <a href="https://github.com/nchopin/particles/blob/master/logo.png">logo</a>. It’s… not great, if anyone has suggestions on how to design a better log, I am all ears.</p>
+</section>
+<section id="whats-next" class="level1">
+<h1>What’s next?</h1>
+<p>I guess what’s still missing from the package are stuff like:</p>
+<ul>
+<li><p>the ensemble Kalman filter, which would be reasonably easy to add, and would be useful in various problems;</p></li>
+<li><p>advanced methods to design better proposals, such as controlled SMC <a href="https://projecteuclid.org/journals/annals-of-statistics/volume-48/issue-5/Controlled-sequential-Monte-Carlo/10.1214/19-AOS1914.short">(Heng et al, 2020)</a> or the iterated auxiliary particle filter <a href="https://www.tandfonline.com/doi/full/10.1080/01621459.2016.1222291">(Guarniero et al, 2017)</a>.</p></li>
+</ul>
+<p>If you have other ideas, let me know.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>news</category>
+  <category>particles</category>
+  <category>SMC</category>
+  <guid>https://github.com/statisfaction-blog/posts/01-09-2023-particles-v0.4/index.html</guid>
+  <pubDate>Thu, 31 Aug 2023 22:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Better than Monte Carlo (this post is not about QMC)</title>
   <dc:creator>Nicolas Chopin</dc:creator>
