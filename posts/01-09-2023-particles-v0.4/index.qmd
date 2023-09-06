@@ -3,6 +3,7 @@ title: "particles version 0.4: single-run variance estimates, FFBS variants,
 nested sampling"
 author: "Nicolas Chopin"
 date: "2023-09-01"
+date-modified: "2023-09-06"
 categories: [news, particles, SMC]
 ---
 
@@ -40,7 +41,7 @@ likelihood (bottom).
 
 We can see from these plots that these single-run estimates are quite reliable,
 and make it possible, in case one uses IBIS, to obtain error bars even from a
-single run. See the documention of module `smc_samplers` (or the scripts in
+single run. See the documentation of module `smc_samplers` (or the scripts in
 `papers/wastefreeSMC`) for more details on how you may get such estimates.
 
 # New FFBS variants
@@ -62,7 +63,7 @@ workshop in Munich, so this gave me some incentive to:
 * add to the same module the NS-SMC samplers of [Salomone et al (2018)](https://arxiv.org/abs/1805.03924)
   to play with them and do some numerical experiments to illustrate my talk. 
 
-I will blog shortly about the interesting results I found (which essentiaZZlly are
+I will blog shortly about the interesting results I found (which essentially are
 in line with Salmone et al). 
 
 # Other minor changes
@@ -86,3 +87,10 @@ al, 2020)](https://projecteuclid.org/journals/annals-of-statistics/volume-48/iss
 
 If you have other ideas, let me know.
 
+# Feedback
+
+I have not yet looked into how to enable comments on a quarto blog. You can
+comment by replying to this
+[post](https://mathstodon.xyz/@nchopin/111018449931345157) on Mastodon, or to
+the same post on LinkedIn (coming soon); or you can raise an issue on github or
+send me an e-mail, of course.

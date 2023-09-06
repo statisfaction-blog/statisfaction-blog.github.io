@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.433">
+<meta name="generator" content="quarto-1.3.450">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -136,6 +136,12 @@ ul.task-list li input[type="checkbox"] {
       </div>
     </div>
     
+      <div>
+      <div class="quarto-title-meta-heading">Modified</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date-modified">September 6, 2023</p>
+      </div>
+    </div>
       
     </div>
     
@@ -166,7 +172,7 @@ ul.task-list li input[type="checkbox"] {
 </figure>
 </div>
 <p>Both plots were obtained from <span class="math inline">\(10^3\)</span> runs of waste-free IBIS (i.e.&nbsp;target at time <span class="math inline">\(t\)</span> is the posterior based on the first <span class="math inline">\(t+1\)</span> observations, <span class="math inline">\(p(\theta|y_{0:t})\)</span>) applied to Bayesian logistic regression and the Pima Indians dataset. The red line is the empirical variance of the output, and, since the number of runs is large, it should be close to the true variance. The lower (resp. upper) limit of the grey area is the <span class="math inline">\(5\%\)</span> (resp. <span class="math inline">\(95\%\)</span>) quantile of the single-run variance estimates obtained from these <span class="math inline">\(10^3\)</span> runs. The considered output is either the posterior mean of the intercept (top) or the log marginal likelihood (bottom).</p>
-<p>We can see from these plots that these single-run estimates are quite reliable, and make it possible, in case one uses IBIS, to obtain error bars even from a single run. See the documention of module <code>smc_samplers</code> (or the scripts in <code>papers/wastefreeSMC</code>) for more details on how you may get such estimates.</p>
+<p>We can see from these plots that these single-run estimates are quite reliable, and make it possible, in case one uses IBIS, to obtain error bars even from a single run. See the documentation of module <code>smc_samplers</code> (or the scripts in <code>papers/wastefreeSMC</code>) for more details on how you may get such estimates.</p>
 </section>
 <section id="new-ffbs-variants" class="level1">
 <h1>New FFBS variants</h1>
@@ -179,7 +185,7 @@ ul.task-list li input[type="checkbox"] {
 <li><p>clean up and document the “vanilla” nested sampling implementation which was in module <code>nested</code>.</p></li>
 <li><p>add to the same module the NS-SMC samplers of <a href="https://arxiv.org/abs/1805.03924">Salomone et al (2018)</a> to play with them and do some numerical experiments to illustrate my talk.</p></li>
 </ul>
-<p>I will blog shortly about the interesting results I found (which essentiaZZlly are in line with Salmone et al).</p>
+<p>I will blog shortly about the interesting results I found (which essentially are in line with Salmone et al).</p>
 </section>
 <section id="other-minor-changes" class="level1">
 <h1>Other minor changes</h1>
@@ -197,6 +203,10 @@ ul.task-list li input[type="checkbox"] {
 <li><p>advanced methods to design better proposals, such as controlled SMC <a href="https://projecteuclid.org/journals/annals-of-statistics/volume-48/issue-5/Controlled-sequential-Monte-Carlo/10.1214/19-AOS1914.short">(Heng et al, 2020)</a> or the iterated auxiliary particle filter <a href="https://www.tandfonline.com/doi/full/10.1080/01621459.2016.1222291">(Guarniero et al, 2017)</a>.</p></li>
 </ul>
 <p>If you have other ideas, let me know.</p>
+</section>
+<section id="feedback" class="level1">
+<h1>Feedback</h1>
+<p>I have not yet looked into how to enable comments on a quarto blog. You can comment by replying to this <a href="https://mathstodon.xyz/@nchopin/111018449931345157">post</a> on Mastodon, or to the same post on LinkedIn (coming soon); or you can raise an issue on github or send me an e-mail, of course.</p>
 
 
 </section>
