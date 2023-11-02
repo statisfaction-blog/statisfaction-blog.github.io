@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://github.com/statisfaction-blog/posts/22-08-2023-monte-carlo-rates/monte_carlo_rates.html</loc>
-    <lastmod>2023-09-06T13:42:26.384Z</lastmod>
-  </url>
-  <url>
-    <loc>https://github.com/statisfaction-blog/posts/01-09-2023-particles-v0.4/index.html</loc>
-    <lastmod>2023-09-06T13:42:25.844Z</lastmod>
-  </url>
-  <url>
-    <loc>https://github.com/statisfaction-blog/index.html</loc>
-    <lastmod>2023-09-06T13:42:25.024Z</lastmod>
-  </url>
-  <url>
     <loc>https://github.com/statisfaction-blog/about.html</loc>
-    <lastmod>2023-09-06T13:42:25.508Z</lastmod>
-  </url>
-  <url>
-    <loc>https://github.com/statisfaction-blog/posts/welcome/index.html</loc>
-    <lastmod>2023-09-06T13:42:26.092Z</lastmod>
+    <lastmod>2023-11-02T08:23:00.117Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/statisfaction-blog/posts/01-11-2023-repelled-point-processes/repelled_point_processes.html</loc>
-    <lastmod>2023-11-01T11:05:25.965Z</lastmod>
+    <lastmod>2023-11-02T08:22:59.275Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/statisfaction-blog/posts/01-09-2023-particles-v0.4/index.html</loc>
+    <lastmod>2023-11-02T08:22:58.531Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/statisfaction-blog/posts/22-08-2023-monte-carlo-rates/monte_carlo_rates.html</loc>
+    <lastmod>2023-11-02T08:22:58.093Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/statisfaction-blog/posts/welcome/index.html</loc>
+    <lastmod>2023-11-02T08:22:58.860Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/statisfaction-blog/index.html</loc>
+    <lastmod>2023-11-02T08:22:59.842Z</lastmod>
   </url>
 </urlset>
