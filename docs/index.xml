@@ -9,8 +9,56 @@
 <link>https://github.com/statisfaction-blog/index.html</link>
 <atom:link href="https://github.com/statisfaction-blog/index.xml" rel="self" type="application/rss+xml"/>
 <description></description>
-<generator>quarto-1.3.450</generator>
-<lastBuildDate>Thu, 31 Aug 2023 22:00:00 GMT</lastBuildDate>
+<generator>quarto-1.3.433</generator>
+<lastBuildDate>Tue, 31 Oct 2023 23:00:00 GMT</lastBuildDate>
+<item>
+  <title>Coulomb rhymes with variance reduction</title>
+  <dc:creator>Rémi Bardenet</dc:creator>
+  <link>https://github.com/statisfaction-blog/posts/01-11-2023-repelled-point-processes/repelled_point_processes.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>… Well, it does rhyme if you read the title aloud with a French accent, hon hon hon.</p>
+<p>To paraphrase Nicolas’s previous <a href="https://statisfaction.wordpress.com/2022/12/22/how-to-beat-monte-carlo-no-qmc/">post</a>, say I want to approximate the integral <img src="https://latex.codecogs.com/png.latex?%0A%20%20%20%20I(f)%20:=%20%5Cint_%7BS%7D%20f(u)%20du,%0A"> where <img src="https://latex.codecogs.com/png.latex?S"> is a compact set of <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BR%7D%5Ed">. I could use plain old Monte Carlo with <img src="https://latex.codecogs.com/png.latex?N"> nodes, <span id="eq-mc"><img src="https://latex.codecogs.com/png.latex?%0A%20%20%20%20%5Chat%7BI%7D(f)%20=%20%5Cfrac%201%20N%20%5Csum_%7Bi=1%7D%5EN%20f(U_i),%20%20%20%5Cquad%20U_i%20%5Csim%20%5Cmathrm%7BU%7D(S).%0A%5Ctag%7B1%7D"></span> Intuitively, an i.i.d. uniform sample of quadrature nodes <img src="https://latex.codecogs.com/png.latex?U_1,%20%5Cdots,%20U_N"> will however leave “holes”; see Figure&nbsp;1 (a). In words, given a realization of the nodes, it is possible to insert a few large balls in <img src="https://latex.codecogs.com/png.latex?S"> that do not contain any <img src="https://latex.codecogs.com/png.latex?U_i">. These holes may make us miss some large variations of <img src="https://latex.codecogs.com/png.latex?f">. Part of the variance of the Monte Carlo estimator in Equation&nbsp;1 could intuitively be removed if we managed to fill these holes, using some of the nodes that got lumped together by chance.</p>
+<p>Many sampling algorithms, such as randomized quasi-Monte Carlo, impose similar space-filling constraints, yielding a random sample with guarantees of “well-spreadedness”. In the <a href="https://arxiv.org/abs/2308.04825">paper</a> I describe in this post, <a href="https://dhawat.github.io/">Diala Hawat</a> and her two advisors (Raphaël Lachièze-Rey and myself) obtained variance reduction by explicitly trying to fill the holes left by a realization of <img src="https://latex.codecogs.com/png.latex?U_1,%20%5Cdots,%20U_N">. In the remainder of the post, I will describe Diala’s main theoretical result.</p>
+<div id="fig-samples" class="quarto-layout-panel">
+<figure class="figure">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-poisson" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><embed src="poisson.pdf" class="img-fluid" data-ref-parent="fig-samples"></p>
+<figcaption class="figure-caption">(a) A Poisson sample</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-repelled" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><embed src="repelled.pdf" class="img-fluid" data-ref-parent="fig-samples"></p>
+<figcaption class="figure-caption">(b) The same sample after repulsion</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p></p><figcaption class="figure-caption">Figure&nbsp;1: Note how the repelled sample has fewer visible “holes” and “lumps”. The details of how we implemented the repulsion are interesting in themselves, and can be found in the <a href="https://arxiv.org/abs/2308.04825">paper</a> and the associated <a href="https://github.com/dhawat/MCRPPy">code</a>.</figcaption><p></p>
+</figure>
+</div>
+<p>The basic intuition is to imagine the quadrature nodes <img src="https://latex.codecogs.com/png.latex?U_1,%20%5Cdots,%20U_N"> as electrons. In physics, electrons (like all charged particles) are subject to the <a href="https://en.wikipedia.org/wiki/Coulomb%27s_law">Coulomb force</a>. The Coulomb force exerted by one electron onto another points away from the first electron, with a magnitude that is inversely proportional to the <img src="https://latex.codecogs.com/png.latex?d-1">th power of the Euclidean distance between the two. As a result, electrons tend to repel each other, and electrons close to you will push you away harder than electrons at the other side of the support of <img src="https://latex.codecogs.com/png.latex?f">. This is the behaviour that we would like to emulate, so that our quadrature nodes avoid lumping together and rather go and fill holes where no particle causes any repulsion.</p>
+<p>If we solved the differential equation implementing Coulomb’s repulsion on our <img src="https://latex.codecogs.com/png.latex?N"> i.i.d. nodes, however, the points would rapidly leave the support of <img src="https://latex.codecogs.com/png.latex?f"> and “go to infinity”, to make sure that the pairwise distances between nodes are as large as possible. One way to avoid this undesired behaviour is to consider an “infinite” uniform Monte Carlo sample in <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BR%7D%5Ed">, so that, wherever an electron looks, there are an infinite number of electrons preventing it from escaping. To make the situation comparable with our initial <img src="https://latex.codecogs.com/png.latex?N">-point estimator in Equation&nbsp;1, we also require that there are roughly <img src="https://latex.codecogs.com/png.latex?N"> points inside the region <img src="https://latex.codecogs.com/png.latex?S"> where we integrate <img src="https://latex.codecogs.com/png.latex?f">. Formally, we consider a homogeneous Poisson point process <img src="https://latex.codecogs.com/png.latex?%5Cmathcal%7BP%7D"> of intensity <img src="https://latex.codecogs.com/png.latex?%5Crho%20=%20N/V"> in <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BR%7D%5Ed">, where <img src="https://latex.codecogs.com/png.latex?V"> is the volume of <img src="https://latex.codecogs.com/png.latex?S">. Consider the modified Monte Carlo estimator <img src="https://latex.codecogs.com/png.latex?%0A%20%20%20%20%5Ctilde%7BI%7D(f)%20=%20%5Cfrac%7B1%7D%7BN%7D%20%5Csum_%7Bx%5Cin%20S%5Ccap%5Cmathcal%7BP%7D%7D%20f(x).%0A"> This estimator is very similar to the <img src="https://latex.codecogs.com/png.latex?N">-point crude Monte Carlo estimator <img src="https://latex.codecogs.com/png.latex?%5Chat%7BI%7D(f)">, except the number of evaluations of <img src="https://latex.codecogs.com/png.latex?f"> in the sum is now Poisson-distributed, with mean and variance <img src="https://latex.codecogs.com/png.latex?N">. What we have gained is that we can now intuitively apply the Coulomb force to the points of <img src="https://latex.codecogs.com/png.latex?%5Cmathcal%7BP%7D">, and hope that both before and after repulsion, about <img src="https://latex.codecogs.com/png.latex?N"> points remain in our integration domain <img src="https://latex.codecogs.com/png.latex?S">. Proving this remains technically thorny, however. For starters, for <img src="https://latex.codecogs.com/png.latex?x"> in <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BR%7D%5Ed">, the series defining the Coulomb force exerted on <img src="https://latex.codecogs.com/png.latex?x"> by a collection <img src="https://latex.codecogs.com/png.latex?C"> of points in <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BR%7D%5Ed">, namely <img src="https://latex.codecogs.com/png.latex?%0A%20%20%20%20F_C(x)%20=%20%5Csum_%7By%5Cin%20C,%20y%5Cneq%20x%7D%20%5Cfrac%7Bx-y%7D%7B%5CVert%20x-y%5CVert%5E%7Bd%7D%7D,%0A"> is not absolutely convergent, so that the order of summation matters. However, it was observed as early as 1943 that, if you sum by increasing distance to the reference point <img src="https://latex.codecogs.com/png.latex?x">, and <img src="https://latex.codecogs.com/png.latex?C=%5Cmathcal%7BP%7D"> is a homogeneous Poisson point process, then the (random) series <img src="https://latex.codecogs.com/png.latex?F_%5Cmathcal%7BP%7D(x)"> converges almost surely. Interested readers are referred to a classical <a href="(https://arxiv.org/abs/math/0611886)">paper</a> by Chatterjee, Peled, Peres, and Romik (2010) on the gravitational allocation of Poisson points, one of the inspirations behind Diala’s work.</p>
+<p>Putting (important) technical issues aside, we are ready to state the main result of our paper. We prove that, for <img src="https://latex.codecogs.com/png.latex?%5Cepsilon%5Cin(-1,1)">, the <em>repelled Poisson point process</em> <img src="https://latex.codecogs.com/png.latex?%0A%20%20%20%20%5CPi_%5Cepsilon%5Cmathcal%7BP%7D%20=%20%5C%7B%20x+%5Cepsilon%20F_%7B%5Cmathcal%7BP%7D%7D(x),%20%5Cquad%20x%5Cin%5Cmathcal%7BP%7D%20%5C%7D%0A"> is well-defined, and has on average <img src="https://latex.codecogs.com/png.latex?N"> points in <img src="https://latex.codecogs.com/png.latex?S">. Moreover, <img src="https://latex.codecogs.com/png.latex?%0A%20%20%20%20%5Ccheck%7BI%7D(f)%20=%20%5Cfrac%7B1%7D%7BN%7D%20%5Csum_%7Bx%5Cin%20S%5Ccap%20%5CPi_%5Cepsilon%5Cmathcal%7BP%7D%7D%20f(x)%0A"> is an unbiased estimator of <img src="https://latex.codecogs.com/png.latex?I(f)">. Finally, if <img src="https://latex.codecogs.com/png.latex?f"> is <img src="https://latex.codecogs.com/png.latex?C%5E2">, for <img src="https://latex.codecogs.com/png.latex?%5Cepsilon%3E0"> small enough, the variance of <img src="https://latex.codecogs.com/png.latex?%5Ccheck%7BI%7D(f)"> is lower than that of <img src="https://latex.codecogs.com/png.latex?%5Ctilde%7BI%7D(f)">. To sum up, for any <img src="https://latex.codecogs.com/png.latex?C%5E2"> integrand, we can in principle reduce the variance of our Monte Carlo estimator by slightly repelling the quadrature nodes away from each other. This is it: by breaking lumps and filling holes in a postprocessing step, we obtain variance reduction over crude Monte Carlo. The proof is not trivial, and relies on the super-harmonicity of the potential behind the Coulomb force.</p>
+<p>Let me close with two further pointers to the <a href="https://arxiv.org/abs/2308.04825">paper</a>. First, we discuss a particular value of the “step size” parameter <img src="https://latex.codecogs.com/png.latex?%5Cepsilon"> in the paper, which has an easily-implemented closed form, and reliably led to variance reduction across our experiments. Second, while our theoretical results only cover the Poisson case so far, we also show experiments on other (stationary) point processes than Poisson, which confirm that variance reduction is also achieved across point processes with varying second-order structure. In Monte Carlo terms, and being very optimistic, some sort of repulsion might become a standard postprocessing step in the future, to reduce the variance of one’s estimator, independently of the law of the nodes (Markov chain, thinned PDMP, you name it).</p>
+
+
+
+ ]]></description>
+  <category>Monte Carlo</category>
+  <category>point processes</category>
+  <guid>https://github.com/statisfaction-blog/posts/01-11-2023-repelled-point-processes/repelled_point_processes.html</guid>
+  <pubDate>Tue, 31 Oct 2023 23:00:00 GMT</pubDate>
+</item>
 <item>
   <title>particles version 0.4: single-run variance estimates, FFBS variants, nested sampling</title>
   <dc:creator>Nicolas Chopin</dc:creator>
@@ -83,6 +131,33 @@
   <pubDate>Thu, 31 Aug 2023 22:00:00 GMT</pubDate>
 </item>
 <item>
+  <title>Better than Monte Carlo (this post is not about QMC)</title>
+  <dc:creator>Nicolas Chopin</dc:creator>
+  <link>https://github.com/statisfaction-blog/posts/22-08-2023-monte-carlo-rates/monte_carlo_rates.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>(This is repost from this December 2022 <a href="https://statisfaction.wordpress.com/2022/12/22/how-to-beat-monte-carlo-no-qmc/">post</a> on the old website, but since math support is so poor on Wordpress, I’d rather have this post published here.)</p>
+<p>Say I want to approximate the integral <img src="https://latex.codecogs.com/png.latex?I(f)%20:=%20%5Cint_%7B%5B0,%201%5D%5Es%7D%20f(u)%20du"> based on <img src="https://latex.codecogs.com/png.latex?n"> evaluations of function <img src="https://latex.codecogs.com/png.latex?f">. I could use plain old Monte Carlo: <img src="https://latex.codecogs.com/png.latex?%5Chat%7BI%7D(f)%20=%20%5Cfrac%201%20n%20%5Csum_%7Bi=1%7D%5En%20f(U_i),%5Cquad%20U_i%20%5Csim%20%5Cmathrm%7BU%7D(%5B0,%0A1%5D%5Es)."> whose RMSE (root mean square error) is <img src="https://latex.codecogs.com/png.latex?O(n%5E%7B-1/2%7D)">.</p>
+<p>Can I do better? That is, can I design an alternative estimator/algorithm, which performs <img src="https://latex.codecogs.com/png.latex?n"> evaluations and returns a random output, such that its RMSE converge quicker?</p>
+<p>Surprisingly, the answer to this question has been known for a long time. If I am ready to focus on functions <img src="https://latex.codecogs.com/png.latex?f%5Cin%5Cmathcal%7BC%7D%5Er(%5B0,%201%5D%5Es)">, Bakhvalov (1959) showed that the best rate I can hope for is <img src="https://latex.codecogs.com/png.latex?O(n%5E%7B-1/2-r/s%7D)."> That is, there exist algorithms that achieve this rate, and algorithms achieving a better rate simply do not exist.</p>
+<p>Ok, but how can I actually design such an algorithm? The proof of Bakhvalov contains a very simple recipe. Say I am able to construct a good approximation <img src="https://latex.codecogs.com/png.latex?f_n"> of <img src="https://latex.codecogs.com/png.latex?f">, based on <img src="https://latex.codecogs.com/png.latex?n"> evaluations; assume the approximation error is <img src="https://latex.codecogs.com/png.latex?%5C%7Cf-f_n%5C%7C_%5Cinfty%20=%20O(n%5E%7B-%5Calpha%7D)">, <img src="https://latex.codecogs.com/png.latex?%5Calpha%3E0">. Then I could compute the following estimator, based on a second batch of <img src="https://latex.codecogs.com/png.latex?n"> evaluations: <img src="https://latex.codecogs.com/png.latex?%20%5Chat%7BI%7D(f)%0A:=%20I(f_n)%20+%20%20%5Cfrac%201%20n%20%5Csum_%7Bi=1%7D%5En%20(f-f_n)(U_i),%5Cquad%20U_i%20%5Csim%0A%5Cmathrm%7BUniform%7D(%5B0,%201%5D%5Es)."> and it is easy to check that this new estimator is unbiased, that its variance is <img src="https://latex.codecogs.com/png.latex?O(n%5E%7B-1-2%5Calpha%7D)">, and therefore its RMSE is <img src="https://latex.codecogs.com/png.latex?O(n%5E%7B-1/2-%5Calpha%7D)">. (It is based on <img src="https://latex.codecogs.com/png.latex?2n"> evaluations.)</p>
+<p>So there is strong relation between Bakhvalov results and function approximation. In fact, the best rate you can achieve for the latter is <img src="https://latex.codecogs.com/png.latex?%5Calpha=r/s">, which explain the rate above for stochastic quadrature. You can see now why I gave this title to this post. QMC is about using points that are better than random points. But here I’m using IID points, and the improved rate comes from the fact I use a better approximation of <img src="https://latex.codecogs.com/png.latex?f">.</p>
+<p>Here is a simple example of a good function approximation. Take <img src="https://latex.codecogs.com/png.latex?s=1">, and <img src="https://latex.codecogs.com/png.latex?%0Af_n(u)%20=%20%5Csum_%7Bi=1%7D%5En%20f(%20%5Cfrac%7B2i-1%7D%7B2n%7D%20)%20%5Cmathbf%7B1%7D_%7B%5B(i-1)/n,%20i/n%5D%7D(u);%0A"> that is, split <img src="https://latex.codecogs.com/png.latex?%5B0,%201%5D"> into <img src="https://latex.codecogs.com/png.latex?n"> intervals <img src="https://latex.codecogs.com/png.latex?%5B(i-1)/n,%20i/n%5D">, and approximate <img src="https://latex.codecogs.com/png.latex?f"> inside a given interval by its value at the centre of the interval. You can quickly check that the approximation error is then <img src="https://latex.codecogs.com/png.latex?O(n%5E%7B-1%7D)"> provided <img src="https://latex.codecogs.com/png.latex?f"> is <img src="https://latex.codecogs.com/png.latex?C%5E1">. So you get a simple recipe to get the optimal rate for <img src="https://latex.codecogs.com/png.latex?s=1"> and <img src="https://latex.codecogs.com/png.latex?r=1">.</p>
+<p>Is it possible to generalise this type of construction to any <img src="https://latex.codecogs.com/png.latex?r"> and any <img src="https://latex.codecogs.com/png.latex?s">? The answer is in our recent paper with Mathieu Gerber, which you can find <a href="https://arxiv.org/abs/2210.01554">here</a>. You may also want to read <a href="https://arxiv.org/abs/1409.6714">Novak (2016)</a>, which is a very good entry on stochastic quadrature, and in particular gives a nice overview of Bakhvalov’s and related results.</p>
+
+
+
+ ]]></description>
+  <category>Monte Carlo</category>
+  <category>QMC</category>
+  <category>rates</category>
+  <guid>https://github.com/statisfaction-blog/posts/22-08-2023-monte-carlo-rates/monte_carlo_rates.html</guid>
+  <pubDate>Fri, 18 Aug 2023 22:00:00 GMT</pubDate>
+</item>
+<item>
   <title>Welcome to the new, quarto-based version of Statisfaction</title>
   <dc:creator>Nicolas Chopin</dc:creator>
   <link>https://github.com/statisfaction-blog/posts/welcome/index.html</link>
@@ -118,33 +193,6 @@ font-style: inherit;">1</span>))</span></code></pre></div>
  ]]></description>
   <category>news</category>
   <guid>https://github.com/statisfaction-blog/posts/welcome/index.html</guid>
-  <pubDate>Fri, 18 Aug 2023 22:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Better than Monte Carlo (this post is not about QMC)</title>
-  <dc:creator>Nicolas Chopin</dc:creator>
-  <link>https://github.com/statisfaction-blog/posts/22-08-2023-monte-carlo-rates/monte_carlo_rates.html</link>
-  <description><![CDATA[ 
-
-
-
-
-<p>(This is repost from this December 2022 <a href="https://statisfaction.wordpress.com/2022/12/22/how-to-beat-monte-carlo-no-qmc/">post</a> on the old website, but since math support is so poor on Wordpress, I’d rather have this post published here.)</p>
-<p>Say I want to approximate the integral <img src="https://latex.codecogs.com/png.latex?I(f)%20:=%20%5Cint_%7B%5B0,%201%5D%5Es%7D%20f(u)%20du"> based on <img src="https://latex.codecogs.com/png.latex?n"> evaluations of function <img src="https://latex.codecogs.com/png.latex?f">. I could use plain old Monte Carlo: <img src="https://latex.codecogs.com/png.latex?%5Chat%7BI%7D(f)%20=%20%5Cfrac%201%20n%20%5Csum_%7Bi=1%7D%5En%20f(U_i),%5Cquad%20U_i%20%5Csim%20%5Cmathrm%7BU%7D(%5B0,%0A1%5D%5Es)."> whose RMSE (root mean square error) is <img src="https://latex.codecogs.com/png.latex?O(n%5E%7B-1/2%7D)">.</p>
-<p>Can I do better? That is, can I design an alternative estimator/algorithm, which performs <img src="https://latex.codecogs.com/png.latex?n"> evaluations and returns a random output, such that its RMSE converge quicker?</p>
-<p>Surprisingly, the answer to this question has been known for a long time. If I am ready to focus on functions <img src="https://latex.codecogs.com/png.latex?f%5Cin%5Cmathcal%7BC%7D%5Er(%5B0,%201%5D%5Es)">, Bakhvalov (1959) showed that the best rate I can hope for is <img src="https://latex.codecogs.com/png.latex?O(n%5E%7B-1/2-r/s%7D)."> That is, there exist algorithms that achieve this rate, and algorithms achieving a better rate simply do not exist.</p>
-<p>Ok, but how can I actually design such an algorithm? The proof of Bakhvalov contains a very simple recipe. Say I am able to construct a good approximation <img src="https://latex.codecogs.com/png.latex?f_n"> of <img src="https://latex.codecogs.com/png.latex?f">, based on <img src="https://latex.codecogs.com/png.latex?n"> evaluations; assume the approximation error is <img src="https://latex.codecogs.com/png.latex?%5C%7Cf-f_n%5C%7C_%5Cinfty%20=%20O(n%5E%7B-%5Calpha%7D)">, <img src="https://latex.codecogs.com/png.latex?%5Calpha%3E0">. Then I could compute the following estimator, based on a second batch of <img src="https://latex.codecogs.com/png.latex?n"> evaluations: <img src="https://latex.codecogs.com/png.latex?%20%5Chat%7BI%7D(f)%0A:=%20I(f_n)%20+%20%20%5Cfrac%201%20n%20%5Csum_%7Bi=1%7D%5En%20(f-f_n)(U_i),%5Cquad%20U_i%20%5Csim%0A%5Cmathrm%7BUniform%7D(%5B0,%201%5D%5Es)."> and it is easy to check that this new estimator is unbiased, that its variance is <img src="https://latex.codecogs.com/png.latex?O(n%5E%7B-1-2%5Calpha%7D)">, and therefore its RMSE is <img src="https://latex.codecogs.com/png.latex?O(n%5E%7B-1/2-%5Calpha%7D)">. (It is based on <img src="https://latex.codecogs.com/png.latex?2n"> evaluations.)</p>
-<p>So there is strong relation between Bakhvalov results and function approximation. In fact, the best rate you can achieve for the latter is <img src="https://latex.codecogs.com/png.latex?%5Calpha=r/s">, which explain the rate above for stochastic quadrature. You can see now why I gave this title to this post. QMC is about using points that are better than random points. But here I’m using IID points, and the improved rate comes from the fact I use a better approximation of <img src="https://latex.codecogs.com/png.latex?f">.</p>
-<p>Here is a simple example of a good function approximation. Take <img src="https://latex.codecogs.com/png.latex?s=1">, and <img src="https://latex.codecogs.com/png.latex?%0Af_n(u)%20=%20%5Csum_%7Bi=1%7D%5En%20f(%20%5Cfrac%7B2i-1%7D%7B2n%7D%20)%20%5Cmathbf%7B1%7D_%7B%5B(i-1)/n,%20i/n%5D%7D(u);%0A"> that is, split <img src="https://latex.codecogs.com/png.latex?%5B0,%201%5D"> into <img src="https://latex.codecogs.com/png.latex?n"> intervals <img src="https://latex.codecogs.com/png.latex?%5B(i-1)/n,%20i/n%5D">, and approximate <img src="https://latex.codecogs.com/png.latex?f"> inside a given interval by its value at the centre of the interval. You can quickly check that the approximation error is then <img src="https://latex.codecogs.com/png.latex?O(n%5E%7B-1%7D)"> provided <img src="https://latex.codecogs.com/png.latex?f"> is <img src="https://latex.codecogs.com/png.latex?C%5E1">. So you get a simple recipe to get the optimal rate for <img src="https://latex.codecogs.com/png.latex?s=1"> and <img src="https://latex.codecogs.com/png.latex?r=1">.</p>
-<p>Is it possible to generalise this type of construction to any <img src="https://latex.codecogs.com/png.latex?r"> and any <img src="https://latex.codecogs.com/png.latex?s">? The answer is in our recent paper with Mathieu Gerber, which you can find <a href="https://arxiv.org/abs/2210.01554">here</a>. You may also want to read <a href="https://arxiv.org/abs/1409.6714">Novak (2016)</a>, which is a very good entry on stochastic quadrature, and in particular gives a nice overview of Bakhvalov’s and related results.</p>
-
-
-
- ]]></description>
-  <category>Monte Carlo</category>
-  <category>QMC</category>
-  <category>rates</category>
-  <guid>https://github.com/statisfaction-blog/posts/22-08-2023-monte-carlo-rates/monte_carlo_rates.html</guid>
   <pubDate>Fri, 18 Aug 2023 22:00:00 GMT</pubDate>
 </item>
 </channel>
