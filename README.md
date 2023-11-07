@@ -23,7 +23,7 @@ To add a new post, follow these steps:
 Under the hood
 ==============
 
-Quarto is configured to render the blog in the doc folder, as recommended here:
+Quarto is configured to render the blog in the docs folder, as recommended here:
 <https://quarto.org/docs/publishing/github-pages.html#render-to-docs>
 
 The github repo is configured accordingly.
