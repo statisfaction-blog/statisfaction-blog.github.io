@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 website:
-  title: "Statisfaction - Bayes and stuff"
+  title: "Statisfaction - I can't get no"
   site-url: https://github.com/statisfaction-blog
   navbar:
     right:
@@ -12,10 +12,15 @@ website:
         href: index.xml
       - icon: github
         href: https://github.com/statisfaction-blog
+
 format:
   html:
     theme: darkly
     css: styles.css
 
-
+comments:
+  utterances:
+    repo: rbardenet/statisfaction-blog-comments
+    issue-term: title
+    theme: github-light
 
