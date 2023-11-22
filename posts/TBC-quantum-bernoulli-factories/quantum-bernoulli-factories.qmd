@@ -1,0 +1,69 @@
+---
+title: "Quantum workers in Bernoulli factories"
+author: "Rémi Bardenet"
+date: "2023-11-01"
+categories: [quantum computing, simulation]
+---
+TL;DR: A quantum computer lets you provably build more general Bernoulli factories than your laptop. 
+
+I have grown an interest for quantum computing, both for fun and because it naturally applies to sampling my favourite distribution, [determinantal point processes](https://arxiv.org/abs/2305.15851).
+One of the natural big questions in quantum computing is, for a given computational task such as solving a linear system, whether having access to a quantum computer gives you an *advantage* over using your laptop in the smartest way possible.
+The advantage can be with respect to any resource: maybe the quantum computer lets you solve your problem faster, or maybe it allows you to solve a more general class of problems.
+[Dale, Jennings, and Rudolph (2015)](https://www.nature.com/articles/ncomms9203) prove a quantum advantage of the latter kind, for a task that appeals to a computational statistician: a quantum computer gives you access to strictly more Bernoulli factories than your laptop does.
+In this post, I discuss one of their examples.
+
+_Bernoulli factories._ First, I need to define what a Bernoulli factory is.
+Loosely speaking, a Bernoulli factory is an algorithm that, when fed with i.i.d draws from a Bernoulli random variable $B(p)$ with unknown parameter $p$, outputs a stream of independent Bernoullis with parameter $f(p)$.
+The algorithm does not have access to the value of $p$, and needs to work for as large a range of values of $p$ as possible.
+For instance, a trick attributed to von Neumann gives you a Bernoulli factory for the constant function $f\equiv 1/2$, can you guess how? 
+The problem of determining what Bernoulli factories can be constructed on a *classical* (as opposed to *quantum*) computer has been answered by [Keane and O'Brien (1994)](https://dl.acm.org/doi/10.1145/175007.175019).
+Essentially, it is necessary and sufficient that $(i)$ $f$ be continuous on its domain $\mathcal{P}$, and that $(ii)$ either $f$ is constant or there exists an integer $n$ such that, for all $p\in\mathcal{P}$,
+$$
+    \min[ f(p), 1-f(p)] \geq \min [ p^n, (1-p)^n ].
+$$
+In particular, a non-constant $f$ should not take the values $0$ or $1$ in $(0,1)$, and cannot approach these extreme values too fast.
+In particular, the doubling function $f_\mathrm{double}:p\mapsto 2p$ defined on $[0,1/2]$ does not correspond to a Bernoulli factory, while its restriction to $[0,1/2-\epsilon]$ does, for any $\epsilon>0$. 
+Another simple example is $f_\mathrm{quadratic}:p\mapsto 4p(1-p)$ defined on $[0,1]$, which does not correspond to a Bernoulli factory.
+We now show that $h$ can be realized simply on a quantum computer. 
+
+_Quantum computers._ 
+Now buckle up, because I need to define a quantum computer in a few words. 
+Let $N$ be a positive integer, and $\mathbb{H} = (\mathbb{C}^2)^{\otimes N} = \mathbb{C}^2\otimes \dots \otimes \mathbb{C}^2$, where the tensor product is taken $N$ times.
+An $N$-qubit quantum computer is a machine that, when fed with 
+
+1. a linear operator $\rho$ on the Hilbert space $\mathbb{H}$, with trace norm $1$ (the *state*),
+2. a Hermitian operator $A$ on $\mathbb{C}^2\otimes \mathbb{C}^2$ (the *observable*), 
+   
+outputs a draw from the random variable $X$, with support the spectrum of $A$, defined by 
+$$
+    \mathbb{E} g(X) = \mathrm{Tr}(\rho g(A)), \quad g:\mathbb{H}\rightarrow \mathbb{R}_+.
+$${#eq-born}
+Here $g(A)$ is the operator that has the same eigenvectors as $A$, but where each eigenvalue $\lambda$ is replaced by $g(\lambda)$.
+As an example, consider an eigenpair $(\lambda, v)$ of $A$, and take for state the orthogonal projector $\rho = \Pi_v$ onto $\mathbb{C}v$. 
+Then @eq-born
+$$
+    \mathbb{P}(X_{A,\rho}=\lambda) = \mathrm{Tr}(\rho A) = \mathrm{Tr}(\Pi_v A) = \lambda$.  
+Finally, it is assumed that repeated calls to the computer output independent draws.
+
+_Quantum Bernoulli factories._ 
+We first need some equivalent of a Bernoulli random variable. 
+Consider an orthonormal basis $(e_0, e_1)$ of $\mathbb{C}^2$. 
+A natural candidate is the orthogonal projector $\Pi_p:\mathbb{C}^2\rightarrow \mathbb{C}^2$ onto 
+$$
+    \sqrt{1-p}e_0 + \sqrt{p}e_1
+$$
+Indeed, $\Pi_p$ together with the observable $\Pi_0 + \Pi_1$ onto $e_0$ as observable define through @eq-born a binary random variable $X$ such that 
+$$
+    \mathbb P (X=1) = \mathrm{Tr}[ \Pi_p \Pi_1 ] = p = 1 - \mathbb P (X=0).
+$$
+
+A quantum Bernoulli factory will be defined as an algorithm that takes $f$ and its domain as input, and outputs a number of qubits $N$, a state-observable pair $(\rho, A)$ on $(\mathbb{C}^2)^{\otiems N}$, and a function $h$ such that $h(X_{A,\rho})\sim \mathrm{Ber}(f(p))$.
+
+so that $(e_i\otimes e_j)_{0\leq i,j, \leq 1}$ gives a basis of $\mathbb{H}$.
+Actually, I will need to independent Bernoulli draws to realize $f_\mathrm{quadratic}$, so I directly define the equivalent of two independent Bernoulli draws. 
+This is the state $v_p\in\mathbb{C^2}$ defined by
+$$
+   
+$$
+It does represent our pair of Bernoulli draws in the following sense. 
+If I feed my computer if you take your state $v_p$ and the observable 
