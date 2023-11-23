@@ -7,8 +7,8 @@ categories: [quantum computing, simulation]
 TL;DR: A quantum computer lets you provably build more general Bernoulli factories than your laptop. 
 
 I have grown an interest for quantum computing, both for fun and because it naturally applies to sampling my favourite distribution, [determinantal point processes](https://arxiv.org/abs/2305.15851).
-One of the natural big questions in quantum computing is, for a given computational task such as solving a linear system, whether having access to a quantum computer gives you an *advantage* over using your laptop in the smartest way possible.
-The advantage can be with respect to any resource: maybe the quantum computer lets you solve your problem faster, or maybe it allows you to solve a more general class of problems.
+One of the natural (and still quite open) big questions in quantum computing is, for a given computational task such as solving a linear system, whether having access to a quantum computer gives you any *advantage* over using your laptop in the smartest way possible.
+Maybe the quantum computer lets you solve part of your problem faster, or maybe it allows you to solve a more general class of problems.
 [Dale, Jennings, and Rudolph (2015)](https://www.nature.com/articles/ncomms9203) prove a quantum advantage of the latter kind, for a task that appeals to a computational statistician: a quantum computer gives you access to strictly more Bernoulli factories than your laptop does.
 In this post, I discuss one of their examples.
 
