@@ -85,7 +85,7 @@ $$
 $$
 The corresponding state $\rho_{2\mathrm{qc}} = (\ket{p}\otimes \ket{p})(\bra{p}\otimes \bra{p})$ is a sum of sixteen terms, which we define as two quantum coins.
 Now consider for your observable an operator $B$ with four distinct eigenvalues, say $\lambda_{ij} \in\mathbb{C}$ for $i, j\in\{0,1\}$, each corresponding to eigenvector $\ket{ij}$.
-The random variable $X = X_{B, \rho_{2\mathrm{qc}}$, associated through @eq-born to two quantum coins and our newly defined observable, has support $\{\lambda_{00}, \lambda_{01}, \lambda_{10}, \lambda_{11}\}$, and 
+The random variable $X = X_{B, \rho_{2\mathrm{qc}}}$, associated through @eq-born to two quantum coins and our newly defined observable, has support $\{\lambda_{00}, \lambda_{01}, \lambda_{10}, \lambda_{11}\}$, and 
 $$
     \mathbb{P}(X = \lambda_{ij}) = \mathrm{Tr}\left[(\ket{p}\otimes \ket{p})(\bra{p}\otimes \bra{p}) \ket{ij}\bra{ij}\right] = p^{1-i}(1-p)^i \times p^{1-j}(1-p)^j, 
 $$
@@ -97,6 +97,10 @@ What if we had taken the same state, but with another observable? Say the observ
 $$
     \ket{\phi^{\pm}} = \frac{\ket{00}\pm\ket{11}}{\sqrt{2}}, \quad
     \ket{\psi^{\pm}} = \frac{\ket{01}\pm\ket{10}}{\sqrt{2}}.
+$$
+Then, the random variable $X = X_{C, \rho_{2\mathrm{qc}}}$ defined by Born's rule in @eq-born has support $\{\lambda_{\phi^+}, \lambda_{\phi-}, \lambda_{\psi+}, \lambda_{\psi-}\}$, and is given by 
+$$
+    \mathbb{P}(X = \phi^+) = \mathrm{Tr\left[ \rho_{2\mathrm{qc}} \ket{\phi^+}\bra{\ket{\phi^+}} \right]} = 
 $$
 
 
