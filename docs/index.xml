@@ -14,7 +14,7 @@
 <item>
   <title>Quantum workers in Bernoulli factories</title>
   <dc:creator>Rémi Bardenet</dc:creator>
-  <link>https://github.com/statisfaction-blog/posts/TBC-quantum-bernoulli-factories/quantum-bernoulli-factories.html</link>
+  <link>https://github.com/statisfaction-blog/posts/14-02-2024-quantum-bernoulli-factories/quantum-bernoulli-factories.html</link>
   <description><![CDATA[ 
 
 
@@ -24,7 +24,7 @@
 <p>I have grown an interest for quantum computing, both for fun and because it naturally applies to sampling my favourite distribution, <a href="https://arxiv.org/abs/2305.15851">determinantal point processes</a>. One of the natural (and still quite open) big questions in quantum computing is, for a given computational task such as solving a linear system, whether having access to a quantum computer gives you any <em>advantage</em> over using your laptop in the smartest way possible. Maybe the quantum computer lets you solve part of your problem faster, or maybe it allows you to solve a more general class of problems. <a href="https://www.nature.com/articles/ncomms9203">Dale, Jennings, and Rudolph (2015)</a> prove a quantum advantage of the latter kind, for a task that appeals to a computational statistician: a quantum computer gives you access to strictly more Bernoulli factories than your laptop does. In this post, I discuss one of their examples.</p>
 <div id="fig-smbc" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
-<p><img src="https://github.com/statisfaction-blog/posts/TBC-quantum-bernoulli-factories/smbc.png" class="img-fluid figure-img"></p>
+<p><img src="https://github.com/statisfaction-blog/posts/14-02-2024-quantum-bernoulli-factories/smbc.png" class="img-fluid figure-img"></p>
 <figcaption class="figure-caption">Figure&nbsp;1: An excerpt from an excellent <a href="https://www.smbc-comics.com/comic/the-talk-3">comic strip</a> by Scott Aaronson and Zach Weinersmith.</figcaption>
 </figure>
 </div>
@@ -63,7 +63,7 @@
  ]]></description>
   <category>quantum computing</category>
   <category>simulation</category>
-  <guid>https://github.com/statisfaction-blog/posts/TBC-quantum-bernoulli-factories/quantum-bernoulli-factories.html</guid>
+  <guid>https://github.com/statisfaction-blog/posts/14-02-2024-quantum-bernoulli-factories/quantum-bernoulli-factories.html</guid>
   <pubDate>Tue, 31 Oct 2023 23:00:00 GMT</pubDate>
 </item>
 <item>
