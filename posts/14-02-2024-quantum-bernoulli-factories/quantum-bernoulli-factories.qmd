@@ -1,7 +1,7 @@
 ---
 title: "Quantum workers in Bernoulli factories"
 author: "Rémi Bardenet"
-date: "2023-11-01"
+date: "2024-02-14"
 categories: [quantum computing, simulation]
 ---
 TL;DR: A quantum computer lets you provably build more general Bernoulli factories than your laptop. 
