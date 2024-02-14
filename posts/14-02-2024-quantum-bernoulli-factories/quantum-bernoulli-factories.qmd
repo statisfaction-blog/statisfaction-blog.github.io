@@ -71,7 +71,7 @@ By construction, we can write things like
 $$
 \bra{v} \ket{u} = \braket{v\vert u},
 $$
-so that the braket notation for vectors and linear forms is consistent with the inner product.
+so that the bra-ket notation for linear forms and vectors is consistent with the inner product.
 
 Now, remember we have fixed a basis $(\ket{0}, \ket{1})$ of $\mathbb{H}$. 
 For $p\in[0,1]$, we define
