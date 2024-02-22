@@ -9,7 +9,6 @@ about:
       href: https://github.com/statisfaction-blog
 ---
 
-A blog initially started, a long time ago, by PhD students at ENSAE interested
-in Bayesian computation and related topics. Used to be hosted on Wordpress
-[here](https://statisfaction.wordpress.com), but now lives a happier life on
-github.  
+The blog is edited by [Nicolas Chopin](https://nchopin.github.io/), [Julyan Arbel](https://www.julyanarbel.com/), and [Rémi Bardenet](http://rbardenet.github.io/); feel free to contact us, via GitHub or email, and contribute a post.
+The blog is a revival of a former wordpress
+[version](https://statisfaction.wordpress.com). 
