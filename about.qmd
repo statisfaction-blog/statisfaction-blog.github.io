@@ -9,6 +9,7 @@ about:
       href: https://github.com/statisfaction-blog
 ---
 
-The blog is edited by [Nicolas Chopin](https://nchopin.github.io/), [Julyan Arbel](https://www.julyanarbel.com/), and [Rémi Bardenet](http://rbardenet.github.io/); feel free to contact us, via GitHub or email, and contribute a post.
-The blog is a revival of a former wordpress
+This is a blog about Bayesian computation and related topics. 
+The blog is currently edited by [Nicolas Chopin](https://nchopin.github.io/), [Julyan Arbel](https://www.julyanarbel.com/), and [Rémi Bardenet](http://rbardenet.github.io/); feel free to contact us, via GitHub or email, and contribute a post.
+The blog is a continuation of a former wordpress
 [version](https://statisfaction.wordpress.com). 
