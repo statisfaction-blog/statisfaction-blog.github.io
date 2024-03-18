@@ -163,7 +163,7 @@ Repeating the procedure as many times as you want draws, we thus have a Bernoull
 The difference is that our Bernoulli factory is a _quantum_ Bernoulli factory.
 In particular, our basic resource is (physically) independent copies of $\ket{p}$.
 This is asking for strictly more than (statistically) independent Bernoulli draws. Indeed, depending on your observable, two physically independent copies of $\ket{p}$ can give you two i.i.d. Bernoullis $X_{B,\rho_{2\mathrm{qc}}}$, or something more complicated like $X_{C,\rho_{2\mathrm{qc}}}$.
-If you accept that the cost of preparing the two types of inputs, i.i.d. Bernoullis $B(p)$ on one side and physically independent copies of $\ket{p}$ on the other side, then you have a quantum advantage.
+If you consider as equivalent the cost of preparing the two types of inputs, i.i.d. Bernoullis $B(p)$ on one side and physically independent copies of $\ket{p}$ on the other side, then you have a quantum advantage.
 It might be a big assumption, but I find it easier to swallow than similar caveats in other quantum advantages that I've read about.
 
 ## Further remarks
