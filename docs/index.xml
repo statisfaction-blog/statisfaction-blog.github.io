@@ -9,8 +9,75 @@
 <link>https://github.com/statisfaction-blog/index.html</link>
 <atom:link href="https://github.com/statisfaction-blog/index.xml" rel="self" type="application/rss+xml"/>
 <description></description>
-<generator>quarto-1.3.450</generator>
-<lastBuildDate>Tue, 13 Feb 2024 23:00:00 GMT</lastBuildDate>
+<generator>quarto-1.3.433</generator>
+<lastBuildDate>Wed, 24 Apr 2024 22:00:00 GMT</lastBuildDate>
+<item>
+  <title>Numpy broke my heart</title>
+  <dc:creator>Nicolas Chopin</dc:creator>
+  <link>https://github.com/statisfaction-blog/posts/25-04-2024-numpy-broke-my-heart/numpy-broke-my-heart.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>I swear, the title is kind of funny in French (try to figure out why). Anyway, in this post I wanted to dispel a misconception I had until recently on python, numpy and multi-processing, and which led me to say something silly in our SMC book.</p>
+<section id="python-and-multi-processing" class="level1">
+<h1>Python and multi-processing</h1>
+<p>Most modern computers have several CPU cores; I guess even potato computers have a least two these days? On the other hand, a program written in Python will be executed on a single core, because of the <a href="https://en.wikipedia.org/wiki/Global_interpreter_lock">GIL</a>. This means that all the other cores will stay idle while you run your program. Which is frustrating when said program takes forever to complete.</p>
+<p>There are different ways to make all your CPU cores work for you, but I will discuss the only two ways which I am (a bit familiar) with:</p>
+<ol type="1">
+<li><p>Use <a href="https://joblib.readthedocs.io">joblib</a> or a similar library. (But seriously, just use joblib, it’s great.) This requires a bit of work, as you have to state explicitly which parts of you program may be turned into independent tasks that will be performed in parallel. The typical use case for me is to run several times the same SMC algorithm (perhaps with different parameters, e.g.&nbsp;a different number of particles); see for instance <a href="https://particles-sequential-monte-carlo-in-python.readthedocs.io/en/latest/notebooks/advanced_tutorial_ssm.html#Running-many-particle-filters-in-one-go">this</a>.</p></li>
+<li><p>Do nothing, and pray that your program rely on those Numpy operations which are already parallelised for you (multithreaded). Numpy rely on low-level (C/Fortran) linear algebra libraries such as BLAS and LAPACK, and these libraries are able to implement certain operations (e.g.&nbsp;matrix multiplication) on multiple cores. In this case, your python script still runs on a single core, but, when it encounters a multithreaded numpy operation, this operation spawns (temporarily, for this operation only) several threads that are executed on different cores.</p></li>
+</ol>
+</section>
+<section id="my-bad" class="level1">
+<h1>My bad</h1>
+<p>Ok, now for my misconception (a.k.a. what a idiot I am.) When I run on a standard PC the following <a href="https://github.com/nchopin/particles/blob/master/book/smc_samplers/logistic_reg.py">script</a>, which implements the numerical experiment of Chapter 17 (on SMC samplers) in our book, all the cores are kept busy during the execution. This script does not rely on any form of explicit parallelism. Several SMC samplers are run, but sequentially (I don’t use <code>multiSMC</code> in this script). So clearly it’s numpy that is doing its thing (point 2 above). In fact, by profiling it, one can see that most of the CPU time is spent in the one line that computes the log-likelihood of the logistic regression model, and this involves a matrix multiplication. So this makes sense.</p>
+<p>In the book (page 352 if you want to check), I said naively: if you have k cores, you get a x k speed-up for free in this particular experiment. I thought that that was the case, because all my CPU cores were 100% busy the whole time.</p>
+<p>However, I did some more testing recently and tried to compare the running time of this script when numpy does multithreading and when it does not. (See <a href="https://superfastpython.com/numpy-number-blas-threads/">here</a> on how you may disable multithreading in numpy.)</p>
+<ol type="1">
+<li><p>On a standard PC, the speed-up is more like… one per-cent?</p></li>
+<li><p>On a certain cloud-based <a href="https://github.com/InseeFrLab/onyxia">architecture</a> that I’m currently playing with (and which rely on kubernetes containers), multithreading can actually slow down the script by a factor of 10 or more.</p></li>
+</ol>
+</section>
+<section id="whats-going-on" class="level1">
+<h1>What’s going on?</h1>
+<p>I am not sure, I’m a bit out of my depth here. I guess what happens is that, for this particular script, the speed-up brought by multithreading is cancelled by the time it takes to generate new threads at the beginning of the numpy operation. (Remember that this must be done each time a line with a multithreaded numpy operation is executed.) In fact, the multithreaded operation seems to be a matrix/vector mutiplication, where the matrix is not very large. (It’s of size <img src="https://latex.codecogs.com/png.latex?(N,%20d)">, where <img src="https://latex.codecogs.com/png.latex?N"> is the number of particles. I tried to increase N several times over, but it did not change the results.)</p>
+<p>And things may get worse in containers, where either numpy might do wrong assumptions on the available resources, or you simply share resources with many other users. (Disclaimer, I don’t know what I’m talking about.)</p>
+<p>Also, of course, this kind or results may depend on your hardware, the version of python and related libraries you are using (in particular whether you use the openBLAS version of BLAS of the MKL one which is specific to Intel CPUs, to see this, check the output <code>numpy.config()</code> on your machine.) and so on. The picture below summaries the situation.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://github.com/statisfaction-blog/posts/25-04-2024-numpy-broke-my-heart/Alice_looking_down_cpu_cores.jpg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Alice decided to better understand multiprocessing in Python</figcaption>
+</figure>
+</div>
+</section>
+<section id="enter-joblib" class="level1">
+<h1>Enter joblib</h1>
+<p>The discussion above assumes you run a single program, and that Numpy may or may not get access to all the cores. What if you try to implement multi-processing (using joblib, multiprocessing or something else), but each task perform numpy operations? You could have a <em>over-subscription</em> problem, that is, you end up with many threads (more than the number of cores), and the computer wastes a lot of time trying to juggle between all these threads.</p>
+<p>Fortunately, joblib is smart enough to tell numpy to calm down and generate fewer threads. This point is discussed <a href="https://joblib.readthedocs.io/en/stable/parallel.html#avoiding-over-subscription-of-cpu-resources">here</a> inin the documentation. Well worth a read.</p>
+<p>I managed to speed up my script significantly by using joblib, but I still cannot obtain a x 24 factor on my niffy 24-core PC. I am still <del>crying</del> investigating.</p>
+</section>
+<section id="take-home-messages" class="level1">
+<h1>Take-home messages</h1>
+<ul>
+<li><p>It’s not because all your 20 CPU cores are busy that your script is running 20 times faster.</p></li>
+<li><p>If you actually want to achieve a substantial speed-up in a multi-core hardware, you might need to try different things, and check the actual results (i.e.&nbsp;measure the total running time).</p></li>
+<li><p>Read <a href="https://superfastpython.com/numpy-number-blas-threads/">this</a> and <a href="https://superfastpython.com/numpy-blas-multiprocessing/">this</a> if you want to learn more about multiprocessing and numpy, I found these pages clear and authoritative on this topic.</p></li>
+<li><p>don’t believe everything you read in books? :-)</p></li>
+</ul>
+
+
+</section>
+
+ ]]></description>
+  <category>python</category>
+  <category>joblib</category>
+  <category>multiprocessing</category>
+  <category>numpy</category>
+  <guid>https://github.com/statisfaction-blog/posts/25-04-2024-numpy-broke-my-heart/numpy-broke-my-heart.html</guid>
+  <pubDate>Wed, 24 Apr 2024 22:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Quantum workers in Bernoulli factories</title>
   <dc:creator>Rémi Bardenet</dc:creator>
