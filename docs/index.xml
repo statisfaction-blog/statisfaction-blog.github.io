@@ -21,6 +21,12 @@
 
 
 <p>I swear, the title is kind of funny in French (try to figure out why). Anyway, in this post I wanted to dispel a misconception I had until recently on python, numpy and multi-processing, and which led me to say something silly in our SMC book.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://github.com/statisfaction-blog/posts/25-04-2024-numpy-broke-my-heart/python_broke_my_heart.jpg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">no comment</figcaption>
+</figure>
+</div>
 <section id="python-and-multi-processing" class="level1">
 <h1>Python and multi-processing</h1>
 <p>Most modern computers have several CPU cores; I guess even potato computers have a least two these days? On the other hand, a program written in Python will be executed on a single core, because of the <a href="https://en.wikipedia.org/wiki/Global_interpreter_lock">GIL</a>. This means that all the other cores will stay idle while you run your program. Which is frustrating when said program takes forever to complete.</p>
