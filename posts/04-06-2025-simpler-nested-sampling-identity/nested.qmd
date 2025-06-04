@@ -68,7 +68,7 @@ sample size) is $\alpha N$, for some $\alpha\in(0, 1)$. Because the weight
 function is $0/1$, this amounts to taking $\lambda_t$ to be the $\alpha-$upper
 quantile of the $L(X_t^n)$, where the $X_t^n$'s are the $N$ particles sampled
 at time $t$ by our SMC sampler. This is what Salomone et al recommend. 
-In this case, we can replace $Z(\alpha_t)$ in the identity above by $\alpha^t$,
+In this case, we can replace $Z(\lambda_t)$ in the identity above by $\alpha^t$,
 at least for $t<T$. 
 
 The corresponding estimate will be something like:
@@ -91,7 +91,7 @@ move as slowly as possible up the likelihood function.
 
 If you'd resample the $N-1$ surviving particles, and apply $k$ MCMC step to
 each of them, you would get a very expensive sampler: increasing $N$ means you
-both increasing the cost of a single iteration, and increasing the total number
+both increase the cost of a single iteration, and the total number
 of iterations (since it makes $\alpha$ larger). 
 
 A cheaper alternative is to choose randomly one of the $N-1$ surviving
@@ -99,7 +99,7 @@ particles, apply it a MCMC step, and takes the output as your new $N-$th
 particle. Then, you get an algorithm which is very close to the original NS
 one. In particular, your estimate of $Z=\gamma(1)$ becomes:
 $$
-\widehat{\gamma}(\varphi) 
+\widehat{\gamma}(1) 
      = \sum_{t=0}^{T-1} \frac{1}{N} (1- \frac 1 N)^t L_{t+1} + \dots
 $$
 with $L_{t+1} = \min_n L(X_{t+1}^n)$. (The original NS estimate has 
@@ -120,7 +120,7 @@ here, with $M=N-1$, $r=1$.
 # Why did I say we get a "simpler" identity?
 
 The original NS algorithm by Skilling derives essentially the same identity
-above, but through more involved steps, which involves the CDF of random
+as above, but through more convoluted steps, which involves the CDF of random
 variable $L(X)$, when $X\sim p$, its inverse, Beta distributions, etc. I find
 the derivation above simpler (at least, again, if you are familiar with SMC
 samplers). Of course, in return, you get a justification which 
