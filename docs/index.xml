@@ -6,11 +6,72 @@
       version="2.0">
 <channel>
 <title>Statisfaction - I can&#39;t get no</title>
-<link>https://github.com/statisfaction-blog/index.html</link>
+<link>https://github.com/statisfaction-blog/</link>
 <atom:link href="https://github.com/statisfaction-blog/index.xml" rel="self" type="application/rss+xml"/>
 <description></description>
-<generator>quarto-1.3.433</generator>
-<lastBuildDate>Wed, 24 Apr 2024 22:00:00 GMT</lastBuildDate>
+<generator>quarto-1.6.32</generator>
+<lastBuildDate>Sat, 05 Apr 2025 22:00:00 GMT</lastBuildDate>
+<item>
+  <title>A simpler nested sampling identity</title>
+  <dc:creator>Nicolas Chopin</dc:creator>
+  <link>https://github.com/statisfaction-blog/posts/04-06-2025-simpler-nested-sampling-identity/nested.html</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<div class="hidden">
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cnewcommand%7B%5Cind%7D%7B%5Cmathbb%7B1%7D%7D%0A"></p>
+</div>
+<p>In this post, I am trying to come up with a simple introduction to NS (nested sampling), through the lens of SMC samplers. It should be interesting to readers who are familiar with the latter but not with the former.</p>
+<p>This post is inspired by <a href="https://arxiv.org/abs/1805.03924">this</a> paper by Salomone et al, which has just been accepted in JRSSB. Congrats to the authors!</p>
+<section id="set-up" class="level1">
+<h1>Set up</h1>
+<p>Consider a model with parameter <img src="https://latex.codecogs.com/png.latex?x">, prior <img src="https://latex.codecogs.com/png.latex?p(x)">, and likelihood <img src="https://latex.codecogs.com/png.latex?L(x)">. The posterior is then <img src="https://latex.codecogs.com/png.latex?%5Cpi(x)%20=%20%5Cfrac%7Bp(x)L(x)%7D%7BZ%7D,%5Cquad%20Z%20=%20%5Cint%20p(x)L(x)dx."> (The Bayesian interpretation is not essential. More generally, <img src="https://latex.codecogs.com/png.latex?p"> could be a proposal distribution, <img src="https://latex.codecogs.com/png.latex?%5Cpi"> a target distribution, and <img src="https://latex.codecogs.com/png.latex?L"> a function proportional to <img src="https://latex.codecogs.com/png.latex?%5Cpi/p">.)</p>
+<p>Let’s now introduce the following family of distributions: <img src="https://latex.codecogs.com/png.latex?%5Cpi_%5Clambda(x)%20=%20%5Cfrac%7Bp(x)%20%5Cind%5C%7B%20L(x)%20%3E%20%5Clambda%5C%7D%7D%7BZ(%5Clambda)%7D,%5Cquad%0AZ(%5Clambda)%20=%20%5Cmathbb%7BP%7D_%5Cmathrm%7Bprior%7D(L(X)%20%3E%20%5Clambda)."> In words, <img src="https://latex.codecogs.com/png.latex?%5Cpi_%5Clambda"> is the prior truncated to the region <img src="https://latex.codecogs.com/png.latex?%5C%7Bx:%20L(x)%20%3E%20%5Clambda%5C%7D">, and the normalising constant <img src="https://latex.codecogs.com/png.latex?Z(%5Clambda)"> is the prior probability that <img src="https://latex.codecogs.com/png.latex?L(X)%3E%5Clambda">.</p>
+<p>If we introduce a sequence <img src="https://latex.codecogs.com/png.latex?0=%5Clambda_%7B0%7D%20%3C%20%5Clambda_1%20%3C%20%5Cdots%20%3C%20%5Clambda_%7BT+1%7D%20=%0A%5Cinfty">, we can use a SMC sampler to approximate recursively <img src="https://latex.codecogs.com/png.latex?%5Cpi_%7B%5Clambda_t%7D"> and its normalising constant <img src="https://latex.codecogs.com/png.latex?Z(%5Clambda_t)">. Note that the particle weights at each time will be 0 or 1 in this particular SMC sampler, since: <img src="https://latex.codecogs.com/png.latex?%20%5Cfrac%7B%5Cpi_%7B%5Clambda_t%7D(x)%7D%7B%5Cpi_%7B%5Clambda_%7Bt-1%7D%7D(x)%7D%20%5Cpropto%20%5Cind%5C%7BL(x)%20%3E%0A%5Clambda_t%5C%7D.%0A"></p>
+</section>
+<section id="the-simpler-ns-identity" class="level1">
+<h1>The simpler NS identity</h1>
+<p>Now comes the identity. Let <img src="https://latex.codecogs.com/png.latex?%5Cgamma(%5Cvarphi)%20=%20%5Cint%20p%20L%20%5Cvarphi"> for an arbitrary function <img src="https://latex.codecogs.com/png.latex?%5Cvarphi"> of <img src="https://latex.codecogs.com/png.latex?x">. Then: <img src="https://latex.codecogs.com/png.latex?%5Cbegin%7Balign*%7D%0A%5Cgamma(%5Cvarphi)%20&amp;%20=%20%5Cint%20p%20L%20%5Cvarphi%20%5C%5C%0A%20%20%20%20&amp;%20=%20%5Csum_%7Bt=0%7D%5ET%20%5Cint%20p%20L%20%5Cvarphi%20%5Cind%5C%7B%20%5Clambda_%7Bt%7D%20%3C%20L%20%5Cleq%20%5Clambda_%7Bt+1%7D%20%5C%7D%20%5C%5C%0A%20%20%20%20&amp;%20=%20%5Csum_%7Bt=0%7D%5ET%20Z(%5Clambda_t)%20%5Cpi_%7B%5Clambda_t%7D%5Cleft(L%20%5Cvarphi%20%5Ctimes%20%5Cind%5C%7B%20L%20%5Cleq%0A%20%20%20%20%5Clambda_%7Bt+1%7D%5C%7D%5Cright)%0A%5Cend%7Balign*%7D%0A"></p>
+<p>Thus, if we implement a SMC sampler that tracks the sequence <img src="https://latex.codecogs.com/png.latex?%5Cpi_%7B%5Clambda_t%7D">, we will be able to approximate all the above quantities, and thus, through this identity, to approximate the marginal likelihood, <img src="https://latex.codecogs.com/png.latex?Z=%5Cgamma(1)">, and posterior moments, <img src="https://latex.codecogs.com/png.latex?%5Cpi(%5Cvarphi)%20=%20%5Cgamma(%5Cvarphi)%20/%20%5Cgamma(1)">.</p>
+</section>
+<section id="choosing-the-lambda_ts" class="level1">
+<h1>Choosing the <img src="https://latex.codecogs.com/png.latex?%5Clambda_t">’s</h1>
+<p>In practice, we need to choose the <img src="https://latex.codecogs.com/png.latex?%5Clambda_t">’s. As in tempering, it seems reasonable to set them automatically, in such a way that the ESS (effective sample size) is <img src="https://latex.codecogs.com/png.latex?%5Calpha%20N">, for some <img src="https://latex.codecogs.com/png.latex?%5Calpha%5Cin(0,%201)">. Because the weight function is <img src="https://latex.codecogs.com/png.latex?0/1">, this amounts to taking <img src="https://latex.codecogs.com/png.latex?%5Clambda_t"> to be the <img src="https://latex.codecogs.com/png.latex?%5Calpha-">upper quantile of the <img src="https://latex.codecogs.com/png.latex?L(X_t%5En)">, where the <img src="https://latex.codecogs.com/png.latex?X_t%5En">’s are the <img src="https://latex.codecogs.com/png.latex?N"> particles sampled at time <img src="https://latex.codecogs.com/png.latex?t"> by our SMC sampler. This is what Salomone et al recommend. In this case, we can replace <img src="https://latex.codecogs.com/png.latex?Z(%5Calpha_t)"> in the identity above by <img src="https://latex.codecogs.com/png.latex?%5Calpha%5Et">, at least for <img src="https://latex.codecogs.com/png.latex?t%3CT">.</p>
+<p>The corresponding estimate will be something like: <img src="https://latex.codecogs.com/png.latex?%0A%5Cwidehat%7B%5Cgamma%7D(%5Cvarphi)%0A%20%20%20%20%20=%20%5Csum_%7Bt=0%7D%5E%7BT-1%7D%20%5Calpha%5Et%20%5Cfrac%7B1%7D%7BN%7D%20%5Csum_%7Bn=1%7D%5EN%20%5Cvarphi(X_%7Bt+1%7D%5En)%20L(X_%7Bt+1%7D%5En)%0A%20%20%20%20%5Cind%5C%7B%20L(X_%7Bt+1%7D%5En)%20%5Cleq%20%5Clambda_%7Bt+1%7D%5C%7D%20+%20%5Cdots%0A"> where I omitted the <img src="https://latex.codecogs.com/png.latex?T-">th term (it has a slightly different expression, i.e. <img src="https://latex.codecogs.com/png.latex?Z(%5Clambda_T)%5Cneq%20%5Calpha%5ET">), and I used the fact that the <em>unweighted</em> sample <img src="https://latex.codecogs.com/png.latex?X_%7Bt+1%7D%5E%7B1:N%7D"> generated at the beginning of iteration <img src="https://latex.codecogs.com/png.latex?t+1"> currently targets <img src="https://latex.codecogs.com/png.latex?%5Cpi_%7B%5Clambda_t%7D">.</p>
+</section>
+<section id="vanilla-ns-as-a-particular-waste-free-smc-sampler" class="level1">
+<h1>Vanilla NS as a particular waste-free SMC sampler</h1>
+<p>Now assume that, in your adaptive NS SMC sampler, you set <img src="https://latex.codecogs.com/png.latex?%5Calpha=(1%20-%20%5Cfrac%201%0AN)"> (or equivalently, <img src="https://latex.codecogs.com/png.latex?%5Clambda_%7Bt+1%7D=%5Cmin_n%20L(X_%7Bt+1%7D%5En)">); that is, you discard only <em>one</em> particle, the one with smallest likelihood. In other words, you decide to move as slowly as possible up the likelihood function.</p>
+<p>If you’d resample the <img src="https://latex.codecogs.com/png.latex?N-1"> surviving particles, and apply <img src="https://latex.codecogs.com/png.latex?k"> MCMC step to each of them, you would get a very expensive sampler: increasing <img src="https://latex.codecogs.com/png.latex?N"> means you both increasing the cost of a single iteration, and increasing the total number of iterations (since it makes <img src="https://latex.codecogs.com/png.latex?%5Calpha"> larger).</p>
+<p>A cheaper alternative is to choose randomly one of the <img src="https://latex.codecogs.com/png.latex?N-1"> surviving particles, apply it a MCMC step, and takes the output as your new <img src="https://latex.codecogs.com/png.latex?N-">th particle. Then, you get an algorithm which is very close to the original NS one. In particular, your estimate of <img src="https://latex.codecogs.com/png.latex?Z=%5Cgamma(1)"> becomes: <img src="https://latex.codecogs.com/png.latex?%0A%5Cwidehat%7B%5Cgamma%7D(%5Cvarphi)%0A%20%20%20%20%20=%20%5Csum_%7Bt=0%7D%5E%7BT-1%7D%20%5Cfrac%7B1%7D%7BN%7D%20(1-%20%5Cfrac%201%20N)%5Et%20L_%7Bt+1%7D%20+%20%5Cdots%0A"> with <img src="https://latex.codecogs.com/png.latex?L_%7Bt+1%7D%20=%20%5Cmin_n%20L(X_%7Bt+1%7D%5En)">. (The original NS estimate has <img src="https://latex.codecogs.com/png.latex?(1-1/N)%5Et/N"> replaced by <img src="https://latex.codecogs.com/png.latex?%5Cexp(-t/N)%20-%20%5Cexp(-(t+1)/N)">, which should be very close numerically for large <img src="https://latex.codecogs.com/png.latex?N">.)</p>
+<p>This idea of resampling <img src="https://latex.codecogs.com/png.latex?N-1"> particles, and move only one of them is reminiscent of <a href="https://arxiv.org/abs/2011.02328">waste-free SMC</a>. In waste-free SMC, you resample only <img src="https://latex.codecogs.com/png.latex?M"> particles out of <img src="https://latex.codecogs.com/png.latex?N">, <img src="https://latex.codecogs.com/png.latex?M%3CN">. Then, assuming <img src="https://latex.codecogs.com/png.latex?M"> divides <img src="https://latex.codecogs.com/png.latex?N">, i.e., <img src="https://latex.codecogs.com/png.latex?N=M%5Ctimes%20P"> for some <img src="https://latex.codecogs.com/png.latex?P%5Cgeq%202">, you apply to each resampled particle <img src="https://latex.codecogs.com/png.latex?(P-1)"> MCMC steps, and gather the resulting <img src="https://latex.codecogs.com/png.latex?M%5Ctimes%0AP"> states to form a new particle sample of size <img src="https://latex.codecogs.com/png.latex?N">. What if <img src="https://latex.codecogs.com/png.latex?M"> does not divide <img src="https://latex.codecogs.com/png.latex?N">, i.e.&nbsp;<img src="https://latex.codecogs.com/png.latex?N=M%20%5Ctimes%20k%20+r">, <img src="https://latex.codecogs.com/png.latex?0%3Cr%3CM">? Then it makes sense to generate <img src="https://latex.codecogs.com/png.latex?r"> MCMC chains of length <img src="https://latex.codecogs.com/png.latex?k+1">, and <img src="https://latex.codecogs.com/png.latex?M-r"> chains of length <img src="https://latex.codecogs.com/png.latex?k">. This is what happens here, with <img src="https://latex.codecogs.com/png.latex?M=N-1">, <img src="https://latex.codecogs.com/png.latex?r=1">.</p>
+</section>
+<section id="why-did-i-say-we-get-a-simpler-identity" class="level1">
+<h1>Why did I say we get a “simpler” identity?</h1>
+<p>The original NS algorithm by Skilling derives essentially the same identity above, but through more involved steps, which involves the CDF of random variable <img src="https://latex.codecogs.com/png.latex?L(X)">, when <img src="https://latex.codecogs.com/png.latex?X%5Csim%20p">, its inverse, Beta distributions, etc. I find the derivation above simpler (at least, again, if you are familiar with SMC samplers). Of course, in return, you get a justification which is a bit hand-wavy for vanilla NS (but for NS-SMC, it is perfectly solid).</p>
+</section>
+<section id="should-i-care-about-ns" class="level1">
+<h1>Should I care about NS?</h1>
+<p>There are two sub-questions:</p>
+<ol type="1">
+<li><p>NS vs SMC-NS: Salomone et al give numerical evidence (and arguments) suggesting that NS-SMC outperforms NS.</p></li>
+<li><p>SMC-NS vs tempering SMC or other SMC schemes: Salomone et al also give numerical evidence suggesting NS-SMC is competitive with tempering SMC, which is intriguing (and in line with independent numerical experiments I did).</p></li>
+</ol>
+<p>I will elaborate on these two points in my next post (coming soon). In the meantime, feel free to have a look at the aforementioned <a href="https://arxiv.org/abs/1805.03924">paper</a>, it is well worth a read.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>SMC</category>
+  <category>nested sampling</category>
+  <category>paper</category>
+  <guid>https://github.com/statisfaction-blog/posts/04-06-2025-simpler-nested-sampling-identity/nested.html</guid>
+  <pubDate>Sat, 05 Apr 2025 22:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Numpy broke my heart</title>
   <dc:creator>Nicolas Chopin</dc:creator>
@@ -20,11 +81,12 @@
 
 
 
+
 <p>I swear, the title is kind of funny in French (try to figure out why). Anyway, in this post I wanted to dispel a misconception I had until recently on python, numpy and multi-processing, and which led me to say something silly in our SMC book.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://github.com/statisfaction-blog/posts/25-04-2024-numpy-broke-my-heart/python_broke_my_heart.jpg" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">no comment</figcaption>
+<figcaption>no comment</figcaption>
 </figure>
 </div>
 <section id="python-and-multi-processing" class="level1">
@@ -54,7 +116,7 @@
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://github.com/statisfaction-blog/posts/25-04-2024-numpy-broke-my-heart/Alice_looking_down_cpu_cores.jpg" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Alice decided to better understand multiprocessing in Python</figcaption>
+<figcaption>Alice decided to better understand multiprocessing in Python</figcaption>
 </figure>
 </div>
 </section>
@@ -93,12 +155,17 @@
 
 
 
+
 <p>TL;DR: A quantum computer lets you provably build more general Bernoulli factories than your laptop.</p>
 <p>I have grown an interest for quantum computing, both for fun and because it naturally applies to sampling my favourite distribution, <a href="https://arxiv.org/abs/2305.15851">determinantal point processes</a>. One of the natural (and still quite open) big questions in quantum computing is, for a given computational task such as solving a linear system, whether having access to a quantum computer gives you any <em>advantage</em> over using your laptop in the smartest way possible. Maybe the quantum computer lets you solve part of your problem faster, or maybe it allows you to solve a more general class of problems. <a href="https://www.nature.com/articles/ncomms9203">Dale, Jennings, and Rudolph (2015)</a> prove a quantum advantage of the latter kind, for a task that appeals to a computational statistician: a quantum computer gives you access to strictly more Bernoulli factories than your laptop does. In this post, I discuss one of their examples.</p>
-<div id="fig-smbc" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://github.com/statisfaction-blog/posts/14-02-2024-quantum-bernoulli-factories/smbc.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;1: An excerpt from an excellent <a href="https://www.smbc-comics.com/comic/the-talk-3">comic strip</a> by Scott Aaronson and Zach Weinersmith.</figcaption>
+<div id="fig-smbc" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-smbc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://github.com/statisfaction-blog/posts/14-02-2024-quantum-bernoulli-factories/smbc.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-smbc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: An excerpt from an excellent <a href="https://www.smbc-comics.com/comic/the-talk-3">comic strip</a> by Scott Aaronson and Zach Weinersmith.
+</figcaption>
 </figure>
 </div>
 <section id="bernoulli-factories" class="level2">
@@ -148,30 +215,43 @@
 
 
 
+
 <p>… Well, it does rhyme if you read the title aloud with a French accent, hon hon hon.</p>
 <p>To paraphrase Nicolas’s previous <a href="https://statisfaction.wordpress.com/2022/12/22/how-to-beat-monte-carlo-no-qmc/">post</a>, say I want to approximate the integral <img src="https://latex.codecogs.com/png.latex?%0A%20%20%20%20I(f)%20:=%20%5Cint_%7BS%7D%20f(u)%20du,%0A"> where <img src="https://latex.codecogs.com/png.latex?S"> is a compact set of <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BR%7D%5Ed">. I could use plain old Monte Carlo with <img src="https://latex.codecogs.com/png.latex?N"> nodes, <span id="eq-mc"><img src="https://latex.codecogs.com/png.latex?%0A%20%20%20%20%5Chat%7BI%7D(f)%20=%20%5Cfrac%201%20N%20%5Csum_%7Bi=1%7D%5EN%20f(U_i),%20%20%20%5Cquad%20U_i%20%5Csim%20%5Cmathrm%7BU%7D(S).%0A%5Ctag%7B1%7D"></span> Intuitively, an i.i.d. uniform sample of quadrature nodes <img src="https://latex.codecogs.com/png.latex?U_1,%20%5Cdots,%20U_N"> will however leave “holes”; see Figure&nbsp;1 (a). In words, given a realization of the nodes, it is possible to insert a few large balls in <img src="https://latex.codecogs.com/png.latex?S"> that do not contain any <img src="https://latex.codecogs.com/png.latex?U_i">. These holes may make us miss some large variations of <img src="https://latex.codecogs.com/png.latex?f">. Part of the variance of the Monte Carlo estimator in Equation&nbsp;1 could intuitively be removed if we managed to fill these holes, using some of the nodes that got lumped together by chance.</p>
 <p>Many sampling algorithms, such as randomized quasi-Monte Carlo, impose similar space-filling constraints, yielding a random sample with guarantees of “well-spreadedness”. In the <a href="https://arxiv.org/abs/2308.04825">paper</a> I describe in this post, <a href="https://dhawat.github.io/">Diala Hawat</a> and her two advisors (Raphaël Lachièze-Rey and myself) obtained variance reduction by explicitly trying to fill the holes left by a realization of <img src="https://latex.codecogs.com/png.latex?U_1,%20%5Cdots,%20U_N">. In the remainder of the post, I will describe Diala’s main theoretical result.</p>
 <div id="fig-samples" class="quarto-layout-panel">
-<figure class="figure">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
-<div id="fig-poisson" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><embed src="poisson.pdf" class="img-fluid" data-ref-parent="fig-samples"></p>
-<figcaption class="figure-caption">(a) A Poisson sample</figcaption>
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-samples-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-samples" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-poisson" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-poisson-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<embed src="poisson.pdf" class="img-fluid" data-ref-parent="fig-samples">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-poisson-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) A Poisson sample
+</figcaption>
 </figure>
 </div>
 </div>
-<div class="quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
-<div id="fig-repelled" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><embed src="repelled.pdf" class="img-fluid" data-ref-parent="fig-samples"></p>
-<figcaption class="figure-caption">(b) The same sample after repulsion</figcaption>
+<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-samples" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-repelled" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-repelled-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<embed src="repelled.pdf" class="img-fluid" data-ref-parent="fig-samples">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-repelled-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) The same sample after repulsion
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p></p><figcaption class="figure-caption">Figure&nbsp;1: Note how the repelled sample has fewer visible “holes” and “lumps”. The details of how we implemented the repulsion are interesting in themselves, and can be found in the <a href="https://arxiv.org/abs/2308.04825">paper</a> and the associated <a href="https://github.com/dhawat/MCRPPy">code</a>.</figcaption><p></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-samples-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Note how the repelled sample has fewer visible “holes” and “lumps”. The details of how we implemented the repulsion are interesting in themselves, and can be found in the <a href="https://arxiv.org/abs/2308.04825">paper</a> and the associated <a href="https://github.com/dhawat/MCRPPy">code</a>.
+</figcaption>
 </figure>
 </div>
 <p>The basic intuition is to imagine the quadrature nodes <img src="https://latex.codecogs.com/png.latex?U_1,%20%5Cdots,%20U_N"> as electrons. In physics, electrons (like all charged particles) are subject to the <a href="https://en.wikipedia.org/wiki/Coulomb%27s_law">Coulomb force</a>. The Coulomb force exerted by one electron onto another points away from the first electron, with a magnitude that is inversely proportional to the <img src="https://latex.codecogs.com/png.latex?d-1">th power of the Euclidean distance between the two. As a result, electrons tend to repel each other, and electrons close to you will push you away harder than electrons at the other side of the support of <img src="https://latex.codecogs.com/png.latex?f">. This is the behaviour that we would like to emulate, so that our quadrature nodes avoid lumping together and rather go and fill holes where no particle causes any repulsion.</p>
@@ -190,8 +270,9 @@
 <item>
   <title>particles version 0.4: single-run variance estimates, FFBS variants, nested sampling</title>
   <dc:creator>Nicolas Chopin</dc:creator>
-  <link>https://github.com/statisfaction-blog/posts/01-09-2023-particles-v0.4/index.html</link>
+  <link>https://github.com/statisfaction-blog/posts/01-09-2023-particles-v0.4/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -199,16 +280,16 @@
 <p>Version 0.4 of <a href="https://github.com/nchopin/particles">particles</a> have just been released. Here are the main changes:</p>
 <section id="single-run-variance-estimation-for-waste-free-smc" class="level1">
 <h1>Single-run variance estimation for waste-free SMC</h1>
-<p>Waste-free SMC <a href="https://academic.oup.com/jrsssb/article/84/1/114/7056097">(Dau &amp; Chopin, 2020)</a> was already implemented in particles (since version 0.3), and even proposed by default. This is a variant of SMC samplers where you resample only <img src="https://latex.codecogs.com/png.latex?M%20%5Cll%20N"> particles, apply to each resampled particle <img src="https://latex.codecogs.com/png.latex?P-1"> MCMC steps, and then gather these <img src="https://latex.codecogs.com/png.latex?M%5Ctimes%20P"> states to form the next particle sample; see the paper if you want to know why this is a good idea (short version: this tends to perform better than standard SMC samplers, and to be more robust to the choice of the number of MCMC steps).</p>
+<p>Waste-free SMC <a href="https://academic.oup.com/jrsssb/article/84/1/114/7056097">(Dau &amp; Chopin, 2020)</a> was already implemented in particles (since version 0.3), and even proposed by default. This is a variant of SMC samplers where you resample only <img src="https://latex.codecogs.com/png.latex?M%20%5Cll%0AN"> particles, apply to each resampled particle <img src="https://latex.codecogs.com/png.latex?P-1"> MCMC steps, and then gather these <img src="https://latex.codecogs.com/png.latex?M%5Ctimes%20P"> states to form the next particle sample; see the paper if you want to know why this is a good idea (short version: this tends to perform better than standard SMC samplers, and to be more robust to the choice of the number of MCMC steps).</p>
 <p>What was not yet implemented (but is, in this version) is the <strong>single-run</strong> variance estimates proposed in the same paper. Here is a simple illustration:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://github.com/statisfaction-blog/posts/01-09-2023-particles-v0.4/ibis_pima_var_post.png" class="img-fluid figure-img" style="width:60.0%"></p>
+<p><img src="https://github.com/statisfaction-blog/posts/01-09-2023-particles-v0.4/ibis_pima_var_post.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://github.com/statisfaction-blog/posts/01-09-2023-particles-v0.4/ibis_pima_var_logLt.png" class="img-fluid figure-img" style="width:60.0%"></p>
+<p><img src="https://github.com/statisfaction-blog/posts/01-09-2023-particles-v0.4/ibis_pima_var_logLt.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
 </figure>
 </div>
 <p>Both plots were obtained from <img src="https://latex.codecogs.com/png.latex?10%5E3"> runs of waste-free IBIS (i.e.&nbsp;target at time <img src="https://latex.codecogs.com/png.latex?t"> is the posterior based on the first <img src="https://latex.codecogs.com/png.latex?t+1"> observations, <img src="https://latex.codecogs.com/png.latex?p(%5Ctheta%7Cy_%7B0:t%7D)">) applied to Bayesian logistic regression and the Pima Indians dataset. The red line is the empirical variance of the output, and, since the number of runs is large, it should be close to the true variance. The lower (resp. upper) limit of the grey area is the <img src="https://latex.codecogs.com/png.latex?5%5C%25"> (resp. <img src="https://latex.codecogs.com/png.latex?95%5C%25">) quantile of the single-run variance estimates obtained from these <img src="https://latex.codecogs.com/png.latex?10%5E3"> runs. The considered output is either the posterior mean of the intercept (top) or the log marginal likelihood (bottom).</p>
@@ -255,14 +336,56 @@
   <category>news</category>
   <category>particles</category>
   <category>SMC</category>
-  <guid>https://github.com/statisfaction-blog/posts/01-09-2023-particles-v0.4/index.html</guid>
+  <guid>https://github.com/statisfaction-blog/posts/01-09-2023-particles-v0.4/</guid>
   <pubDate>Thu, 31 Aug 2023 22:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Welcome to the new, quarto-based version of Statisfaction</title>
+  <dc:creator>Nicolas Chopin</dc:creator>
+  <link>https://github.com/statisfaction-blog/posts/welcome/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>Hey! We have just moved this blog from Wordpress to github. The old version is still available <a href="https://statisfaction.wordpress.com/">here</a>. The new version is based on <a href="https://quarto.org/">quarto</a>, which will make it much easier to write mathematics, e.g.&nbsp;<img src="https://latex.codecogs.com/png.latex?%5Cpi(%5Ctheta%7Cx)%20%5Cpropto%20%5Cpi(%5Ctheta)%0AL(x%7C%5Ctheta)">, and code, e.g.&nbsp;</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> np</span>
+<span id="cb1-2"></span>
+<span id="cb1-3"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> fact(n):</span>
+<span id="cb1-4">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> np.prod(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, n <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>))</span></code></pre></div>
+
+
+
+ ]]></description>
+  <category>news</category>
+  <guid>https://github.com/statisfaction-blog/posts/welcome/</guid>
+  <pubDate>Fri, 18 Aug 2023 22:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Better than Monte Carlo (this post is not about QMC)</title>
   <dc:creator>Nicolas Chopin</dc:creator>
   <link>https://github.com/statisfaction-blog/posts/22-08-2023-monte-carlo-rates/monte_carlo_rates.html</link>
   <description><![CDATA[ 
+
 
 
 
@@ -283,44 +406,6 @@
   <category>QMC</category>
   <category>rates</category>
   <guid>https://github.com/statisfaction-blog/posts/22-08-2023-monte-carlo-rates/monte_carlo_rates.html</guid>
-  <pubDate>Fri, 18 Aug 2023 22:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Welcome to the new, quarto-based version of Statisfaction</title>
-  <dc:creator>Nicolas Chopin</dc:creator>
-  <link>https://github.com/statisfaction-blog/posts/welcome/index.html</link>
-  <description><![CDATA[ 
-
-
-
-
-<p>Hey! We have just moved this blog from Wordpress to github. The old version is still available <a href="https://statisfaction.wordpress.com/">here</a>. The new version is based on <a href="https://quarto.org/">quarto</a>, which will make it much easier to write mathematics, e.g.&nbsp;<img src="https://latex.codecogs.com/png.latex?%5Cpi(%5Ctheta%7Cx)%20%5Cpropto%20%5Cpi(%5Ctheta)%20L(x%7C%5Ctheta)">, and code, e.g.&nbsp;</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">as</span> np</span>
-<span id="cb1-2"></span>
-<span id="cb1-3"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">def</span> fact(n):</span>
-<span id="cb1-4">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">return</span> np.prod(<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>, n <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>))</span></code></pre></div>
-
-
-
- ]]></description>
-  <category>news</category>
-  <guid>https://github.com/statisfaction-blog/posts/welcome/index.html</guid>
   <pubDate>Fri, 18 Aug 2023 22:00:00 GMT</pubDate>
 </item>
 </channel>

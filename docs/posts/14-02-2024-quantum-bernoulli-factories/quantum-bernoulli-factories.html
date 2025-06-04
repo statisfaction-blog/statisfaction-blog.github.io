@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.433">
+<meta name="generator" content="quarto-1.6.32">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Rémi Bardenet">
 <meta name="dcterms.date" content="2024-02-14">
 
-<title>Statisfaction - I can’t get no - Quantum workers in Bernoulli factories</title>
+<title>Quantum workers in Bernoulli factories – Statisfaction - I can’t get no</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -37,11 +37,11 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2486e1f0a3ee9ee1fc393803a1361cdb.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-6561bbde787c299e21493071c8edc6ff.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-fd271aa52f300aa8cf7ffc86f2565b26.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
@@ -49,7 +49,13 @@ ul.task-list li input[type="checkbox"] {
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -58,14 +64,42 @@ ul.task-list li input[type="checkbox"] {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
 }</script>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -73,39 +107,39 @@ ul.task-list li input[type="checkbox"] {
 <body class="nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+      <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Statisfaction - I can’t get no</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../about.html" rel="" target="">
- <span class="menu-text">About</span></a>
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="../../index.xml" rel="" target=""><i class="bi bi-rss" role="img">
+    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/statisfaction-blog" rel="" target=""><i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://github.com/statisfaction-blog"> <i class="bi bi-github" role="img">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
 </ul>
+          </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
-          </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -152,12 +186,17 @@ ul.task-list li input[type="checkbox"] {
 
 
 
+
 <p>TL;DR: A quantum computer lets you provably build more general Bernoulli factories than your laptop.</p>
 <p>I have grown an interest for quantum computing, both for fun and because it naturally applies to sampling my favourite distribution, <a href="https://arxiv.org/abs/2305.15851">determinantal point processes</a>. One of the natural (and still quite open) big questions in quantum computing is, for a given computational task such as solving a linear system, whether having access to a quantum computer gives you any <em>advantage</em> over using your laptop in the smartest way possible. Maybe the quantum computer lets you solve part of your problem faster, or maybe it allows you to solve a more general class of problems. <a href="https://www.nature.com/articles/ncomms9203">Dale, Jennings, and Rudolph (2015)</a> prove a quantum advantage of the latter kind, for a task that appeals to a computational statistician: a quantum computer gives you access to strictly more Bernoulli factories than your laptop does. In this post, I discuss one of their examples.</p>
-<div id="fig-smbc" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="smbc.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;1: An excerpt from an excellent <a href="https://www.smbc-comics.com/comic/the-talk-3">comic strip</a> by Scott Aaronson and Zach Weinersmith.</figcaption>
+<div id="fig-smbc" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-smbc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="smbc.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-smbc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: An excerpt from an excellent <a href="https://www.smbc-comics.com/comic/the-talk-3">comic strip</a> by Scott Aaronson and Zach Weinersmith.
+</figcaption>
 </figure>
 </div>
 <section id="bernoulli-factories" class="level2">
@@ -180,7 +219,7 @@ ul.task-list li input[type="checkbox"] {
 </ol>
 <p>outputs a draw from the random variable <span class="math inline">\(X_{A,\rho}\)</span>, with support included in the spectrum of <span class="math inline">\(A\)</span>, defined by <span id="eq-born"><span class="math display">\[
     \mathbb{E} g(X_{A,\rho}) = \mathrm{Tr}(\rho g(A)), \quad g:\mathbb{H}\rightarrow \mathbb{R}_+.
-\tag{2}\]</span></span> Here <span class="math inline">\(g(A)\)</span> is the operator that has the same eigenvectors as <span class="math inline">\(A\)</span>, but where each eigenvalue <span class="math inline">\(\lambda\)</span> is replaced by <span class="math inline">\(g(\lambda)\)</span>. The correspondence in <a href="#eq-born">Equation&nbsp;2</a> between a state-observable pair and a probability distribution on the spectrum of the observable is a cornerstone of quantum physics called <em>Born’s rule</em>, and it is the only bit of quantum theory we shall need. In other words, we see a quantum computer as a procedure to draw from probability distributions parametrized by state-observable pairs. We give two fundamental examples of such state-observable pairs, which can be respectively interpreted as describing one quantum coin and two quantum coins.</p>
+\tag{2}\]</span></span> Here <span class="math inline">\(g(A)\)</span> is the operator that has the same eigenvectors as <span class="math inline">\(A\)</span>, but where each eigenvalue <span class="math inline">\(\lambda\)</span> is replaced by <span class="math inline">\(g(\lambda)\)</span>. The correspondence in <a href="#eq-born" class="quarto-xref">Equation&nbsp;2</a> between a state-observable pair and a probability distribution on the spectrum of the observable is a cornerstone of quantum physics called <em>Born’s rule</em>, and it is the only bit of quantum theory we shall need. In other words, we see a quantum computer as a procedure to draw from probability distributions parametrized by state-observable pairs. We give two fundamental examples of such state-observable pairs, which can be respectively interpreted as describing one quantum coin and two quantum coins.</p>
 <p><em>The quantum coin.</em> Consider a one-qubit computer, i.e.&nbsp;<span class="math inline">\(N=1\)</span>. Then <span class="math inline">\(\mathbb{H} = \mathbb{C}^2\)</span> has dimension <span class="math inline">\(2\)</span>, and we fix an orthonormal basis, which we denote by <span class="math inline">\((\ket{0}, \ket{1})\)</span>. The strange notation <span class="math inline">\(\ket{\cdot}\)</span> is inherited from physics, and is very practical in computations, as you will see. In short, denote by <span class="math inline">\(\braket{\cdot\vert\cdot}\)</span> (a <em>bracket</em>, or <em>bra-ket</em>) the inner product in <span class="math inline">\(\mathbb{H}\)</span>. Now, a vector in <span class="math inline">\(\mathbb{H}\)</span> is written <span class="math inline">\(\ket{v}\)</span> (a <em>ket</em>). Similarly, define the linear form <span class="math inline">\(\bra{v}\)</span> (a <em>bra</em>) by <span class="math display">\[
     \bra{v}: \ket{u} \mapsto \braket{v\vert u}.
 \]</span> By construction, we can write things like <span class="math display">\[
@@ -188,23 +227,23 @@ ul.task-list li input[type="checkbox"] {
 \]</span> so that the bra-ket notation for linear forms and vectors is consistent with the inner product.</p>
 <p>Now, remember we have fixed a basis <span class="math inline">\((\ket{0}, \ket{1})\)</span> of <span class="math inline">\(\mathbb{H}\)</span>. For <span class="math inline">\(p\in[0,1]\)</span>, we define <span class="math display">\[
     \ket{p} = \sqrt{1-p} \ket{0} + \sqrt{p}\ket{1}.
-\]</span> This definition is consistent with earlier notation, as <span class="math inline">\(\ket{p} = \ket{0}\)</span> when <span class="math inline">\(p=0\)</span>, for instance. Now, we define a quantum coin as the state <span class="math inline">\(\rho_{\mathrm{qc}} = \ket{p}\bra{p}\)</span>. It is the projection onto <span class="math inline">\(\mathbb{C}\ket{p}\)</span>, and in particular it is a positive semi-definite, Hermitian operator of trace <span class="math inline">\(1\)</span>, and hence a valid state. As observable, we take the projection onto the second vector of the basis, which we denote in the bra-ket notation by <span class="math inline">\(\ket{1}\bra{1}\)</span>. What random variable <span class="math inline">\(X_{\ket{1}\bra{1}, \rho_{\mathrm{qc}}}\)</span> does this state-observable pair define in <a href="#eq-born">Equation&nbsp;2</a>?</p>
-<p>Well, the spectrum of the observable is <span class="math inline">\(\{0,1\}\)</span>, so we have defined a Bernoulli random variable. Moreover, the probability that it is equal to <span class="math inline">\(1\)</span> is given by taking <span class="math inline">\(g:\lambda\mapsto \mathbf{1}_{\lambda=1}\)</span> in <a href="#eq-born">Equation&nbsp;2</a>, yielding <span class="math display">\[
+\]</span> This definition is consistent with earlier notation, as <span class="math inline">\(\ket{p} = \ket{0}\)</span> when <span class="math inline">\(p=0\)</span>, for instance. Now, we define a quantum coin as the state <span class="math inline">\(\rho_{\mathrm{qc}} = \ket{p}\bra{p}\)</span>. It is the projection onto <span class="math inline">\(\mathbb{C}\ket{p}\)</span>, and in particular it is a positive semi-definite, Hermitian operator of trace <span class="math inline">\(1\)</span>, and hence a valid state. As observable, we take the projection onto the second vector of the basis, which we denote in the bra-ket notation by <span class="math inline">\(\ket{1}\bra{1}\)</span>. What random variable <span class="math inline">\(X_{\ket{1}\bra{1}, \rho_{\mathrm{qc}}}\)</span> does this state-observable pair define in <a href="#eq-born" class="quarto-xref">Equation&nbsp;2</a>?</p>
+<p>Well, the spectrum of the observable is <span class="math inline">\(\{0,1\}\)</span>, so we have defined a Bernoulli random variable. Moreover, the probability that it is equal to <span class="math inline">\(1\)</span> is given by taking <span class="math inline">\(g:\lambda\mapsto \mathbf{1}_{\lambda=1}\)</span> in <a href="#eq-born" class="quarto-xref">Equation&nbsp;2</a>, yielding <span class="math display">\[
     \mathbb{P}(X_{\ket{1}\bra{1}, \rho_{\mathrm{qc}}} = 1) = \mathrm{Tr}\left[ \ket{1}\bra{1} \ket{p}\bra{p}  \right] = \vert \braket{1\vert p}\vert^2 = p.
 \]</span> by cyclicity of the trace. All of this to define a <span class="math inline">\(B(p)\)</span> variable! Things get more interesting when you try to create two dependent Bernoulli variables.</p>
 <p><em>Two quantum coins.</em> Consider now a computer with two qubits, so that the Hilbert space is <span class="math inline">\(\mathbb{H}=\mathbb{C}^2\otimes\mathbb{C}^2\)</span>. From our orthonormal basis <span class="math inline">\((\ket{0}, \ket{1})\)</span> of <span class="math inline">\(\mathbb{C}^2\)</span>, we can build an orthonormal basis <span class="math inline">\((\ket{i}\otimes\ket{j}, i,j\in\{0,1\})\)</span> of <span class="math inline">\(\mathbb{H}\)</span>. To keep expressions short, it is customary to write <span class="math inline">\(\ket{i}\otimes\ket{j}\)</span> as <span class="math inline">\(\ket{ij}\)</span>. To define a pair of quantum coins, we now consider the tensor product of two quantum coins, <span class="math display">\[
     \ket{p}\otimes \ket{p} = (1-p) \ket{00} + \sqrt{p(1-p)}\ket{01} + \sqrt{p(1-p)}\ket{10}+ p \ket{11}.
 \]</span> We think of the corresponding state <span class="math inline">\(\rho_{2\mathrm{qc}} = (\ket{p}\otimes \ket{p})(\bra{p}\otimes \bra{p})\)</span> as two quantum coins. Now consider for your observable an operator <span class="math inline">\(B\)</span> with four distinct eigenvalues, say <span class="math inline">\(\lambda_{ij} \in\mathbb{C}\)</span> for <span class="math inline">\(i, j\in\{0,1\}\)</span>, each corresponding to eigenvector <span class="math inline">\(\ket{ij}\)</span>. In other words, the spectral decomposition of <span class="math inline">\(B\)</span> is <span class="math display">\[
     B = \sum_{i, j\in\{0,1\}} \lambda_{ij} \ket{ij}\bra{ij}.
-\]</span> The random variable <span class="math inline">\(X_{B, \rho_{2\mathrm{qc}}}\)</span>, associated through <a href="#eq-born">Equation&nbsp;2</a> to two quantum coins and our newly defined observable <span class="math inline">\(B\)</span>, has support in <span class="math display">\[
+\]</span> The random variable <span class="math inline">\(X_{B, \rho_{2\mathrm{qc}}}\)</span>, associated through <a href="#eq-born" class="quarto-xref">Equation&nbsp;2</a> to two quantum coins and our newly defined observable <span class="math inline">\(B\)</span>, has support in <span class="math display">\[
     \{\lambda_{00}, \lambda_{01}, \lambda_{10}, \lambda_{11}\}.
-\]</span> Moreover, taking <span class="math inline">\(g:\lambda\mapsto \mathbf{1}_{\lambda=\lambda_{ij}}\)</span> in <a href="#eq-born">Equation&nbsp;2</a>, we obtain <span class="math display">\[
+\]</span> Moreover, taking <span class="math inline">\(g:\lambda\mapsto \mathbf{1}_{\lambda=\lambda_{ij}}\)</span> in <a href="#eq-born" class="quarto-xref">Equation&nbsp;2</a>, we obtain <span class="math display">\[
     \mathbb{P}(X_{B, \rho_{2\mathrm{qc}}} = \lambda_{ij}) = \mathrm{Tr}\left[(\ket{p}\otimes \ket{p})(\bra{p}\otimes \bra{p}) \ket{ij}\bra{ij}\right] = p^{i}(1-p)^{1-i} \times p^{j}(1-p)^{1-j},
 \]</span> again by cyclicity of the trace and then carefully distributing our multiplication, noting that most terms are zero by orthogonality. Otherly put, the indices of <span class="math inline">\(X_{B, \rho_{2\mathrm{qc}}}\)</span> are a pair of independent Bernoullis with equal parameter <span class="math inline">\(p\)</span>. Again, this might feel like a lot of algebraic pain for no gain, but wait for it.</p>
 <p>What if we had taken the same state, but with another observable? Say the observable with four distinct eigenvalues <span class="math inline">\(\lambda_{\phi^+}, \lambda_{\phi-}, \lambda_{\psi+}, \lambda_{\psi-}\in \mathbb{C}\)</span>, and corresponding eigenvectors <span class="math display">\[
     \ket{\phi^{\pm}} = \frac{\ket{00}\pm\ket{11}}{\sqrt{2}}, \quad
     \ket{\psi^{\pm}} = \frac{\ket{01}\pm\ket{10}}{\sqrt{2}}.
-\]</span> Then, the random variable <span class="math inline">\(X_{C, \rho_{2\mathrm{qc}}}\)</span> defined by Born’s rule in <a href="#eq-born">Equation&nbsp;2</a> is supported in <span class="math display">\[
+\]</span> Then, the random variable <span class="math inline">\(X_{C, \rho_{2\mathrm{qc}}}\)</span> defined by Born’s rule in <a href="#eq-born" class="quarto-xref">Equation&nbsp;2</a> is supported in <span class="math display">\[
     \{\lambda_{\phi^+}, \lambda_{\phi-}, \lambda_{\psi+}, \lambda_{\psi-}\},
 \]</span> with <span class="math display">\[
     \mathbb{P}(X_{C, \rho_{2\mathrm{qc}}} = \lambda_{\phi^+}) = \mathrm{Tr\left[ \rho_{2\mathrm{qc}} \ket{\phi^+}\bra{\phi^+} \right]} = \vert (\bra{p}\otimes\bra{p})\ket{\phi^+} \vert^2 = \frac12.
@@ -220,13 +259,13 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="a-quantum-bernoulli-factory">A quantum Bernoulli factory</h2>
 <p>Imagine the following procedure. Draw the random variable <span class="math inline">\(X_{C,\rho_{2\mathrm{qc}}}\)</span>. If you obtain <span class="math inline">\(\lambda_{\phi^-}\)</span> or <span class="math inline">\(\lambda_{\psi^+}\)</span>, then stop, and respectively output <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span>. Otherwise, draw another independent realization of <span class="math inline">\(X_{C,\rho_{2\mathrm{qc}}}\)</span>, etc. This is reminiscent of the von Neumann trick we mentioned earlier. What have we achieved? Well, the output is a Bernoulli draw with parameter <span class="math display">\[
     \frac{2p(1-p)}{2p(1-p)+\frac{(2p-1)^2}{2}} = 4p(1-p).
-\]</span> Repeating the procedure as many times as you want draws, we thus have a Bernoulli factory for <span class="math inline">\(f_{\mathrm{quadratic}}\)</span> in <a href="#eq-quadratic">Equation&nbsp;1</a>, which we know to be beyond the reach of classical Bernoulli factories!</p>
+\]</span> Repeating the procedure as many times as you want draws, we thus have a Bernoulli factory for <span class="math inline">\(f_{\mathrm{quadratic}}\)</span> in <a href="#eq-quadratic" class="quarto-xref">Equation&nbsp;1</a>, which we know to be beyond the reach of classical Bernoulli factories!</p>
 <p>The difference is that our Bernoulli factory is a <em>quantum</em> Bernoulli factory. In particular, our basic resource is (physically) independent copies of <span class="math inline">\(\ket{p}\)</span>. This is asking for strictly more than (statistically) independent Bernoulli draws. Indeed, depending on your observable, two physically independent copies of <span class="math inline">\(\ket{p}\)</span> can give you two i.i.d. Bernoullis <span class="math inline">\(X_{B,\rho_{2\mathrm{qc}}}\)</span>, or something more complicated like <span class="math inline">\(X_{C,\rho_{2\mathrm{qc}}}\)</span>. If you consider as equivalent the cost of preparing the two types of inputs, i.i.d. Bernoullis <span class="math inline">\(B(p)\)</span> on one side and physically independent copies of <span class="math inline">\(\ket{p}\)</span> on the other side, then you have a quantum advantage. It might be a big assumption, but I find it easier to swallow than similar caveats in other quantum advantages that I’ve read about.</p>
 </section>
 <section id="further-remarks" class="level2">
 <h2 class="anchored" data-anchor-id="further-remarks">Further remarks</h2>
 <p>The example in this post is from the paper by <a href="https://www.nature.com/articles/ncomms9203">Dale, Jennings, and Rudolph (2015)</a>. The authors further characterize the Bernoulli factories that you can build with only single-qubit operations: they strictly include classical Bernoulli factories and the example from this post. In other words, it is not necessary to use pairs of qubits to build <span class="math inline">\(X_{C,\rho_{2\mathrm{qc}}}\)</span>. Since then, there has been more work on quantum Bernoulli factories, for instance considering <a href="https://arxiv.org/abs/1712.09817">quantum-to-quantum Bernoulli factories</a>, where the goal is to create independent copies of <span class="math inline">\(\ket{f(p)}\)</span> rather than a stream of Bernoulli random variables.</p>
-<p>I thank my <a href="http://rbardenet.github.io/#group">group</a> for valuable comments during the writing of this post. One non-consensual point is that I have tried to reduce the quantum formalism to the correspondence in <a href="#eq-born">Equation&nbsp;2</a> between a state-observable pair and a random variable. This has the advantage of keeping the necessary algebra to a minimum, but it forced me to introduce rather abstract observables, with a spectrum that we only use through its indices. A more standard (but arguably lengthier) treatment might have involved <a href="https://en.wikipedia.org/wiki/Projection-valued_measure">projection-valued measures</a>.</p>
+<p>I thank my <a href="http://rbardenet.github.io/#group">group</a> for valuable comments during the writing of this post. One non-consensual point is that I have tried to reduce the quantum formalism to the correspondence in <a href="#eq-born" class="quarto-xref">Equation&nbsp;2</a> between a state-observable pair and a random variable. This has the advantage of keeping the necessary algebra to a minimum, but it forced me to introduce rather abstract observables, with a spectrum that we only use through its indices. A more standard (but arguably lengthier) treatment might have involved <a href="https://en.wikipedia.org/wiki/Projection-valued_measure">projection-valued measures</a>.</p>
 
 
 </section>
@@ -273,6 +312,33 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       } else {
         el.classList.add('notransition');
       }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
     }
   }
   const toggleColorMode = (alternate) => {
@@ -341,13 +407,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return localAlternateSentinel;
     }
   }
-  let localAlternateSentinel = 'default';
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
   // Dark / light mode switch
   window.quartoToggleColorScheme = () => {
     // Read the current dark / light value 
     let toAlternate = !hasAlternateSentinel();
     toggleColorMode(toAlternate);
     setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
   };
   // Ensure there is a toggle, if there isn't float one in the top right
   if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
@@ -382,18 +450,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -425,11 +482,50 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
-  function tippyHover(el, contentFn) {
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/github\.com\/statisfaction-blog");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -439,8 +535,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -452,7 +557,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -496,6 +724,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -521,6 +750,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -583,6 +838,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <script src="https://utteranc.es/client.js" repo="rbardenet/statisfaction-blog-comments" issue-term="title" theme="github-light" crossorigin="anonymous" async="">
 </script>
 </div> <!-- /content -->
+
 
 
 

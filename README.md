@@ -4,7 +4,7 @@ Quick guide
 To add a new post, follow these steps: 
 
 1. WARNING DO NOT SKIP: `git pull`, to make sure you are up to date (managing
-   conflicts between files compiled by markdown is not fun).
+   conflicts between files compiled by quarto is not fun).
 
 2. create new sub-directory `DD-MM-YYYY-name` in directory `posts/`.
 
