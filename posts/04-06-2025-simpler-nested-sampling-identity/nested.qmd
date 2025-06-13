@@ -74,8 +74,8 @@ at least for $t<T$.
 The corresponding estimate will be something like:
 $$
 \widehat{\gamma}(\varphi) 
-     = \sum_{t=0}^{T-1} \alpha^t \frac{1}{N} \sum_{n=1}^N \varphi(X_{t+1}^n) L(X_{t+1}^n)
-    \ind\{ L(X_{t+1}^n) \leq \lambda_{t+1}\} + \dots
+     = \sum_{t=0}^{T-1} \alpha^t \left[ \frac{1}{N} \sum_{n=1}^N \varphi(X_{t+1}^n) L(X_{t+1}^n)
+    \ind\{ L(X_{t+1}^n) \leq \lambda_{t+1}\} \right] + \dots
 $$
 where I omitted the $T-$th term (it has a slightly different expression, i.e.
 $Z(\lambda_T)\neq \alpha^T$), and I used the fact that 
@@ -84,7 +84,7 @@ iteration $t+1$ currently targets $\pi_{\lambda_t}$.
 
 # Vanilla NS as a particular waste-free SMC sampler
 
-Now assume that, in your adaptive NS SMC sampler, you set $\alpha=(1 - \frac 1
+Now assume that, in your adaptive NS-SMC sampler, you set $\alpha=(1 - \frac 1
 N)$ (or equivalently, $\lambda_{t+1}=\min_n L(X_{t+1}^n)$); that is, you discard only
 *one* particle, the one with smallest likelihood. In other words, you decide to
 move as slowly as possible up the likelihood function. 
