@@ -10,7 +10,65 @@
 <atom:link href="https://github.com/statisfaction-blog/index.xml" rel="self" type="application/rss+xml"/>
 <description></description>
 <generator>quarto-1.6.32</generator>
-<lastBuildDate>Tue, 03 Jun 2025 22:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 29 Jun 2025 22:00:00 GMT</lastBuildDate>
+<item>
+  <title>Nested sampling and SMC: numerical experiments</title>
+  <dc:creator>Nicolas Chopin</dc:creator>
+  <link>https://github.com/statisfaction-blog/posts/30-06-2025-nested-sampling-experiments/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<div class="hidden">
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cnewcommand%7B%5Cind%7D%7B%5Cmathbb%7B1%7D%7D%0A"></p>
+</div>
+<p>By “popular” demand (i.e., Adrien asked for it), here are the numerical experiments I promised in my previous <a href="../04-06-2025-simpler-nested-sampling-identity/nested.html">post</a>. I did these experiments initially to illustrate some points in the talk I gave at <a href="https://www.ipp.mpg.de/5281701">MaxEnt 2023</a>.</p>
+<section id="ns-smc-vs-tempering-smc-for-a-gaussian-like-target" class="level1">
+<h1>NS-SMC vs tempering SMC for a Gaussian-like target</h1>
+<p><a href="https://arxiv.org/abs/1805.03924">Salomone et al</a> discuss how NS (nested sampling, both the vanilla and the SMC versions) may outperform tempering whenever the target distribution exhibits pathologies such as <strong>phase transition</strong>. It is not easy (to me at least) to grasp how phase transition may occur in a Bayesian posterior, but I suspect it tends to occur when the posterior is multi-modal. Please have a look at their paper for more details on this and their first numerical experiment which illustrates this point.</p>
+<p>In this first experiment, I wanted to see whether NS-SMC is competitive with tempering SMC on a less challenging target distribution, i.e.&nbsp;the good old logistic regression posterior, which is typically Gaussian like, and therefore unimodal.</p>
+<p>In the plots below, I compare two instances of waste-free SMC, one based on a tempering sequence, the other on the NS sequence discussed in the previous post. Both algorithms derive automatically the next element in these sequences so that the ESS (effective sampling size) is <img src="https://latex.codecogs.com/png.latex?%5Calpha%20N">. Both rely on random walk Metropolis kernels, which are calibrated on the current particle sample.</p>
+<p>I consider the sonar dataset (dim=61). The plot below show how the MSE (over 100 runs) of the log-marginal likelihood evolves as a function of <img src="https://latex.codecogs.com/png.latex?%5Calpha"> for both algorithms; considered values for <img src="https://latex.codecogs.com/png.latex?%5Calpha"> are <img src="https://latex.codecogs.com/png.latex?0.05,%200.10,%20%5Cdots,%200.95">. This plot is a bit misleading, because, when <img src="https://latex.codecogs.com/png.latex?%5Calpha"> changes, the CPU cost changes as well: the large <img src="https://latex.codecogs.com/png.latex?%5Calpha"> is, the larger is the number of intermediate distributions.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://github.com/statisfaction-blog/posts/30-06-2025-nested-sampling-experiments/sonar_nested_vs_tempering_mse.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
+</figure>
+</div>
+<p>So let’s do a second plot, where the <img src="https://latex.codecogs.com/png.latex?y-">axis is the work-normalised MSE; that is, MSE times number of total evaluations of the likelihood (which is a good proxy for overall CPU cost). See below.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://github.com/statisfaction-blog/posts/30-06-2025-nested-sampling-experiments/sonar_nested_vs_tempering_work_normalised.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
+</figure>
+</div>
+<p>Both variants seems to lead to the same level of performance (i.e.&nbsp;CPU vs error trade-off). One point to note is that the best performance for NS is obtained by taking <img src="https://latex.codecogs.com/png.latex?%5Calpha"> small.</p>
+<p>Bottom line: NS-SMC seems indeed competitive with tempering SMC. This is a bit surprising to me (as they rely on two very different sequences of distribution), but it shows that NS-SMC may deserve more scrutiny from the Bayesian computation community, I think.</p>
+</section>
+<section id="a-limitation-of-vanilla-ns" class="level1">
+<h1>A limitation of vanilla NS</h1>
+<p>Another experiment, possibly of more limited interest. For the same type of target distributions (logistic regression posterior, this time for the Pima dataset), the plot below illustrates the bias of vanilla NS as a function of the number <img src="https://latex.codecogs.com/png.latex?k"> of MCMC steps performed at each iteration. Recall that in vanilla NS, you discard one particle at each time <img src="https://latex.codecogs.com/png.latex?t"> (the one with smallest likelihood), choose randomly one of the <img src="https://latex.codecogs.com/png.latex?N-1"> remaining one, apply <img src="https://latex.codecogs.com/png.latex?k"> MCMC steps to this selected particle, and add back the output to the particle sampler.</p>
+<p>This plot suggests that NS may be biased if <img src="https://latex.codecogs.com/png.latex?k"> is too small. I am not sure why this is happening. This may be because NS is valid only when <img src="https://latex.codecogs.com/png.latex?k%5Cto%20%5Cinfty">. Or maybe because of the adaptive MCMC strategy I’m using: as in the previous section, I use random walk Metropolis, and I recursively adapt the proposal covariance to the empirical covariance matrix of the <img src="https://latex.codecogs.com/png.latex?N"> particles.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://github.com/statisfaction-blog/posts/30-06-2025-nested-sampling-experiments/pima_bias_vanilla.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
+</figure>
+</div>
+</section>
+<section id="how-to-replicate-these-results" class="level1">
+<h1>How to replicate these results</h1>
+<p>I have added some time ago a <code>nested</code> module to <a href="https://github.com/nchopin/particles">particles</a>, which implements both vanilla NS and NS-SMC. The numerical experiments reported above may be reproduced by running the scripts in folder <code>papers/nested</code>.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>Nested sampling</category>
+  <category>SMC</category>
+  <category>numerics</category>
+  <guid>https://github.com/statisfaction-blog/posts/30-06-2025-nested-sampling-experiments/</guid>
+  <pubDate>Sun, 29 Jun 2025 22:00:00 GMT</pubDate>
+</item>
 <item>
   <title>A simpler nested sampling identity</title>
   <dc:creator>Nicolas Chopin</dc:creator>
@@ -340,6 +398,34 @@ Figure&nbsp;1: Note how the repelled sample has fewer visible “holes” and �
   <pubDate>Thu, 31 Aug 2023 22:00:00 GMT</pubDate>
 </item>
 <item>
+  <title>Better than Monte Carlo (this post is not about QMC)</title>
+  <dc:creator>Nicolas Chopin</dc:creator>
+  <link>https://github.com/statisfaction-blog/posts/22-08-2023-monte-carlo-rates/monte_carlo_rates.html</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>(This is repost from this December 2022 <a href="https://statisfaction.wordpress.com/2022/12/22/how-to-beat-monte-carlo-no-qmc/">post</a> on the old website, but since math support is so poor on Wordpress, I’d rather have this post published here.)</p>
+<p>Say I want to approximate the integral <img src="https://latex.codecogs.com/png.latex?I(f)%20:=%20%5Cint_%7B%5B0,%201%5D%5Es%7D%20f(u)%20du"> based on <img src="https://latex.codecogs.com/png.latex?n"> evaluations of function <img src="https://latex.codecogs.com/png.latex?f">. I could use plain old Monte Carlo: <img src="https://latex.codecogs.com/png.latex?%5Chat%7BI%7D(f)%20=%20%5Cfrac%201%20n%20%5Csum_%7Bi=1%7D%5En%20f(U_i),%5Cquad%20U_i%20%5Csim%20%5Cmathrm%7BU%7D(%5B0,%0A1%5D%5Es)."> whose RMSE (root mean square error) is <img src="https://latex.codecogs.com/png.latex?O(n%5E%7B-1/2%7D)">.</p>
+<p>Can I do better? That is, can I design an alternative estimator/algorithm, which performs <img src="https://latex.codecogs.com/png.latex?n"> evaluations and returns a random output, such that its RMSE converge quicker?</p>
+<p>Surprisingly, the answer to this question has been known for a long time. If I am ready to focus on functions <img src="https://latex.codecogs.com/png.latex?f%5Cin%5Cmathcal%7BC%7D%5Er(%5B0,%201%5D%5Es)">, Bakhvalov (1959) showed that the best rate I can hope for is <img src="https://latex.codecogs.com/png.latex?O(n%5E%7B-1/2-r/s%7D)."> That is, there exist algorithms that achieve this rate, and algorithms achieving a better rate simply do not exist.</p>
+<p>Ok, but how can I actually design such an algorithm? The proof of Bakhvalov contains a very simple recipe. Say I am able to construct a good approximation <img src="https://latex.codecogs.com/png.latex?f_n"> of <img src="https://latex.codecogs.com/png.latex?f">, based on <img src="https://latex.codecogs.com/png.latex?n"> evaluations; assume the approximation error is <img src="https://latex.codecogs.com/png.latex?%5C%7Cf-f_n%5C%7C_%5Cinfty%20=%20O(n%5E%7B-%5Calpha%7D)">, <img src="https://latex.codecogs.com/png.latex?%5Calpha%3E0">. Then I could compute the following estimator, based on a second batch of <img src="https://latex.codecogs.com/png.latex?n"> evaluations: <img src="https://latex.codecogs.com/png.latex?%20%5Chat%7BI%7D(f)%0A:=%20I(f_n)%20+%20%20%5Cfrac%201%20n%20%5Csum_%7Bi=1%7D%5En%20(f-f_n)(U_i),%5Cquad%20U_i%20%5Csim%0A%5Cmathrm%7BUniform%7D(%5B0,%201%5D%5Es)."> and it is easy to check that this new estimator is unbiased, that its variance is <img src="https://latex.codecogs.com/png.latex?O(n%5E%7B-1-2%5Calpha%7D)">, and therefore its RMSE is <img src="https://latex.codecogs.com/png.latex?O(n%5E%7B-1/2-%5Calpha%7D)">. (It is based on <img src="https://latex.codecogs.com/png.latex?2n"> evaluations.)</p>
+<p>So there is strong relation between Bakhvalov results and function approximation. In fact, the best rate you can achieve for the latter is <img src="https://latex.codecogs.com/png.latex?%5Calpha=r/s">, which explain the rate above for stochastic quadrature. You can see now why I gave this title to this post. QMC is about using points that are better than random points. But here I’m using IID points, and the improved rate comes from the fact I use a better approximation of <img src="https://latex.codecogs.com/png.latex?f">.</p>
+<p>Here is a simple example of a good function approximation. Take <img src="https://latex.codecogs.com/png.latex?s=1">, and <img src="https://latex.codecogs.com/png.latex?%0Af_n(u)%20=%20%5Csum_%7Bi=1%7D%5En%20f(%20%5Cfrac%7B2i-1%7D%7B2n%7D%20)%20%5Cmathbf%7B1%7D_%7B%5B(i-1)/n,%20i/n%5D%7D(u);%0A"> that is, split <img src="https://latex.codecogs.com/png.latex?%5B0,%201%5D"> into <img src="https://latex.codecogs.com/png.latex?n"> intervals <img src="https://latex.codecogs.com/png.latex?%5B(i-1)/n,%20i/n%5D">, and approximate <img src="https://latex.codecogs.com/png.latex?f"> inside a given interval by its value at the centre of the interval. You can quickly check that the approximation error is then <img src="https://latex.codecogs.com/png.latex?O(n%5E%7B-1%7D)"> provided <img src="https://latex.codecogs.com/png.latex?f"> is <img src="https://latex.codecogs.com/png.latex?C%5E1">. So you get a simple recipe to get the optimal rate for <img src="https://latex.codecogs.com/png.latex?s=1"> and <img src="https://latex.codecogs.com/png.latex?r=1">.</p>
+<p>Is it possible to generalise this type of construction to any <img src="https://latex.codecogs.com/png.latex?r"> and any <img src="https://latex.codecogs.com/png.latex?s">? The answer is in our recent paper with Mathieu Gerber, which you can find <a href="https://arxiv.org/abs/2210.01554">here</a>. You may also want to read <a href="https://arxiv.org/abs/1409.6714">Novak (2016)</a>, which is a very good entry on stochastic quadrature, and in particular gives a nice overview of Bakhvalov’s and related results.</p>
+
+
+
+ ]]></description>
+  <category>Monte Carlo</category>
+  <category>QMC</category>
+  <category>rates</category>
+  <guid>https://github.com/statisfaction-blog/posts/22-08-2023-monte-carlo-rates/monte_carlo_rates.html</guid>
+  <pubDate>Fri, 18 Aug 2023 22:00:00 GMT</pubDate>
+</item>
+<item>
   <title>Welcome to the new, quarto-based version of Statisfaction</title>
   <dc:creator>Nicolas Chopin</dc:creator>
   <link>https://github.com/statisfaction-blog/posts/welcome/</link>
@@ -378,34 +464,6 @@ font-style: inherit;">1</span>))</span></code></pre></div>
  ]]></description>
   <category>news</category>
   <guid>https://github.com/statisfaction-blog/posts/welcome/</guid>
-  <pubDate>Fri, 18 Aug 2023 22:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Better than Monte Carlo (this post is not about QMC)</title>
-  <dc:creator>Nicolas Chopin</dc:creator>
-  <link>https://github.com/statisfaction-blog/posts/22-08-2023-monte-carlo-rates/monte_carlo_rates.html</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p>(This is repost from this December 2022 <a href="https://statisfaction.wordpress.com/2022/12/22/how-to-beat-monte-carlo-no-qmc/">post</a> on the old website, but since math support is so poor on Wordpress, I’d rather have this post published here.)</p>
-<p>Say I want to approximate the integral <img src="https://latex.codecogs.com/png.latex?I(f)%20:=%20%5Cint_%7B%5B0,%201%5D%5Es%7D%20f(u)%20du"> based on <img src="https://latex.codecogs.com/png.latex?n"> evaluations of function <img src="https://latex.codecogs.com/png.latex?f">. I could use plain old Monte Carlo: <img src="https://latex.codecogs.com/png.latex?%5Chat%7BI%7D(f)%20=%20%5Cfrac%201%20n%20%5Csum_%7Bi=1%7D%5En%20f(U_i),%5Cquad%20U_i%20%5Csim%20%5Cmathrm%7BU%7D(%5B0,%0A1%5D%5Es)."> whose RMSE (root mean square error) is <img src="https://latex.codecogs.com/png.latex?O(n%5E%7B-1/2%7D)">.</p>
-<p>Can I do better? That is, can I design an alternative estimator/algorithm, which performs <img src="https://latex.codecogs.com/png.latex?n"> evaluations and returns a random output, such that its RMSE converge quicker?</p>
-<p>Surprisingly, the answer to this question has been known for a long time. If I am ready to focus on functions <img src="https://latex.codecogs.com/png.latex?f%5Cin%5Cmathcal%7BC%7D%5Er(%5B0,%201%5D%5Es)">, Bakhvalov (1959) showed that the best rate I can hope for is <img src="https://latex.codecogs.com/png.latex?O(n%5E%7B-1/2-r/s%7D)."> That is, there exist algorithms that achieve this rate, and algorithms achieving a better rate simply do not exist.</p>
-<p>Ok, but how can I actually design such an algorithm? The proof of Bakhvalov contains a very simple recipe. Say I am able to construct a good approximation <img src="https://latex.codecogs.com/png.latex?f_n"> of <img src="https://latex.codecogs.com/png.latex?f">, based on <img src="https://latex.codecogs.com/png.latex?n"> evaluations; assume the approximation error is <img src="https://latex.codecogs.com/png.latex?%5C%7Cf-f_n%5C%7C_%5Cinfty%20=%20O(n%5E%7B-%5Calpha%7D)">, <img src="https://latex.codecogs.com/png.latex?%5Calpha%3E0">. Then I could compute the following estimator, based on a second batch of <img src="https://latex.codecogs.com/png.latex?n"> evaluations: <img src="https://latex.codecogs.com/png.latex?%20%5Chat%7BI%7D(f)%0A:=%20I(f_n)%20+%20%20%5Cfrac%201%20n%20%5Csum_%7Bi=1%7D%5En%20(f-f_n)(U_i),%5Cquad%20U_i%20%5Csim%0A%5Cmathrm%7BUniform%7D(%5B0,%201%5D%5Es)."> and it is easy to check that this new estimator is unbiased, that its variance is <img src="https://latex.codecogs.com/png.latex?O(n%5E%7B-1-2%5Calpha%7D)">, and therefore its RMSE is <img src="https://latex.codecogs.com/png.latex?O(n%5E%7B-1/2-%5Calpha%7D)">. (It is based on <img src="https://latex.codecogs.com/png.latex?2n"> evaluations.)</p>
-<p>So there is strong relation between Bakhvalov results and function approximation. In fact, the best rate you can achieve for the latter is <img src="https://latex.codecogs.com/png.latex?%5Calpha=r/s">, which explain the rate above for stochastic quadrature. You can see now why I gave this title to this post. QMC is about using points that are better than random points. But here I’m using IID points, and the improved rate comes from the fact I use a better approximation of <img src="https://latex.codecogs.com/png.latex?f">.</p>
-<p>Here is a simple example of a good function approximation. Take <img src="https://latex.codecogs.com/png.latex?s=1">, and <img src="https://latex.codecogs.com/png.latex?%0Af_n(u)%20=%20%5Csum_%7Bi=1%7D%5En%20f(%20%5Cfrac%7B2i-1%7D%7B2n%7D%20)%20%5Cmathbf%7B1%7D_%7B%5B(i-1)/n,%20i/n%5D%7D(u);%0A"> that is, split <img src="https://latex.codecogs.com/png.latex?%5B0,%201%5D"> into <img src="https://latex.codecogs.com/png.latex?n"> intervals <img src="https://latex.codecogs.com/png.latex?%5B(i-1)/n,%20i/n%5D">, and approximate <img src="https://latex.codecogs.com/png.latex?f"> inside a given interval by its value at the centre of the interval. You can quickly check that the approximation error is then <img src="https://latex.codecogs.com/png.latex?O(n%5E%7B-1%7D)"> provided <img src="https://latex.codecogs.com/png.latex?f"> is <img src="https://latex.codecogs.com/png.latex?C%5E1">. So you get a simple recipe to get the optimal rate for <img src="https://latex.codecogs.com/png.latex?s=1"> and <img src="https://latex.codecogs.com/png.latex?r=1">.</p>
-<p>Is it possible to generalise this type of construction to any <img src="https://latex.codecogs.com/png.latex?r"> and any <img src="https://latex.codecogs.com/png.latex?s">? The answer is in our recent paper with Mathieu Gerber, which you can find <a href="https://arxiv.org/abs/2210.01554">here</a>. You may also want to read <a href="https://arxiv.org/abs/1409.6714">Novak (2016)</a>, which is a very good entry on stochastic quadrature, and in particular gives a nice overview of Bakhvalov’s and related results.</p>
-
-
-
- ]]></description>
-  <category>Monte Carlo</category>
-  <category>QMC</category>
-  <category>rates</category>
-  <guid>https://github.com/statisfaction-blog/posts/22-08-2023-monte-carlo-rates/monte_carlo_rates.html</guid>
   <pubDate>Fri, 18 Aug 2023 22:00:00 GMT</pubDate>
 </item>
 </channel>

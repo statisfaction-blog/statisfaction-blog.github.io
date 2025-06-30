@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Nicolas Chopin">
+<meta name="dcterms.date" content="2025-06-30">
 
-<title>About – Statisfaction - I can’t get no</title>
+<title>Nested sampling and SMC: numerical experiments – Statisfaction - I can’t get no</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,23 +25,24 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-2486e1f0a3ee9ee1fc393803a1361cdb.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-6561bbde787c299e21493071c8edc6ff.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-641d6c4e76d3c5daf2125af644899813.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2486e1f0a3ee9ee1fc393803a1361cdb.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-6561bbde787c299e21493071c8edc6ff.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-641d6c4e76d3c5daf2125af644899813.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -68,18 +71,47 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="styles.css">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Statisfaction - I can’t get no</span>
     </a>
   </div>
@@ -90,11 +122,11 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./about.html" aria-current="page"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="./index.xml"> <i class="bi bi-rss" role="img">
+    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -112,34 +144,94 @@ ul.task-list li input[type="checkbox"] {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Nested sampling and SMC: numerical experiments</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Nested sampling</div>
+                <div class="quarto-category">SMC</div>
+                <div class="quarto-category">numerics</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Nicolas Chopin </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">June 30, 2025</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     
 <!-- main -->
-<div class="quarto-about-jolla">
-  <img src="profile.jpg" class="about-image
-  round " style="height: 15em; width: 15em;">
- <header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">About</h1>
-</div>
-<div class="quarto-title-meta">
-  </div>
-</header><main class="content" id="quarto-document-content">
-<p>This is a blog about Bayesian computation and related topics. The blog is currently edited by <a href="https://nchopin.github.io/">Nicolas Chopin</a>, <a href="https://www.julyanarbel.com/">Julyan Arbel</a>, and <a href="http://rbardenet.github.io/">Rémi Bardenet</a>; feel free to contact us, via GitHub or email, and contribute a post. The blog is a continuation of a former wordpress <a href="https://statisfaction.wordpress.com">version</a>.</p>
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
-</main> 
-  <hr class="about-sep">
-   <div class="about-links">
-  <a href="https://github.com/statisfaction-blog" class="about-link" rel="" target="">
-    <i class="bi bi-github"></i>
-     <span class="about-link-text">Github</span>
-  </a>
+
+
+
+<div class="hidden">
+<p><span class="math display">\[
+\newcommand{\ind}{\mathbb{1}}
+\]</span></p>
 </div>
+<p>By “popular” demand (i.e., Adrien asked for it), here are the numerical experiments I promised in my previous <a href="../04-06-2025-simpler-nested-sampling-identity/nested.html">post</a>. I did these experiments initially to illustrate some points in the talk I gave at <a href="https://www.ipp.mpg.de/5281701">MaxEnt 2023</a>.</p>
+<section id="ns-smc-vs-tempering-smc-for-a-gaussian-like-target" class="level1">
+<h1>NS-SMC vs tempering SMC for a Gaussian-like target</h1>
+<p><a href="https://arxiv.org/abs/1805.03924">Salomone et al</a> discuss how NS (nested sampling, both the vanilla and the SMC versions) may outperform tempering whenever the target distribution exhibits pathologies such as <strong>phase transition</strong>. It is not easy (to me at least) to grasp how phase transition may occur in a Bayesian posterior, but I suspect it tends to occur when the posterior is multi-modal. Please have a look at their paper for more details on this and their first numerical experiment which illustrates this point.</p>
+<p>In this first experiment, I wanted to see whether NS-SMC is competitive with tempering SMC on a less challenging target distribution, i.e.&nbsp;the good old logistic regression posterior, which is typically Gaussian like, and therefore unimodal.</p>
+<p>In the plots below, I compare two instances of waste-free SMC, one based on a tempering sequence, the other on the NS sequence discussed in the previous post. Both algorithms derive automatically the next element in these sequences so that the ESS (effective sampling size) is <span class="math inline">\(\alpha N\)</span>. Both rely on random walk Metropolis kernels, which are calibrated on the current particle sample.</p>
+<p>I consider the sonar dataset (dim=61). The plot below show how the MSE (over 100 runs) of the log-marginal likelihood evolves as a function of <span class="math inline">\(\alpha\)</span> for both algorithms; considered values for <span class="math inline">\(\alpha\)</span> are <span class="math inline">\(0.05, 0.10, \dots, 0.95\)</span>. This plot is a bit misleading, because, when <span class="math inline">\(\alpha\)</span> changes, the CPU cost changes as well: the large <span class="math inline">\(\alpha\)</span> is, the larger is the number of intermediate distributions.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="sonar_nested_vs_tempering_mse.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
+</figure>
 </div>
- <!-- /main -->
+<p>So let’s do a second plot, where the <span class="math inline">\(y-\)</span>axis is the work-normalised MSE; that is, MSE times number of total evaluations of the likelihood (which is a good proxy for overall CPU cost). See below.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="sonar_nested_vs_tempering_work_normalised.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
+</figure>
+</div>
+<p>Both variants seems to lead to the same level of performance (i.e.&nbsp;CPU vs error trade-off). One point to note is that the best performance for NS is obtained by taking <span class="math inline">\(\alpha\)</span> small.</p>
+<p>Bottom line: NS-SMC seems indeed competitive with tempering SMC. This is a bit surprising to me (as they rely on two very different sequences of distribution), but it shows that NS-SMC may deserve more scrutiny from the Bayesian computation community, I think.</p>
+</section>
+<section id="a-limitation-of-vanilla-ns" class="level1">
+<h1>A limitation of vanilla NS</h1>
+<p>Another experiment, possibly of more limited interest. For the same type of target distributions (logistic regression posterior, this time for the Pima dataset), the plot below illustrates the bias of vanilla NS as a function of the number <span class="math inline">\(k\)</span> of MCMC steps performed at each iteration. Recall that in vanilla NS, you discard one particle at each time <span class="math inline">\(t\)</span> (the one with smallest likelihood), choose randomly one of the <span class="math inline">\(N-1\)</span> remaining one, apply <span class="math inline">\(k\)</span> MCMC steps to this selected particle, and add back the output to the particle sampler.</p>
+<p>This plot suggests that NS may be biased if <span class="math inline">\(k\)</span> is too small. I am not sure why this is happening. This may be because NS is valid only when <span class="math inline">\(k\to \infty\)</span>. Or maybe because of the adaptive MCMC strategy I’m using: as in the previous section, I use random walk Metropolis, and I recursively adapt the proposal covariance to the empirical covariance matrix of the <span class="math inline">\(N\)</span> particles.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="pima_bias_vanilla.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
+</figure>
+</div>
+</section>
+<section id="how-to-replicate-these-results" class="level1">
+<h1>How to replicate these results</h1>
+<p>I have added some time ago a <code>nested</code> module to <a href="https://github.com/nchopin/particles">particles</a>, which implements both vanilla NS and NS-SMC. The numerical experiments reported above may be reproduced by running the scripts in folder <code>papers/nested</code>.</p>
+
+
+</section>
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -304,6 +396,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   } else {
     toggleColorMode(false);
   }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
   const isCodeAnnotation = (el) => {
     for (const clz of el.classList) {
       if (clz.startsWith('code-annotation-')) {                     
