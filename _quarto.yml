@@ -4,7 +4,7 @@ project:
 
 website:
   title: "Statisfaction - I can't get no"
-  site-url: https://github.com/statisfaction-blog
+  site-url: https://statisfaction-blog.github.io
   navbar:
     right:
       - about.qmd
