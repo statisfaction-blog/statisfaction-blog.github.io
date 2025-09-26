@@ -6,16 +6,17 @@
       version="2.0">
 <channel>
 <title>Statisfaction - I can&#39;t get no</title>
-<link>https://github.com/statisfaction-blog/</link>
-<atom:link href="https://github.com/statisfaction-blog/index.xml" rel="self" type="application/rss+xml"/>
+<link>https://statisfaction-blog.github.io/</link>
+<atom:link href="https://statisfaction-blog.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description></description>
-<generator>quarto-1.6.32</generator>
+<generator>quarto-1.8.24</generator>
 <lastBuildDate>Sun, 29 Jun 2025 22:00:00 GMT</lastBuildDate>
 <item>
   <title>Nested sampling and SMC: numerical experiments</title>
   <dc:creator>Nicolas Chopin</dc:creator>
-  <link>https://github.com/statisfaction-blog/posts/30-06-2025-nested-sampling-experiments/</link>
+  <link>https://statisfaction-blog.github.io/posts/30-06-2025-nested-sampling-experiments/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -33,13 +34,13 @@
 <p>I consider the sonar dataset (dim=61). The plot below show how the MSE (over 100 runs) of the log-marginal likelihood evolves as a function of <img src="https://latex.codecogs.com/png.latex?%5Calpha"> for both algorithms; considered values for <img src="https://latex.codecogs.com/png.latex?%5Calpha"> are <img src="https://latex.codecogs.com/png.latex?0.05,%200.10,%20%5Cdots,%200.95">. This plot is a bit misleading, because, when <img src="https://latex.codecogs.com/png.latex?%5Calpha"> changes, the CPU cost changes as well: the large <img src="https://latex.codecogs.com/png.latex?%5Calpha"> is, the larger is the number of intermediate distributions.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://github.com/statisfaction-blog/posts/30-06-2025-nested-sampling-experiments/sonar_nested_vs_tempering_mse.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
+<p><img src="https://statisfaction-blog.github.io/posts/30-06-2025-nested-sampling-experiments/sonar_nested_vs_tempering_mse.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
 </figure>
 </div>
 <p>So let’s do a second plot, where the <img src="https://latex.codecogs.com/png.latex?y-">axis is the work-normalised MSE; that is, MSE times number of total evaluations of the likelihood (which is a good proxy for overall CPU cost). See below.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://github.com/statisfaction-blog/posts/30-06-2025-nested-sampling-experiments/sonar_nested_vs_tempering_work_normalised.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
+<p><img src="https://statisfaction-blog.github.io/posts/30-06-2025-nested-sampling-experiments/sonar_nested_vs_tempering_work_normalised.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
 </figure>
 </div>
 <p>Both variants seems to lead to the same level of performance (i.e.&nbsp;CPU vs error trade-off). One point to note is that the best performance for NS is obtained by taking <img src="https://latex.codecogs.com/png.latex?%5Calpha"> small.</p>
@@ -51,7 +52,7 @@
 <p>This plot suggests that NS may be biased if <img src="https://latex.codecogs.com/png.latex?k"> is too small. I am not sure why this is happening. This may be because NS is valid only when <img src="https://latex.codecogs.com/png.latex?k%5Cto%20%5Cinfty">. Or maybe because of the adaptive MCMC strategy I’m using: as in the previous section, I use random walk Metropolis, and I recursively adapt the proposal covariance to the empirical covariance matrix of the <img src="https://latex.codecogs.com/png.latex?N"> particles.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://github.com/statisfaction-blog/posts/30-06-2025-nested-sampling-experiments/pima_bias_vanilla.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
+<p><img src="https://statisfaction-blog.github.io/posts/30-06-2025-nested-sampling-experiments/pima_bias_vanilla.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
 </figure>
 </div>
 </section>
@@ -66,14 +67,15 @@
   <category>Nested sampling</category>
   <category>SMC</category>
   <category>numerics</category>
-  <guid>https://github.com/statisfaction-blog/posts/30-06-2025-nested-sampling-experiments/</guid>
+  <guid>https://statisfaction-blog.github.io/posts/30-06-2025-nested-sampling-experiments/</guid>
   <pubDate>Sun, 29 Jun 2025 22:00:00 GMT</pubDate>
 </item>
 <item>
   <title>A simpler nested sampling identity</title>
   <dc:creator>Nicolas Chopin</dc:creator>
-  <link>https://github.com/statisfaction-blog/posts/04-06-2025-simpler-nested-sampling-identity/nested.html</link>
+  <link>https://statisfaction-blog.github.io/posts/04-06-2025-simpler-nested-sampling-identity/nested.html</link>
   <description><![CDATA[ 
+
 
 
 
@@ -127,14 +129,15 @@
   <category>SMC</category>
   <category>nested sampling</category>
   <category>paper</category>
-  <guid>https://github.com/statisfaction-blog/posts/04-06-2025-simpler-nested-sampling-identity/nested.html</guid>
+  <guid>https://statisfaction-blog.github.io/posts/04-06-2025-simpler-nested-sampling-identity/nested.html</guid>
   <pubDate>Tue, 03 Jun 2025 22:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Numpy broke my heart</title>
   <dc:creator>Nicolas Chopin</dc:creator>
-  <link>https://github.com/statisfaction-blog/posts/25-04-2024-numpy-broke-my-heart/numpy-broke-my-heart.html</link>
+  <link>https://statisfaction-blog.github.io/posts/25-04-2024-numpy-broke-my-heart/numpy-broke-my-heart.html</link>
   <description><![CDATA[ 
+
 
 
 
@@ -143,7 +146,7 @@
 <p>I swear, the title is kind of funny in French (try to figure out why). Anyway, in this post I wanted to dispel a misconception I had until recently on python, numpy and multi-processing, and which led me to say something silly in our SMC book.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://github.com/statisfaction-blog/posts/25-04-2024-numpy-broke-my-heart/python_broke_my_heart.jpg" class="img-fluid figure-img"></p>
+<p><img src="https://statisfaction-blog.github.io/posts/25-04-2024-numpy-broke-my-heart/python_broke_my_heart.jpg" class="img-fluid figure-img"></p>
 <figcaption>no comment</figcaption>
 </figure>
 </div>
@@ -173,7 +176,7 @@
 <p>Also, of course, this kind or results may depend on your hardware, the version of python and related libraries you are using (in particular whether you use the openBLAS version of BLAS of the MKL one which is specific to Intel CPUs, to see this, check the output <code>numpy.config()</code> on your machine.) and so on. The picture below summaries the situation.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://github.com/statisfaction-blog/posts/25-04-2024-numpy-broke-my-heart/Alice_looking_down_cpu_cores.jpg" class="img-fluid figure-img"></p>
+<p><img src="https://statisfaction-blog.github.io/posts/25-04-2024-numpy-broke-my-heart/Alice_looking_down_cpu_cores.jpg" class="img-fluid figure-img"></p>
 <figcaption>Alice decided to better understand multiprocessing in Python</figcaption>
 </figure>
 </div>
@@ -201,14 +204,15 @@
   <category>joblib</category>
   <category>multiprocessing</category>
   <category>numpy</category>
-  <guid>https://github.com/statisfaction-blog/posts/25-04-2024-numpy-broke-my-heart/numpy-broke-my-heart.html</guid>
+  <guid>https://statisfaction-blog.github.io/posts/25-04-2024-numpy-broke-my-heart/numpy-broke-my-heart.html</guid>
   <pubDate>Wed, 24 Apr 2024 22:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Quantum workers in Bernoulli factories</title>
   <dc:creator>Rémi Bardenet</dc:creator>
-  <link>https://github.com/statisfaction-blog/posts/14-02-2024-quantum-bernoulli-factories/quantum-bernoulli-factories.html</link>
+  <link>https://statisfaction-blog.github.io/posts/14-02-2024-quantum-bernoulli-factories/quantum-bernoulli-factories.html</link>
   <description><![CDATA[ 
+
 
 
 
@@ -219,7 +223,7 @@
 <div id="fig-smbc" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-smbc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="https://github.com/statisfaction-blog/posts/14-02-2024-quantum-bernoulli-factories/smbc.png" class="img-fluid figure-img">
+<img src="https://statisfaction-blog.github.io/posts/14-02-2024-quantum-bernoulli-factories/smbc.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-smbc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;1: An excerpt from an excellent <a href="https://www.smbc-comics.com/comic/the-talk-3">comic strip</a> by Scott Aaronson and Zach Weinersmith.
@@ -261,14 +265,15 @@ Figure&nbsp;1: An excerpt from an excellent <a href="https://www.smbc-comics.com
  ]]></description>
   <category>quantum computing</category>
   <category>simulation</category>
-  <guid>https://github.com/statisfaction-blog/posts/14-02-2024-quantum-bernoulli-factories/quantum-bernoulli-factories.html</guid>
+  <guid>https://statisfaction-blog.github.io/posts/14-02-2024-quantum-bernoulli-factories/quantum-bernoulli-factories.html</guid>
   <pubDate>Tue, 13 Feb 2024 23:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Coulomb rhymes with variance reduction</title>
   <dc:creator>Rémi Bardenet</dc:creator>
-  <link>https://github.com/statisfaction-blog/posts/01-11-2023-repelled-point-processes/repelled_point_processes.html</link>
+  <link>https://statisfaction-blog.github.io/posts/01-11-2023-repelled-point-processes/repelled_point_processes.html</link>
   <description><![CDATA[ 
+
 
 
 
@@ -322,14 +327,15 @@ Figure&nbsp;1: Note how the repelled sample has fewer visible “holes” and �
  ]]></description>
   <category>Monte Carlo</category>
   <category>point processes</category>
-  <guid>https://github.com/statisfaction-blog/posts/01-11-2023-repelled-point-processes/repelled_point_processes.html</guid>
+  <guid>https://statisfaction-blog.github.io/posts/01-11-2023-repelled-point-processes/repelled_point_processes.html</guid>
   <pubDate>Tue, 31 Oct 2023 23:00:00 GMT</pubDate>
 </item>
 <item>
   <title>particles version 0.4: single-run variance estimates, FFBS variants, nested sampling</title>
   <dc:creator>Nicolas Chopin</dc:creator>
-  <link>https://github.com/statisfaction-blog/posts/01-09-2023-particles-v0.4/</link>
+  <link>https://statisfaction-blog.github.io/posts/01-09-2023-particles-v0.4/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -342,12 +348,12 @@ Figure&nbsp;1: Note how the repelled sample has fewer visible “holes” and �
 <p>What was not yet implemented (but is, in this version) is the <strong>single-run</strong> variance estimates proposed in the same paper. Here is a simple illustration:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://github.com/statisfaction-blog/posts/01-09-2023-particles-v0.4/ibis_pima_var_post.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
+<p><img src="https://statisfaction-blog.github.io/posts/01-09-2023-particles-v0.4/ibis_pima_var_post.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://github.com/statisfaction-blog/posts/01-09-2023-particles-v0.4/ibis_pima_var_logLt.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
+<p><img src="https://statisfaction-blog.github.io/posts/01-09-2023-particles-v0.4/ibis_pima_var_logLt.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
 </figure>
 </div>
 <p>Both plots were obtained from <img src="https://latex.codecogs.com/png.latex?10%5E3"> runs of waste-free IBIS (i.e.&nbsp;target at time <img src="https://latex.codecogs.com/png.latex?t"> is the posterior based on the first <img src="https://latex.codecogs.com/png.latex?t+1"> observations, <img src="https://latex.codecogs.com/png.latex?p(%5Ctheta%7Cy_%7B0:t%7D)">) applied to Bayesian logistic regression and the Pima Indians dataset. The red line is the empirical variance of the output, and, since the number of runs is large, it should be close to the true variance. The lower (resp. upper) limit of the grey area is the <img src="https://latex.codecogs.com/png.latex?5%5C%25"> (resp. <img src="https://latex.codecogs.com/png.latex?95%5C%25">) quantile of the single-run variance estimates obtained from these <img src="https://latex.codecogs.com/png.latex?10%5E3"> runs. The considered output is either the posterior mean of the intercept (top) or the log marginal likelihood (bottom).</p>
@@ -394,14 +400,15 @@ Figure&nbsp;1: Note how the repelled sample has fewer visible “holes” and �
   <category>news</category>
   <category>particles</category>
   <category>SMC</category>
-  <guid>https://github.com/statisfaction-blog/posts/01-09-2023-particles-v0.4/</guid>
+  <guid>https://statisfaction-blog.github.io/posts/01-09-2023-particles-v0.4/</guid>
   <pubDate>Thu, 31 Aug 2023 22:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Better than Monte Carlo (this post is not about QMC)</title>
   <dc:creator>Nicolas Chopin</dc:creator>
-  <link>https://github.com/statisfaction-blog/posts/22-08-2023-monte-carlo-rates/monte_carlo_rates.html</link>
+  <link>https://statisfaction-blog.github.io/posts/22-08-2023-monte-carlo-rates/monte_carlo_rates.html</link>
   <description><![CDATA[ 
+
 
 
 
@@ -422,21 +429,22 @@ Figure&nbsp;1: Note how the repelled sample has fewer visible “holes” and �
   <category>Monte Carlo</category>
   <category>QMC</category>
   <category>rates</category>
-  <guid>https://github.com/statisfaction-blog/posts/22-08-2023-monte-carlo-rates/monte_carlo_rates.html</guid>
+  <guid>https://statisfaction-blog.github.io/posts/22-08-2023-monte-carlo-rates/monte_carlo_rates.html</guid>
   <pubDate>Fri, 18 Aug 2023 22:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Welcome to the new, quarto-based version of Statisfaction</title>
   <dc:creator>Nicolas Chopin</dc:creator>
-  <link>https://github.com/statisfaction-blog/posts/welcome/</link>
+  <link>https://statisfaction-blog.github.io/posts/welcome/</link>
   <description><![CDATA[ 
 
 
 
 
 
+
 <p>Hey! We have just moved this blog from Wordpress to github. The old version is still available <a href="https://statisfaction.wordpress.com/">here</a>. The new version is based on <a href="https://quarto.org/">quarto</a>, which will make it much easier to write mathematics, e.g.&nbsp;<img src="https://latex.codecogs.com/png.latex?%5Cpi(%5Ctheta%7Cx)%20%5Cpropto%20%5Cpi(%5Ctheta)%0AL(x%7C%5Ctheta)">, and code, e.g.&nbsp;</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
 background-color: null;
@@ -457,13 +465,13 @@ font-style: inherit;">1</span>, n <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">1</span>))</span></code></pre></div>
+font-style: inherit;">1</span>))</span></code></pre></div></div>
 
 
 
  ]]></description>
   <category>news</category>
-  <guid>https://github.com/statisfaction-blog/posts/welcome/</guid>
+  <guid>https://statisfaction-blog.github.io/posts/welcome/</guid>
   <pubDate>Fri, 18 Aug 2023 22:00:00 GMT</pubDate>
 </item>
 </channel>
