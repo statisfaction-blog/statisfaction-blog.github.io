@@ -1,0 +1,10 @@
+---
+title: "Testing the RSS feed"
+author: "Nicolas Chopin"
+date: "2025-10-04"
+categories: [test, sorry]
+---
+
+This is just a test. Sorry for the inconvenience. I will delete this post
+shortly. 
+
