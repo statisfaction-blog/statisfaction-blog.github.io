@@ -32,6 +32,7 @@ Amusingly, this resonates with the post's content: we will see that talking of t
 
 We start with part of Theorem 3.1 in Marcelo Pereyra's above-mentioned [paper](https://arxiv.org/abs/1612.06149). 
 With the notation of @eq-map, let $\Phi(x) \propto - \log p(y\vert x) - \log p(x)$ be minus the log density of the posterior obtained from $p(y\vert \cdot)$ and $p(\cdot)$. 
+Note that I use $\propto$ to say ``up to an additive constant" here.
 Assume $\Phi$ is strongly convex and $C^3$, and that $p(x\vert y) = \exp(-\Phi(x))$ decays fast as $\Vert x\Vert$ grows.
 Consider the so-called Bregman divergence
 $$
