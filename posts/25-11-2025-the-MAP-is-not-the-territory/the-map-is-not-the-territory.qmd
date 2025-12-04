@@ -1,0 +1,90 @@
+---
+title: "The MAP is not the territory"
+author: "Rémi Bardenet"
+date: "2025-11-25"
+categories: [inference, inverse problems, foundations]
+---
+TL;DR: The MAP estimator is sometimes a Bayes estimator in disguise, but this comes at a price.
+
+Say you are inferring a parameter $x\in\mathbb{R}^d$, and you have come up with a prior density $p(\cdot)$ with respect to the Lebesgue measure on $\mathbb{R}^d$, and a family of densities $\{p(\cdot\vert x), x\in\mathbb{R}^d\}$ for your observations, with respect to some reference measure on the space where the data live. 
+After observing data $y$, a common practice, especially in the literature on inverse problems, is to estimate $x$ by maximizing the posterior density
+$$
+    \hat x_{\mathrm{MAP}} = \arg\max_x \log p(y\vert x) + \log p(x).
+$${#eq-map}
+With the right assumptions on the two densities in the RHS of @eq-map, the argmax is unique, thus justifying the definition. 
+The MAP estimator is popular in inverse problems, e.g. for restoring corrupted images, where $p(\cdot\vert x)$ is typically Gaussian or Poisson and the prior $p(\cdot)$ typically expresses a regularization, e.g. a soft constraint on coefficients in a basis or a frame. This popularity of the MAP estimator is largely explained, I think, by the availability of efficient numerical optimization procedures to solve @eq-map for the likelihood-prior pairs that are common in inverse problems.
+
+Yet some Bayesians dislike the MAP estimator. 
+For starters, the primitives of Bayesian inferential procedures are usually probability measures, not their densities.
+In particular, I can arbitrarily change the MAP estimator by modifying e.g. the prior density $p(\cdot)$ in @eq-map on a set of Lebesgue measure zero.
+That alone was enough of an argument for me against the MAP until about ten years ago. 
+At that time, I saw a talk by Marcelo Pereyra in Bordeaux, presenting this [paper](https://arxiv.org/abs/1612.06149). 
+Marcelo was trying to salvage the MAP estimator, by casting the MAP as a Bayes action in a (twisted) decision-theoretical framework. 
+I remember thinking a lot about this at the time, after which I put these thoughts in a mental drawer for a while.
+At coffee time during the last [GRETSI](https://gretsi.fr/colloque2025/), Rémi Gribonval mentioned his past work on exactly this issue, and I couldn't but reopen that drawer.
+I thought the basic ingredients of this discussion would make a nice blog post.
+
+As a palate cleanser before the theorems, the picture in @fig-korzybski is Alfred Korzybski (1879-1950), the Polish-American philosopher of science who coined the sentence making the punny title of this post. 
+According to [Wikipedia](https://en.wikipedia.org/wiki/Science_and_Sanity), his views are that our understanding of the world is impeded by our nervous system, language, etc. and that mathematics are a language that helps us formulate a discourse that best approximates reality.
+Amusingly, this resonates with the post's content: we will see that talking of the MAP as maximizing a posterior, and thus intuitively according some modelling role to the densities appearing in @eq-map, is maybe not be the best way to express the mental assumptions we are making on the world when choosing the MAP estimator.
+
+![Left: Alfred Korzybski, whose Wikipedia picture would actually benefit from some denoising. Right: Denoising is classically implemented as a MAP, here I used a Gaussian likelihood and a "total variation" prior; see the [documentation](https://scikit-image.org/docs/0.23.x/api/skimage.restoration.html#skimage.restoration.denoise_tv_chambolle) of `scikit-image`.](korzybski_original_and_restored.jpg){#fig-korzybski}
+
+We start with part of Theorem 3.1 in Marcelo Pereyra's above-mentioned [paper](https://arxiv.org/abs/1612.06149). 
+With the notation of @eq-map, let $\Phi(x) \propto - \log p(y\vert x) - \log p(x)$ be minus the log density of the posterior obtained from $p(y\vert \cdot)$ and $p(\cdot)$. 
+Assume $\Phi$ is strongly convex and $C^3$, and that $p(x\vert y) = \exp(-\Phi(x))$ decays fast as $\Vert x\Vert$ grows.
+Consider the so-called Bregman divergence
+$$
+    D_\Phi(u,x) = \Phi(u) - \Phi(x) - \langle \nabla \Phi(x), u-x\rangle.
+$$
+The result states that
+$$
+    \hat{x}_\mathrm{MAP} = \arg\min_u \int D_\Phi(u,x) p(x\vert y)\mathrm{d} x,
+$${#eq-pereyra}
+and in particular the minimum in the RHS is unique.
+Informally, the proof follows from plugging the definition of $D_\Phi$ in the expectation, and noting that the only non-trivial term is 
+$$
+    \int \nabla\Phi(x) p(x\vert y)\mathrm{d} x = - \int \frac{\nabla p(x\vert y)}{p(x\vert y)} p(x\vert y) \mathrm{d}x = - \int \nabla p(x\vert y) \mathrm{d}x.
+$$
+The latter integral is zero under the right decay assumption by the divergence theorem. 
+
+Now, @eq-pereyra implies that the MAP estimator is a Bayes estimator, in the sense that it maximizes an expected utility (equivalently, minimizes an expected loss) with respect to a probability measure, here the posterior measure. 
+The twist is that the loss function depends on the posterior through its negative log density $\Phi$, and in particular it depends on the data $y$. 
+In subjective Bayes terms, the utility is state-dependent.
+This violates the most common sets of axioms of Bayesian decision theory, such as the Anscombe-Aumann axioms presented in Schervish's [book](https://link.springer.com/book/10.1007/978-1-4612-4250-5).
+In particular, this makes it hard to interpret the posterior as a degree of belief.
+Yet, I have grown inclined to weaken my definition of being Bayesian, and it would be interesting to understand how the choice of $D_\Phi$ as a loss impacts the statistician's ranking on actions.
+As a remark of independent interest, $D_\Phi$ is not symmetric, and if one reverts $u$ and $x$ in @eq-pereyra, Pereyra shows that the Bayes action becomes the posterior mean! 
+
+I can't have an exhaustive bibliography in this post, but I should at least mention that Pereyra's result generalizes an earlier [result](https://arxiv.org/abs/1402.5297) by Burger and Lucka who focussed on Gaussian likelihoods.
+Pereyra also mentions a [generalization](https://arxiv.org/abs/1608.07483) to non-Gaussian likelihoods akin to his by Burger, Dong, and Sciacchitano. 
+Pereyra also cites a 2011 [paper](https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://inria.hal.science/inria-00486840/document&ved=2ahUKEwiy0MWt9I2RAxVRLPsDHc44LdcQFnoECB0QAQ&usg=AOvVaw3F-_BAJ1H6XyDftloxKr_t) by Rémi Gribonval, which was the start of a line of work by Gribonval and Nikolova. The next result I'd like to cover is in the last paper in that line of work, a 2019 [paper](https://arxiv.org/abs/1807.04021) by Gribonval and Nikolova. 
+According to a footnote, Mila Nikolova passed away during their writing of the paper. 
+I have good memories of her lectures on optimization in Cachan.
+
+Gribonval and Nikolova's take is rather different. 
+They start from a mean posterior estimator, where the posterior is defined by what I will call the initial likelihood-prior pair. 
+Under conditions on the initial likelihood, they manage to rewrite the mean posterior estimator in the form of @eq-map, for a different likelihood-prior pair than the initial one.
+Let me call this new pair of densities appearing in the MAP reformulation the computational pair. 
+For the authors, the computational pair of densities are not thought of as modelling the data generation process or a prior belief, they are simply intermediate quantities that appear in a formal rewriting of the original Bayesian estimator.
+Compared to Pereyra and Burger et al., the procedure has the benefit of keeping the loss function untouched: it remains the squared loss throughout.
+The price is to pay is, from what I understand, a limited number of initial likelihoods that can be treated, and a rather intricate definition of the 
+computational prior.
+An important message from the paper is that, if you choose to go for a MAP estimator (say, a LASSO estimator in linear regression, or the total-variation denoiser I used in @fig-korzybski), your likelihood-prior pair is of the computational kind: your modelling choices are encoded in the implicit initial pair of densities.
+ 
+Their fundamental tool is their Lemma 1 on proximal operators, i.e. operators that map data to the solution of a regularized least-squares problem. 
+Formally, for a function $\varphi:\mathbb{R}^d\rightarrow \mathbb{R}\cup\{+\infty\}$ that is not identically $+\infty$, define
+$$
+    \mathrm{prox}_\phi(y) := \arg\min_{x\in\mathbb{R}^d} \frac12\Vert y-x\Vert^2 + \varphi(x).
+$${#eq-proximal}
+Proximal operators are a key notion in optimization of non-differentiable functions, as solving a regularized least squares problem can intuitively replace a gradient descent step.
+In a companion [paper](https://arxiv.org/abs/1807.04014), Gribonval and Nikolova had found a characterization of proximal operators, and they apply it here to posterior means: under (stringent) conditions on the initial likelihood-prior pairs, the mean of the posterior can be rewritten as a MAP for a different likelihood-prior pair.
+They give many examples of the resulting MAP reformulations. 
+To cite only one, their Proposition 1 states that if $Y\vert X$ is a Poisson law, and the prior on $X$ is whatever you want, then there exists a function $\tilde\varphi$ on the positive reals such that 
+$$
+    \mathbb{E}(X\vert Y=n) = \arg\min_x \frac12\vert n - x\vert^2 + \tilde\varphi(x).
+$$
+Otherly put, the posterior mean for a model with Poisson noise has a MAP formulation as in @eq-map, for a computational likelihood that looks like a Gaussian! 
+
+Overall, a MAP can hide a Bayes estimator, at the price of either a data-dependent loss function or because your MAP problem is the proximal rewriting of a posterior mean corresponding to a different likelihood-prior pair! Note that I've only scratched the surface of the papers I mention, and they all contain more nuggets than what I dug out.
+

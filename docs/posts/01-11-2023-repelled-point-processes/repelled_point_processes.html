@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.6.32">
+<meta name="generator" content="quarto-1.3.450">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Rémi Bardenet">
 <meta name="dcterms.date" content="2023-11-01">
 
-<title>Coulomb rhymes with variance reduction – Statisfaction - I can’t get no</title>
+<title>Statisfaction - I can’t get no - Coulomb rhymes with variance reduction</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -37,11 +37,11 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2486e1f0a3ee9ee1fc393803a1361cdb.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-6561bbde787c299e21493071c8edc6ff.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-641d6c4e76d3c5daf2125af644899813.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
@@ -49,13 +49,7 @@ ul.task-list li input[type="checkbox"] {
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 50,
-  "keyboard-shortcut": [
-    "f",
-    "/",
-    "s"
-  ],
-  "show-item-context": false,
+  "limit": 20,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -64,42 +58,14 @@ ul.task-list li input[type="checkbox"] {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
-    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -107,39 +73,39 @@ window.Quarto = {
 <body class="nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top quarto-banner">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container mx-auto">
+      <div class="navbar-brand-container">
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Statisfaction - I can’t get no</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../about.html"> 
-<span class="menu-text">About</span></a>
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img">
+    <a class="nav-link" href="../../index.xml" rel="" target=""><i class="bi bi-rss" role="img">
 </i> 
-<span class="menu-text"></span></a>
+ <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/statisfaction-blog"> <i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://github.com/statisfaction-blog" rel="" target=""><i class="bi bi-github" role="img">
 </i> 
-<span class="menu-text"></span></a>
+ <span class="menu-text"></span></a>
   </li>  
 </ul>
-          </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
+          </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -186,51 +152,38 @@ window.Quarto = {
 
 
 
-
 <p>… Well, it does rhyme if you read the title aloud with a French accent, hon hon hon.</p>
 <p>To paraphrase Nicolas’s previous <a href="https://statisfaction.wordpress.com/2022/12/22/how-to-beat-monte-carlo-no-qmc/">post</a>, say I want to approximate the integral <span class="math display">\[
     I(f) := \int_{S} f(u) du,
 \]</span> where <span class="math inline">\(S\)</span> is a compact set of <span class="math inline">\(\mathbb{R}^d\)</span>. I could use plain old Monte Carlo with <span class="math inline">\(N\)</span> nodes, <span id="eq-mc"><span class="math display">\[
     \hat{I}(f) = \frac 1 N \sum_{i=1}^N f(U_i),   \quad U_i \sim \mathrm{U}(S).
-\tag{1}\]</span></span> Intuitively, an i.i.d. uniform sample of quadrature nodes <span class="math inline">\(U_1, \dots, U_N\)</span> will however leave “holes”; see <a href="#fig-poisson" class="quarto-xref">Figure&nbsp;1 (a)</a>. In words, given a realization of the nodes, it is possible to insert a few large balls in <span class="math inline">\(S\)</span> that do not contain any <span class="math inline">\(U_i\)</span>. These holes may make us miss some large variations of <span class="math inline">\(f\)</span>. Part of the variance of the Monte Carlo estimator in <a href="#eq-mc" class="quarto-xref">Equation&nbsp;1</a> could intuitively be removed if we managed to fill these holes, using some of the nodes that got lumped together by chance.</p>
+\tag{1}\]</span></span> Intuitively, an i.i.d. uniform sample of quadrature nodes <span class="math inline">\(U_1, \dots, U_N\)</span> will however leave “holes”; see <a href="#fig-poisson">Figure&nbsp;1 (a)</a>. In words, given a realization of the nodes, it is possible to insert a few large balls in <span class="math inline">\(S\)</span> that do not contain any <span class="math inline">\(U_i\)</span>. These holes may make us miss some large variations of <span class="math inline">\(f\)</span>. Part of the variance of the Monte Carlo estimator in <a href="#eq-mc">Equation&nbsp;1</a> could intuitively be removed if we managed to fill these holes, using some of the nodes that got lumped together by chance.</p>
 <p>Many sampling algorithms, such as randomized quasi-Monte Carlo, impose similar space-filling constraints, yielding a random sample with guarantees of “well-spreadedness”. In the <a href="https://arxiv.org/abs/2308.04825">paper</a> I describe in this post, <a href="https://dhawat.github.io/">Diala Hawat</a> and her two advisors (Raphaël Lachièze-Rey and myself) obtained variance reduction by explicitly trying to fill the holes left by a realization of <span class="math inline">\(U_1, \dots, U_N\)</span>. In the remainder of the post, I will describe Diala’s main theoretical result.</p>
 <div id="fig-samples" class="quarto-layout-panel">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-samples-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-samples" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-poisson" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-poisson-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<embed src="poisson.pdf" class="img-fluid" data-ref-parent="fig-samples">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-poisson-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(a) A Poisson sample
-</figcaption>
+<figure class="figure">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-poisson" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><embed src="poisson.pdf" class="img-fluid" data-ref-parent="fig-samples"></p>
+<figcaption class="figure-caption">(a) A Poisson sample</figcaption>
 </figure>
 </div>
 </div>
-<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-samples" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-repelled" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-repelled-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<embed src="repelled.pdf" class="img-fluid" data-ref-parent="fig-samples">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-repelled-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(b) The same sample after repulsion
-</figcaption>
+<div class="quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-repelled" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><embed src="repelled.pdf" class="img-fluid" data-ref-parent="fig-samples"></p>
+<figcaption class="figure-caption">(b) The same sample after repulsion</figcaption>
 </figure>
 </div>
 </div>
 </div>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-samples-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Note how the repelled sample has fewer visible “holes” and “lumps”. The details of how we implemented the repulsion are interesting in themselves, and can be found in the <a href="https://arxiv.org/abs/2308.04825">paper</a> and the associated <a href="https://github.com/dhawat/MCRPPy">code</a>.
-</figcaption>
+<p></p><figcaption class="figure-caption">Figure&nbsp;1: Note how the repelled sample has fewer visible “holes” and “lumps”. The details of how we implemented the repulsion are interesting in themselves, and can be found in the <a href="https://arxiv.org/abs/2308.04825">paper</a> and the associated <a href="https://github.com/dhawat/MCRPPy">code</a>.</figcaption><p></p>
 </figure>
 </div>
 <p>The basic intuition is to imagine the quadrature nodes <span class="math inline">\(U_1, \dots, U_N\)</span> as electrons. In physics, electrons (like all charged particles) are subject to the <a href="https://en.wikipedia.org/wiki/Coulomb%27s_law">Coulomb force</a>. The Coulomb force exerted by one electron onto another points away from the first electron, with a magnitude that is inversely proportional to the <span class="math inline">\(d-1\)</span>th power of the Euclidean distance between the two. As a result, electrons tend to repel each other, and electrons close to you will push you away harder than electrons at the other side of the support of <span class="math inline">\(f\)</span>. This is the behaviour that we would like to emulate, so that our quadrature nodes avoid lumping together and rather go and fill holes where no particle causes any repulsion.</p>
-<p>If we solved the differential equation implementing Coulomb’s repulsion on our <span class="math inline">\(N\)</span> i.i.d. nodes, however, the points would rapidly leave the support of <span class="math inline">\(f\)</span> and “go to infinity”, to make sure that the pairwise distances between nodes are as large as possible. One way to avoid this undesired behaviour is to consider an “infinite” uniform Monte Carlo sample in <span class="math inline">\(\mathbb{R}^d\)</span>, so that, wherever an electron looks, there are an infinite number of electrons preventing it from escaping. To make the situation comparable with our initial <span class="math inline">\(N\)</span>-point estimator in <a href="#eq-mc" class="quarto-xref">Equation&nbsp;1</a>, we also require that there are roughly <span class="math inline">\(N\)</span> points inside the region <span class="math inline">\(S\)</span> where we integrate <span class="math inline">\(f\)</span>. Formally, we consider a homogeneous Poisson point process <span class="math inline">\(\mathcal{P}\)</span> of intensity <span class="math inline">\(\rho = N/V\)</span> in <span class="math inline">\(\mathbb{R}^d\)</span>, where <span class="math inline">\(V\)</span> is the volume of <span class="math inline">\(S\)</span>. Consider the modified Monte Carlo estimator <span class="math display">\[
+<p>If we solved the differential equation implementing Coulomb’s repulsion on our <span class="math inline">\(N\)</span> i.i.d. nodes, however, the points would rapidly leave the support of <span class="math inline">\(f\)</span> and “go to infinity”, to make sure that the pairwise distances between nodes are as large as possible. One way to avoid this undesired behaviour is to consider an “infinite” uniform Monte Carlo sample in <span class="math inline">\(\mathbb{R}^d\)</span>, so that, wherever an electron looks, there are an infinite number of electrons preventing it from escaping. To make the situation comparable with our initial <span class="math inline">\(N\)</span>-point estimator in <a href="#eq-mc">Equation&nbsp;1</a>, we also require that there are roughly <span class="math inline">\(N\)</span> points inside the region <span class="math inline">\(S\)</span> where we integrate <span class="math inline">\(f\)</span>. Formally, we consider a homogeneous Poisson point process <span class="math inline">\(\mathcal{P}\)</span> of intensity <span class="math inline">\(\rho = N/V\)</span> in <span class="math inline">\(\mathbb{R}^d\)</span>, where <span class="math inline">\(V\)</span> is the volume of <span class="math inline">\(S\)</span>. Consider the modified Monte Carlo estimator <span class="math display">\[
     \tilde{I}(f) = \frac{1}{N} \sum_{x\in S\cap\mathcal{P}} f(x).
 \]</span> This estimator is very similar to the <span class="math inline">\(N\)</span>-point crude Monte Carlo estimator <span class="math inline">\(\hat{I}(f)\)</span>, except the number of evaluations of <span class="math inline">\(f\)</span> in the sum is now Poisson-distributed, with mean and variance <span class="math inline">\(N\)</span>. What we have gained is that we can now intuitively apply the Coulomb force to the points of <span class="math inline">\(\mathcal{P}\)</span>, and hope that both before and after repulsion, about <span class="math inline">\(N\)</span> points remain in our integration domain <span class="math inline">\(S\)</span>. Proving this remains technically thorny, however. For starters, for <span class="math inline">\(x\)</span> in <span class="math inline">\(\mathbb{R}^d\)</span>, the series defining the Coulomb force exerted on <span class="math inline">\(x\)</span> by a collection <span class="math inline">\(C\)</span> of points in <span class="math inline">\(\mathbb{R}^d\)</span>, namely <span class="math display">\[
     F_C(x) = \sum_{y\in C, y\neq x} \frac{x-y}{\Vert x-y\Vert^{d}},
@@ -286,33 +239,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       } else {
         el.classList.add('notransition');
       }
-    }
-  }
-  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
-    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
-    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
-    let newTheme = '';
-    if(darkModeDefault) {
-      newTheme = isAlternate ? baseTheme : alternateTheme;
-    } else {
-      newTheme = isAlternate ? alternateTheme : baseTheme;
-    }
-    const changeGiscusTheme = () => {
-      // From: https://github.com/giscus/giscus/issues/336
-      const sendMessage = (message) => {
-        const iframe = document.querySelector('iframe.giscus-frame');
-        if (!iframe) return;
-        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
-      }
-      sendMessage({
-        setConfig: {
-          theme: newTheme
-        }
-      });
-    }
-    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
-    if (isGiscussLoaded) {
-      changeGiscusTheme();
     }
   }
   const toggleColorMode = (alternate) => {
@@ -381,15 +307,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return localAlternateSentinel;
     }
   }
-  const darkModeDefault = false;
-  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  let localAlternateSentinel = 'default';
   // Dark / light mode switch
   window.quartoToggleColorScheme = () => {
     // Read the current dark / light value 
     let toAlternate = !hasAlternateSentinel();
     toggleColorMode(toAlternate);
     setStyleSentinel(toAlternate);
-    toggleGiscusIfUsed(toAlternate, darkModeDefault);
   };
   // Ensure there is a toggle, if there isn't float one in the top right
   if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
@@ -424,7 +348,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const onCopySuccess = function(e) {
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -456,50 +391,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
-  }
-  const getTextToCopy = function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-    text: getTextToCopy
   });
-  clipboard.on('success', onCopySuccess);
-  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
-    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-      text: getTextToCopy,
-      container: window.document.getElementById('quarto-embedded-source-code-modal')
-    });
-    clipboardModal.on('success', onCopySuccess);
-  }
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-    var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("https:\/\/statisfaction-blog\.github\.io");
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
-    }
-    // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-        // undo the damage that might have been done by quarto-nav.js in the case of
-        // links that we want to consider external
-        if (link.dataset.originalHref !== undefined) {
-          link.href = link.dataset.originalHref;
-        }
-      }
-    }
-  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+  function tippyHover(el, contentFn) {
     const config = {
       allowHTML: true,
+      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -509,17 +405,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start',
+      placement: 'bottom-start'
     };
-    if (contentFn) {
-      config.content = contentFn;
-    }
-    if (onTriggerFn) {
-      config.onTrigger = onTriggerFn;
-    }
-    if (onUntriggerFn) {
-      config.onUntrigger = onUntriggerFn;
-    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -531,130 +418,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      if (note) {
-        return note.innerHTML;
-      } else {
-        return "";
-      }
-    });
-  }
-  const xrefs = window.document.querySelectorAll('a.quarto-xref');
-  const processXRef = (id, note) => {
-    // Strip column container classes
-    const stripColumnClz = (el) => {
-      el.classList.remove("page-full", "page-columns");
-      if (el.children) {
-        for (const child of el.children) {
-          stripColumnClz(child);
-        }
-      }
-    }
-    stripColumnClz(note)
-    if (id === null || id.startsWith('sec-')) {
-      // Special case sections, only their first couple elements
-      const container = document.createElement("div");
-      if (note.children && note.children.length > 2) {
-        container.appendChild(note.children[0].cloneNode(true));
-        for (let i = 1; i < note.children.length; i++) {
-          const child = note.children[i];
-          if (child.tagName === "P" && child.innerText === "") {
-            continue;
-          } else {
-            container.appendChild(child.cloneNode(true));
-            break;
-          }
-        }
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(container);
-        }
-        return container.innerHTML
-      } else {
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(note);
-        }
-        return note.innerHTML;
-      }
-    } else {
-      // Remove any anchor links if they are present
-      const anchorLink = note.querySelector('a.anchorjs-link');
-      if (anchorLink) {
-        anchorLink.remove();
-      }
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(note);
-      }
-      // TODO in 1.5, we should make sure this works without a callout special case
-      if (note.classList.contains("callout")) {
-        return note.outerHTML;
-      } else {
-        return note.innerHTML;
-      }
-    }
-  }
-  for (var i=0; i<xrefs.length; i++) {
-    const xref = xrefs[i];
-    tippyHover(xref, undefined, function(instance) {
-      instance.disable();
-      let url = xref.getAttribute('href');
-      let hash = undefined; 
-      if (url.startsWith('#')) {
-        hash = url;
-      } else {
-        try { hash = new URL(url).hash; } catch {}
-      }
-      if (hash) {
-        const id = hash.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note !== null) {
-          try {
-            const html = processXRef(id, note.cloneNode(true));
-            instance.setContent(html);
-          } finally {
-            instance.enable();
-            instance.show();
-          }
-        } else {
-          // See if we can fetch this
-          fetch(url.split('#')[0])
-          .then(res => res.text())
-          .then(html => {
-            const parser = new DOMParser();
-            const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.getElementById(id);
-            if (note !== null) {
-              const html = processXRef(id, note);
-              instance.setContent(html);
-            } 
-          }).finally(() => {
-            instance.enable();
-            instance.show();
-          });
-        }
-      } else {
-        // See if we can fetch a full url (with no hash to target)
-        // This is a special case and we should probably do some content thinning / targeting
-        fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const htmlDoc = parser.parseFromString(html, "text/html");
-          const note = htmlDoc.querySelector('main.content');
-          if (note !== null) {
-            // This should only happen for chapter cross references
-            // (since there is no id in the URL)
-            // remove the first header
-            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-              note.children[0].remove();
-            }
-            const html = processXRef(null, note);
-            instance.setContent(html);
-          } 
-        }).finally(() => {
-          instance.enable();
-          instance.show();
-        });
-      }
-    }, function(instance) {
+      return note.innerHTML;
     });
   }
       let selectedAnnoteEl;
@@ -698,7 +462,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
-            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -724,32 +487,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
-        // Handle positioning of the toggle
-    window.addEventListener(
-      "resize",
-      throttle(() => {
-        elRect = undefined;
-        if (selectedAnnoteEl) {
-          selectCodeLines(selectedAnnoteEl);
-        }
-      }, 10)
-    );
-    function throttle(fn, ms) {
-    let throttle = false;
-    let timer;
-      return (...args) => {
-        if(!throttle) { // first call gets through
-            fn.apply(this, args);
-            throttle = true;
-        } else { // all the others get throttled
-            if(timer) clearTimeout(timer); // cancel #2
-            timer = setTimeout(() => {
-              fn.apply(this, args);
-              timer = throttle = false;
-            }, ms);
-        }
-      };
-    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -812,7 +549,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <script src="https://utteranc.es/client.js" repo="rbardenet/statisfaction-blog-comments" issue-term="title" theme="github-light" crossorigin="anonymous" async="">
 </script>
 </div> <!-- /content -->
-
 
 
 

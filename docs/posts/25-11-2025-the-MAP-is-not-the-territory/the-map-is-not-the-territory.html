@@ -6,10 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Nicolas Chopin">
-<meta name="dcterms.date" content="2025-06-04">
+<meta name="author" content="Rémi Bardenet">
+<meta name="dcterms.date" content="2025-11-25">
 
-<title>Statisfaction - I can’t get no - A simpler nested sampling identity</title>
+<title>Statisfaction - I can’t get no - The MAP is not the territory</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -113,11 +113,11 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">A simpler nested sampling identity</h1>
+      <h1 class="title">The MAP is not the territory</h1>
                                 <div class="quarto-categories">
-                <div class="quarto-category">SMC</div>
-                <div class="quarto-category">nested sampling</div>
-                <div class="quarto-category">paper</div>
+                <div class="quarto-category">inference</div>
+                <div class="quarto-category">inverse problems</div>
+                <div class="quarto-category">foundations</div>
               </div>
                   </div>
   </div>
@@ -128,14 +128,14 @@ ul.task-list li input[type="checkbox"] {
       <div>
       <div class="quarto-title-meta-heading">Author</div>
       <div class="quarto-title-meta-contents">
-               <p>Nicolas Chopin </p>
+               <p>Rémi Bardenet </p>
             </div>
     </div>
       
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">June 4, 2025</p>
+        <p class="date">November 25, 2025</p>
       </div>
     </div>
     
@@ -153,67 +153,36 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<div class="hidden">
-<p><span class="math display">\[
-\newcommand{\ind}{\mathbb{1}}
-\]</span></p>
+<p>TL;DR: The MAP estimator is sometimes a Bayes estimator in disguise, but this comes at a price.</p>
+<p>Say you are inferring a parameter <span class="math inline">\(x\in\mathbb{R}^d\)</span>, and you have come up with a prior density <span class="math inline">\(p(\cdot)\)</span> with respect to the Lebesgue measure on <span class="math inline">\(\mathbb{R}^d\)</span>, and a family of densities <span class="math inline">\(\{p(\cdot\vert x), x\in\mathbb{R}^d\}\)</span> for your observations, with respect to some reference measure on the space where the data live. After observing data <span class="math inline">\(y\)</span>, a common practice, especially in the literature on inverse problems, is to estimate <span class="math inline">\(x\)</span> by maximizing the posterior density <span id="eq-map"><span class="math display">\[
+    \hat x_{\mathrm{MAP}} = \arg\max_x \log p(y\vert x) + \log p(x).
+\tag{1}\]</span></span> With the right assumptions on the two densities in the RHS of <a href="#eq-map">Equation&nbsp;1</a>, the argmax is unique, thus justifying the definition. The MAP estimator is popular in inverse problems, e.g.&nbsp;for restoring corrupted images, where <span class="math inline">\(p(\cdot\vert x)\)</span> is typically Gaussian or Poisson and the prior <span class="math inline">\(p(\cdot)\)</span> typically expresses a regularization, e.g.&nbsp;a soft constraint on coefficients in a basis or a frame. This popularity of the MAP estimator is largely explained, I think, by the availability of efficient numerical optimization procedures to solve <a href="#eq-map">Equation&nbsp;1</a> for the likelihood-prior pairs that are common in inverse problems.</p>
+<p>Yet some Bayesians dislike the MAP estimator. For starters, the primitives of Bayesian inferential procedures are usually probability measures, not their densities. In particular, I can arbitrarily change the MAP estimator by modifying e.g.&nbsp;the prior density <span class="math inline">\(p(\cdot)\)</span> in <a href="#eq-map">Equation&nbsp;1</a> on a set of Lebesgue measure zero. That alone was enough of an argument for me against the MAP until about ten years ago. At that time, I saw a talk by Marcelo Pereyra in Bordeaux, presenting this <a href="https://arxiv.org/abs/1612.06149">paper</a>. Marcelo was trying to salvage the MAP estimator, by casting the MAP as a Bayes action in a (twisted) decision-theoretical framework. I remember thinking a lot about this at the time, after which I put these thoughts in a mental drawer for a while. At coffee time during the last <a href="https://gretsi.fr/colloque2025/">GRETSI</a>, Rémi Gribonval mentioned his past work on exactly this issue, and I couldn’t but reopen that drawer. I thought the basic ingredients of this discussion would make a nice blog post.</p>
+<p>As a palate cleanser before the theorems, the picture in <a href="#fig-korzybski">Figure&nbsp;1</a> is Alfred Korzybski (1879-1950), the Polish-American philosopher of science who coined the sentence making the punny title of this post. According to <a href="https://en.wikipedia.org/wiki/Science_and_Sanity">Wikipedia</a>, his views are that our understanding of the world is impeded by our nervous system, language, etc. and that mathematics are a language that helps us formulate a discourse that best approximates reality. Amusingly, this resonates with the post’s content: we will see that talking of the MAP as maximizing a posterior, and thus intuitively according some modelling role to the densities appearing in <a href="#eq-map">Equation&nbsp;1</a>, is maybe not be the best way to express the mental assumptions we are making on the world when choosing the MAP estimator.</p>
+<div id="fig-korzybski" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="korzybski_original_and_restored.jpg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;1: Left: Alfred Korzybski, whose Wikipedia picture would actually benefit from some denoising. Right: Denoising is classically implemented as a MAP, here I used a Gaussian likelihood and a “total variation” prior; see the <a href="https://scikit-image.org/docs/0.23.x/api/skimage.restoration.html#skimage.restoration.denoise_tv_chambolle">documentation</a> of <code>scikit-image</code>.</figcaption>
+</figure>
 </div>
-<p>In this post, I am trying to come up with a simple introduction to NS (nested sampling), through the lens of SMC samplers. It should be interesting to readers who are familiar with the latter but not with the former.</p>
-<p>This post is inspired by <a href="https://arxiv.org/abs/1805.03924">this</a> paper by Salomone et al, which has just been accepted in JRSSB. Congrats to the authors!</p>
-<section id="set-up" class="level1">
-<h1>Set up</h1>
-<p>Consider a model with parameter <span class="math inline">\(x\)</span>, prior <span class="math inline">\(p(x)\)</span>, and likelihood <span class="math inline">\(L(x)\)</span>. The posterior is then <span class="math display">\[\pi(x) = \frac{p(x)L(x)}{Z},\quad Z = \int p(x)L(x)dx.\]</span> (The Bayesian interpretation is not essential. More generally, <span class="math inline">\(p\)</span> could be a proposal distribution, <span class="math inline">\(\pi\)</span> a target distribution, and <span class="math inline">\(L\)</span> a function proportional to <span class="math inline">\(\pi/p\)</span>.)</p>
-<p>Let’s now introduce the following family of distributions: <span class="math display">\[\pi_\lambda(x) = \frac{p(x) \ind\{ L(x) &gt; \lambda\}}{Z(\lambda)},\quad
-Z(\lambda) = \mathbb{P}_\mathrm{prior}(L(X) &gt; \lambda).\]</span> In words, <span class="math inline">\(\pi_\lambda\)</span> is the prior truncated to the region <span class="math inline">\(\{x: L(x) &gt; \lambda\}\)</span>, and the normalising constant <span class="math inline">\(Z(\lambda)\)</span> is the prior probability that <span class="math inline">\(L(X)&gt;\lambda\)</span>.</p>
-<p>If we introduce a sequence <span class="math inline">\(0=\lambda_{0} &lt; \lambda_1 &lt; \dots &lt; \lambda_{T+1} = \infty\)</span>, we can use a SMC sampler to approximate recursively <span class="math inline">\(\pi_{\lambda_t}\)</span> and its normalising constant <span class="math inline">\(Z(\lambda_t)\)</span>. Note that the particle weights at each time will be 0 or 1 in this particular SMC sampler, since: <span class="math display">\[ \frac{\pi_{\lambda_t}(x)}{\pi_{\lambda_{t-1}}(x)} \propto \ind\{L(x) &gt;
-\lambda_t\}.
-\]</span></p>
-</section>
-<section id="the-simpler-ns-identity" class="level1">
-<h1>The simpler NS identity</h1>
-<p>Now comes the identity. Let <span class="math inline">\(\gamma(\varphi) = \int p L \varphi\)</span> for an arbitrary function <span class="math inline">\(\varphi\)</span> of <span class="math inline">\(x\)</span>. Then: <span class="math display">\[\begin{align*}
-\gamma(\varphi) &amp; = \int p L \varphi \\
-    &amp; = \sum_{t=0}^T \int p L \varphi \ind\{ \lambda_{t} &lt; L \leq \lambda_{t+1} \} \\
-    &amp; = \sum_{t=0}^T Z(\lambda_t) \pi_{\lambda_t}\left(L \varphi \times \ind\{ L \leq
-    \lambda_{t+1}\}\right)
-\end{align*}
-\]</span></p>
-<p>Thus, if we implement a SMC sampler that tracks the sequence <span class="math inline">\(\pi_{\lambda_t}\)</span>, we will be able to approximate all the above quantities, and thus, through this identity, to approximate the marginal likelihood, <span class="math inline">\(Z=\gamma(1)\)</span>, and posterior moments, <span class="math inline">\(\pi(\varphi) = \gamma(\varphi) / \gamma(1)\)</span>.</p>
-</section>
-<section id="choosing-the-lambda_ts" class="level1">
-<h1>Choosing the <span class="math inline">\(\lambda_t\)</span>’s</h1>
-<p>In practice, we need to choose the <span class="math inline">\(\lambda_t\)</span>’s. As in tempering, it seems reasonable to set them automatically, in such a way that the ESS (effective sample size) is <span class="math inline">\(\alpha N\)</span>, for some <span class="math inline">\(\alpha\in(0, 1)\)</span>. Because the weight function is <span class="math inline">\(0/1\)</span>, this amounts to taking <span class="math inline">\(\lambda_t\)</span> to be the <span class="math inline">\(\alpha-\)</span>upper quantile of the <span class="math inline">\(L(X_t^n)\)</span>, where the <span class="math inline">\(X_t^n\)</span>’s are the <span class="math inline">\(N\)</span> particles sampled at time <span class="math inline">\(t\)</span> by our SMC sampler. This is what Salomone et al recommend. In this case, we can replace <span class="math inline">\(Z(\lambda_t)\)</span> in the identity above by <span class="math inline">\(\alpha^t\)</span>, at least for <span class="math inline">\(t&lt;T\)</span>.</p>
-<p>The corresponding estimate will be something like: <span class="math display">\[
-\widehat{\gamma}(\varphi)
-     = \sum_{t=0}^{T-1} \alpha^t \left[ \frac{1}{N} \sum_{n=1}^N \varphi(X_{t+1}^n) L(X_{t+1}^n)
-    \ind\{ L(X_{t+1}^n) \leq \lambda_{t+1}\} \right] + \dots
-\]</span> where I omitted the <span class="math inline">\(T-\)</span>th term (it has a slightly different expression, i.e. <span class="math inline">\(Z(\lambda_T)\neq \alpha^T\)</span>), and I used the fact that the <em>unweighted</em> sample <span class="math inline">\(X_{t+1}^{1:N}\)</span> generated at the beginning of iteration <span class="math inline">\(t+1\)</span> currently targets <span class="math inline">\(\pi_{\lambda_t}\)</span>.</p>
-</section>
-<section id="vanilla-ns-as-a-particular-waste-free-smc-sampler" class="level1">
-<h1>Vanilla NS as a particular waste-free SMC sampler</h1>
-<p>Now assume that, in your adaptive NS-SMC sampler, you set <span class="math inline">\(\alpha=(1 - \frac 1 N)\)</span> (or equivalently, <span class="math inline">\(\lambda_{t+1}=\min_n L(X_{t+1}^n)\)</span>); that is, you discard only <em>one</em> particle, the one with smallest likelihood. In other words, you decide to move as slowly as possible up the likelihood function.</p>
-<p>If you’d resample the <span class="math inline">\(N-1\)</span> surviving particles, and apply <span class="math inline">\(k\)</span> MCMC step to each of them, you would get a very expensive sampler: increasing <span class="math inline">\(N\)</span> means you both increase the cost of a single iteration, and the total number of iterations (since it makes <span class="math inline">\(\alpha\)</span> larger).</p>
-<p>A cheaper alternative is to choose randomly one of the <span class="math inline">\(N-1\)</span> surviving particles, apply it a MCMC step, and takes the output as your new <span class="math inline">\(N-\)</span>th particle. Then, you get an algorithm which is very close to the original NS one. In particular, your estimate of <span class="math inline">\(Z=\gamma(1)\)</span> becomes: <span class="math display">\[
-\widehat{\gamma}(1)
-     = \sum_{t=0}^{T-1} \frac{1}{N} (1- \frac 1 N)^t L_{t+1} + \dots
-\]</span> with <span class="math inline">\(L_{t+1} = \min_n L(X_{t+1}^n)\)</span>. (The original NS estimate has <span class="math inline">\((1-1/N)^t/N\)</span> replaced by <span class="math inline">\(\exp(-t/N) - \exp(-(t+1)/N)\)</span>, which should be very close numerically for large <span class="math inline">\(N\)</span>.)</p>
-<p>This idea of resampling <span class="math inline">\(N-1\)</span> particles, and move only one of them is reminiscent of <a href="https://arxiv.org/abs/2011.02328">waste-free SMC</a>. In waste-free SMC, you resample only <span class="math inline">\(M\)</span> particles out of <span class="math inline">\(N\)</span>, <span class="math inline">\(M&lt;N\)</span>. Then, assuming <span class="math inline">\(M\)</span> divides <span class="math inline">\(N\)</span>, i.e., <span class="math inline">\(N=M\times P\)</span> for some <span class="math inline">\(P\geq 2\)</span>, you apply to each resampled particle <span class="math inline">\((P-1)\)</span> MCMC steps, and gather the resulting <span class="math inline">\(M\times P\)</span> states to form a new particle sample of size <span class="math inline">\(N\)</span>. What if <span class="math inline">\(M\)</span> does not divide <span class="math inline">\(N\)</span>, i.e.&nbsp;<span class="math inline">\(N=M \times k +r\)</span>, <span class="math inline">\(0&lt;r&lt;M\)</span>? Then it makes sense to generate <span class="math inline">\(r\)</span> MCMC chains of length <span class="math inline">\(k+1\)</span>, and <span class="math inline">\(M-r\)</span> chains of length <span class="math inline">\(k\)</span>. This is what happens here, with <span class="math inline">\(M=N-1\)</span>, <span class="math inline">\(r=1\)</span>.</p>
-</section>
-<section id="why-did-i-say-we-get-a-simpler-identity" class="level1">
-<h1>Why did I say we get a “simpler” identity?</h1>
-<p>The original NS algorithm by Skilling derives essentially the same identity as above, but through more convoluted steps, which involves the CDF of random variable <span class="math inline">\(L(X)\)</span>, when <span class="math inline">\(X\sim p\)</span>, its inverse, Beta distributions, etc. I find the derivation above simpler (at least, again, if you are familiar with SMC samplers). Of course, in return, you get a justification which is a bit hand-wavy for vanilla NS (but for NS-SMC, it is perfectly solid).</p>
-</section>
-<section id="should-i-care-about-ns" class="level1">
-<h1>Should I care about NS?</h1>
-<p>There are two sub-questions:</p>
-<ol type="1">
-<li><p>NS vs SMC-NS: Salomone et al give numerical evidence (and arguments) suggesting that NS-SMC outperforms NS.</p></li>
-<li><p>SMC-NS vs tempering SMC or other SMC schemes: Salomone et al also give numerical evidence suggesting NS-SMC is competitive with tempering SMC, which is intriguing (and in line with independent numerical experiments I did).</p></li>
-</ol>
-<p>I will elaborate on these two points in my next post (coming soon). In the meantime, feel free to have a look at the aforementioned <a href="https://arxiv.org/abs/1805.03924">paper</a>, it is well worth a read.</p>
+<p>We start with part of Theorem 3.1 in Marcelo Pereyra’s above-mentioned <a href="https://arxiv.org/abs/1612.06149">paper</a>. With the notation of <a href="#eq-map">Equation&nbsp;1</a>, let <span class="math inline">\(\Phi(x) \propto - \log p(y\vert x) - \log p(x)\)</span> be minus the log density of the posterior obtained from <span class="math inline">\(p(y\vert \cdot)\)</span> and <span class="math inline">\(p(\cdot)\)</span>. Assume <span class="math inline">\(\Phi\)</span> is strongly convex and <span class="math inline">\(C^3\)</span>, and that <span class="math inline">\(p(x\vert y) = \exp(-\Phi(x))\)</span> decays fast as <span class="math inline">\(\Vert x\Vert\)</span> grows. Consider the so-called Bregman divergence <span class="math display">\[
+    D_\Phi(u,x) = \Phi(u) - \Phi(x) - \langle \nabla \Phi(x), u-x\rangle.
+\]</span> The result states that <span id="eq-pereyra"><span class="math display">\[
+    \hat{x}_\mathrm{MAP} = \arg\min_u \int D_\Phi(u,x) p(x\vert y)\mathrm{d} x,
+\tag{2}\]</span></span> and in particular the minimum in the RHS is unique. Informally, the proof follows from plugging the definition of <span class="math inline">\(D_\Phi\)</span> in the expectation, and noting that the only non-trivial term is <span class="math display">\[
+    \int \nabla\Phi(x) p(x\vert y)\mathrm{d} x = - \int \frac{\nabla p(x\vert y)}{p(x\vert y)} p(x\vert y) \mathrm{d}x = - \int \nabla p(x\vert y) \mathrm{d}x.
+\]</span> The latter integral is zero under the right decay assumption by the divergence theorem.</p>
+<p>Now, <a href="#eq-pereyra">Equation&nbsp;2</a> implies that the MAP estimator is a Bayes estimator, in the sense that it maximizes an expected utility (equivalently, minimizes an expected loss) with respect to a probability measure, here the posterior measure. The twist is that the loss function depends on the posterior through its negative log density <span class="math inline">\(\Phi\)</span>, and in particular it depends on the data <span class="math inline">\(y\)</span>. In subjective Bayes terms, the utility is state-dependent. This violates the most common sets of axioms of Bayesian decision theory, such as the Anscombe-Aumann axioms presented in Schervish’s <a href="https://link.springer.com/book/10.1007/978-1-4612-4250-5">book</a>. In particular, this makes it hard to interpret the posterior as a degree of belief. Yet, I have grown inclined to weaken my definition of being Bayesian, and it would be interesting to understand how the choice of <span class="math inline">\(D_\Phi\)</span> as a loss impacts the statistician’s ranking on actions. As a remark of independent interest, <span class="math inline">\(D_\Phi\)</span> is not symmetric, and if one reverts <span class="math inline">\(u\)</span> and <span class="math inline">\(x\)</span> in <a href="#eq-pereyra">Equation&nbsp;2</a>, Pereyra shows that the Bayes action becomes the posterior mean!</p>
+<p>I can’t have an exhaustive bibliography in this post, but I should at least mention that Pereyra’s result generalizes an earlier <a href="https://arxiv.org/abs/1402.5297">result</a> by Burger and Lucka who focussed on Gaussian likelihoods. Pereyra also mentions a <a href="https://arxiv.org/abs/1608.07483">generalization</a> to non-Gaussian likelihoods akin to his by Burger, Dong, and Sciacchitano. Pereyra also cites a 2011 <a href="https://www.google.com/url?sa=t&amp;source=web&amp;rct=j&amp;opi=89978449&amp;url=https://inria.hal.science/inria-00486840/document&amp;ved=2ahUKEwiy0MWt9I2RAxVRLPsDHc44LdcQFnoECB0QAQ&amp;usg=AOvVaw3F-_BAJ1H6XyDftloxKr_t">paper</a> by Rémi Gribonval, which was the start of a line of work by Gribonval and Nikolova. The next result I’d like to cover is in the last paper in that line of work, a 2019 <a href="https://arxiv.org/abs/1807.04021">paper</a> by Gribonval and Nikolova. According to a footnote, Mila Nikolova passed away during their writing of the paper. I have good memories of her lectures on optimization in Cachan.</p>
+<p>Gribonval and Nikolova’s take is rather different. They start from a mean posterior estimator, where the posterior is defined by what I will call the initial likelihood-prior pair. Under conditions on the initial likelihood, they manage to rewrite the mean posterior estimator in the form of <a href="#eq-map">Equation&nbsp;1</a>, for a different likelihood-prior pair than the initial one. Let me call this new pair of densities appearing in the MAP reformulation the computational pair. For the authors, the computational pair of densities are not thought of as modelling the data generation process or a prior belief, they are simply intermediate quantities that appear in a formal rewriting of the original Bayesian estimator. Compared to Pereyra and Burger et al., the procedure has the benefit of keeping the loss function untouched: it remains the squared loss throughout. The price is to pay is, from what I understand, a limited number of initial likelihoods that can be treated, and a rather intricate definition of the computational prior. An important message from the paper is that, if you choose to go for a MAP estimator (say, a LASSO estimator in linear regression, or the total-variation denoiser I used in <a href="#fig-korzybski">Figure&nbsp;1</a>), your likelihood-prior pair is of the computational kind: your modelling choices are encoded in the implicit initial pair of densities.</p>
+<p>Their fundamental tool is their Lemma 1 on proximal operators, i.e.&nbsp;operators that map data to the solution of a regularized least-squares problem. Formally, for a function <span class="math inline">\(\varphi:\mathbb{R}^d\rightarrow \mathbb{R}\cup\{+\infty\}\)</span> that is not identically <span class="math inline">\(+\infty\)</span>, define <span id="eq-proximal"><span class="math display">\[
+    \mathrm{prox}_\phi(y) := \arg\min_{x\in\mathbb{R}^d} \frac12\Vert y-x\Vert^2 + \varphi(x).
+\tag{3}\]</span></span> Proximal operators are a key notion in optimization of non-differentiable functions, as solving a regularized least squares problem can intuitively replace a gradient descent step. In a companion <a href="https://arxiv.org/abs/1807.04014">paper</a>, Gribonval and Nikolova had found a characterization of proximal operators, and they apply it here to posterior means: under (stringent) conditions on the initial likelihood-prior pairs, the mean of the posterior can be rewritten as a MAP for a different likelihood-prior pair. They give many examples of the resulting MAP reformulations. To cite only one, their Proposition 1 states that if <span class="math inline">\(Y\vert X\)</span> is a Poisson law, and the prior on <span class="math inline">\(X\)</span> is whatever you want, then there exists a function <span class="math inline">\(\tilde\varphi\)</span> on the positive reals such that <span class="math display">\[
+    \mathbb{E}(X\vert Y=n) = \arg\min_x \frac12\vert n - x\vert^2 + \tilde\varphi(x).
+\]</span> Otherly put, the posterior mean for a model with Poisson noise has a MAP formulation as in <a href="#eq-map">Equation&nbsp;1</a>, for a computational likelihood that looks like a Gaussian!</p>
+<p>Overall, a MAP can hide a Bayes estimator, at the price of either a data-dependent loss function or because your MAP problem is the proximal rewriting of a posterior mean corresponding to a different likelihood-prior pair! Note that I’ve only scratched the surface of the papers I mention, and they all contain more nuggets than what I dug out.</p>
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

@@ -6,17 +6,51 @@
       version="2.0">
 <channel>
 <title>Statisfaction - I can&#39;t get no</title>
-<link>https://statisfaction-blog.github.io/</link>
+<link>https://statisfaction-blog.github.io/index.html</link>
 <atom:link href="https://statisfaction-blog.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description></description>
-<generator>quarto-1.6.32</generator>
-<lastBuildDate>Fri, 03 Oct 2025 22:00:00 GMT</lastBuildDate>
+<generator>quarto-1.3.450</generator>
+<lastBuildDate>Mon, 24 Nov 2025 23:00:00 GMT</lastBuildDate>
+<item>
+  <title>The MAP is not the territory</title>
+  <dc:creator>Rémi Bardenet</dc:creator>
+  <link>https://statisfaction-blog.github.io/posts/25-11-2025-the-MAP-is-not-the-territory/the-map-is-not-the-territory.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>TL;DR: The MAP estimator is sometimes a Bayes estimator in disguise, but this comes at a price.</p>
+<p>Say you are inferring a parameter <img src="https://latex.codecogs.com/png.latex?x%5Cin%5Cmathbb%7BR%7D%5Ed">, and you have come up with a prior density <img src="https://latex.codecogs.com/png.latex?p(%5Ccdot)"> with respect to the Lebesgue measure on <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BR%7D%5Ed">, and a family of densities <img src="https://latex.codecogs.com/png.latex?%5C%7Bp(%5Ccdot%5Cvert%20x),%20x%5Cin%5Cmathbb%7BR%7D%5Ed%5C%7D"> for your observations, with respect to some reference measure on the space where the data live. After observing data <img src="https://latex.codecogs.com/png.latex?y">, a common practice, especially in the literature on inverse problems, is to estimate <img src="https://latex.codecogs.com/png.latex?x"> by maximizing the posterior density <span id="eq-map"><img src="https://latex.codecogs.com/png.latex?%0A%20%20%20%20%5Chat%20x_%7B%5Cmathrm%7BMAP%7D%7D%20=%20%5Carg%5Cmax_x%20%5Clog%20p(y%5Cvert%20x)%20+%20%5Clog%20p(x).%0A%5Ctag%7B1%7D"></span> With the right assumptions on the two densities in the RHS of Equation&nbsp;1, the argmax is unique, thus justifying the definition. The MAP estimator is popular in inverse problems, e.g.&nbsp;for restoring corrupted images, where <img src="https://latex.codecogs.com/png.latex?p(%5Ccdot%5Cvert%20x)"> is typically Gaussian or Poisson and the prior <img src="https://latex.codecogs.com/png.latex?p(%5Ccdot)"> typically expresses a regularization, e.g.&nbsp;a soft constraint on coefficients in a basis or a frame. This popularity of the MAP estimator is largely explained, I think, by the availability of efficient numerical optimization procedures to solve Equation&nbsp;1 for the likelihood-prior pairs that are common in inverse problems.</p>
+<p>Yet some Bayesians dislike the MAP estimator. For starters, the primitives of Bayesian inferential procedures are usually probability measures, not their densities. In particular, I can arbitrarily change the MAP estimator by modifying e.g.&nbsp;the prior density <img src="https://latex.codecogs.com/png.latex?p(%5Ccdot)"> in Equation&nbsp;1 on a set of Lebesgue measure zero. That alone was enough of an argument for me against the MAP until about ten years ago. At that time, I saw a talk by Marcelo Pereyra in Bordeaux, presenting this <a href="https://arxiv.org/abs/1612.06149">paper</a>. Marcelo was trying to salvage the MAP estimator, by casting the MAP as a Bayes action in a (twisted) decision-theoretical framework. I remember thinking a lot about this at the time, after which I put these thoughts in a mental drawer for a while. At coffee time during the last <a href="https://gretsi.fr/colloque2025/">GRETSI</a>, Rémi Gribonval mentioned his past work on exactly this issue, and I couldn’t but reopen that drawer. I thought the basic ingredients of this discussion would make a nice blog post.</p>
+<p>As a palate cleanser before the theorems, the picture in Figure&nbsp;1 is Alfred Korzybski (1879-1950), the Polish-American philosopher of science who coined the sentence making the punny title of this post. According to <a href="https://en.wikipedia.org/wiki/Science_and_Sanity">Wikipedia</a>, his views are that our understanding of the world is impeded by our nervous system, language, etc. and that mathematics are a language that helps us formulate a discourse that best approximates reality. Amusingly, this resonates with the post’s content: we will see that talking of the MAP as maximizing a posterior, and thus intuitively according some modelling role to the densities appearing in Equation&nbsp;1, is maybe not be the best way to express the mental assumptions we are making on the world when choosing the MAP estimator.</p>
+<div id="fig-korzybski" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="https://statisfaction-blog.github.io/posts/25-11-2025-the-MAP-is-not-the-territory/korzybski_original_and_restored.jpg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;1: Left: Alfred Korzybski, whose Wikipedia picture would actually benefit from some denoising. Right: Denoising is classically implemented as a MAP, here I used a Gaussian likelihood and a “total variation” prior; see the <a href="https://scikit-image.org/docs/0.23.x/api/skimage.restoration.html#skimage.restoration.denoise_tv_chambolle">documentation</a> of <code>scikit-image</code>.</figcaption>
+</figure>
+</div>
+<p>We start with part of Theorem 3.1 in Marcelo Pereyra’s above-mentioned <a href="https://arxiv.org/abs/1612.06149">paper</a>. With the notation of Equation&nbsp;1, let <img src="https://latex.codecogs.com/png.latex?%5CPhi(x)%20%5Cpropto%20-%20%5Clog%20p(y%5Cvert%20x)%20-%20%5Clog%20p(x)"> be minus the log density of the posterior obtained from <img src="https://latex.codecogs.com/png.latex?p(y%5Cvert%20%5Ccdot)"> and <img src="https://latex.codecogs.com/png.latex?p(%5Ccdot)">. Assume <img src="https://latex.codecogs.com/png.latex?%5CPhi"> is strongly convex and <img src="https://latex.codecogs.com/png.latex?C%5E3">, and that <img src="https://latex.codecogs.com/png.latex?p(x%5Cvert%20y)%20=%20%5Cexp(-%5CPhi(x))"> decays fast as <img src="https://latex.codecogs.com/png.latex?%5CVert%20x%5CVert"> grows. Consider the so-called Bregman divergence <img src="https://latex.codecogs.com/png.latex?%0A%20%20%20%20D_%5CPhi(u,x)%20=%20%5CPhi(u)%20-%20%5CPhi(x)%20-%20%5Clangle%20%5Cnabla%20%5CPhi(x),%20u-x%5Crangle.%0A"> The result states that <span id="eq-pereyra"><img src="https://latex.codecogs.com/png.latex?%0A%20%20%20%20%5Chat%7Bx%7D_%5Cmathrm%7BMAP%7D%20=%20%5Carg%5Cmin_u%20%5Cint%20D_%5CPhi(u,x)%20p(x%5Cvert%20y)%5Cmathrm%7Bd%7D%20x,%0A%5Ctag%7B2%7D"></span> and in particular the minimum in the RHS is unique. Informally, the proof follows from plugging the definition of <img src="https://latex.codecogs.com/png.latex?D_%5CPhi"> in the expectation, and noting that the only non-trivial term is <img src="https://latex.codecogs.com/png.latex?%0A%20%20%20%20%5Cint%20%5Cnabla%5CPhi(x)%20p(x%5Cvert%20y)%5Cmathrm%7Bd%7D%20x%20=%20-%20%5Cint%20%5Cfrac%7B%5Cnabla%20p(x%5Cvert%20y)%7D%7Bp(x%5Cvert%20y)%7D%20p(x%5Cvert%20y)%20%5Cmathrm%7Bd%7Dx%20=%20-%20%5Cint%20%5Cnabla%20p(x%5Cvert%20y)%20%5Cmathrm%7Bd%7Dx.%0A"> The latter integral is zero under the right decay assumption by the divergence theorem.</p>
+<p>Now, Equation&nbsp;2 implies that the MAP estimator is a Bayes estimator, in the sense that it maximizes an expected utility (equivalently, minimizes an expected loss) with respect to a probability measure, here the posterior measure. The twist is that the loss function depends on the posterior through its negative log density <img src="https://latex.codecogs.com/png.latex?%5CPhi">, and in particular it depends on the data <img src="https://latex.codecogs.com/png.latex?y">. In subjective Bayes terms, the utility is state-dependent. This violates the most common sets of axioms of Bayesian decision theory, such as the Anscombe-Aumann axioms presented in Schervish’s <a href="https://link.springer.com/book/10.1007/978-1-4612-4250-5">book</a>. In particular, this makes it hard to interpret the posterior as a degree of belief. Yet, I have grown inclined to weaken my definition of being Bayesian, and it would be interesting to understand how the choice of <img src="https://latex.codecogs.com/png.latex?D_%5CPhi"> as a loss impacts the statistician’s ranking on actions. As a remark of independent interest, <img src="https://latex.codecogs.com/png.latex?D_%5CPhi"> is not symmetric, and if one reverts <img src="https://latex.codecogs.com/png.latex?u"> and <img src="https://latex.codecogs.com/png.latex?x"> in Equation&nbsp;2, Pereyra shows that the Bayes action becomes the posterior mean!</p>
+<p>I can’t have an exhaustive bibliography in this post, but I should at least mention that Pereyra’s result generalizes an earlier <a href="https://arxiv.org/abs/1402.5297">result</a> by Burger and Lucka who focussed on Gaussian likelihoods. Pereyra also mentions a <a href="https://arxiv.org/abs/1608.07483">generalization</a> to non-Gaussian likelihoods akin to his by Burger, Dong, and Sciacchitano. Pereyra also cites a 2011 <a href="https://www.google.com/url?sa=t&amp;source=web&amp;rct=j&amp;opi=89978449&amp;url=https://inria.hal.science/inria-00486840/document&amp;ved=2ahUKEwiy0MWt9I2RAxVRLPsDHc44LdcQFnoECB0QAQ&amp;usg=AOvVaw3F-_BAJ1H6XyDftloxKr_t">paper</a> by Rémi Gribonval, which was the start of a line of work by Gribonval and Nikolova. The next result I’d like to cover is in the last paper in that line of work, a 2019 <a href="https://arxiv.org/abs/1807.04021">paper</a> by Gribonval and Nikolova. According to a footnote, Mila Nikolova passed away during their writing of the paper. I have good memories of her lectures on optimization in Cachan.</p>
+<p>Gribonval and Nikolova’s take is rather different. They start from a mean posterior estimator, where the posterior is defined by what I will call the initial likelihood-prior pair. Under conditions on the initial likelihood, they manage to rewrite the mean posterior estimator in the form of Equation&nbsp;1, for a different likelihood-prior pair than the initial one. Let me call this new pair of densities appearing in the MAP reformulation the computational pair. For the authors, the computational pair of densities are not thought of as modelling the data generation process or a prior belief, they are simply intermediate quantities that appear in a formal rewriting of the original Bayesian estimator. Compared to Pereyra and Burger et al., the procedure has the benefit of keeping the loss function untouched: it remains the squared loss throughout. The price is to pay is, from what I understand, a limited number of initial likelihoods that can be treated, and a rather intricate definition of the computational prior. An important message from the paper is that, if you choose to go for a MAP estimator (say, a LASSO estimator in linear regression, or the total-variation denoiser I used in Figure&nbsp;1), your likelihood-prior pair is of the computational kind: your modelling choices are encoded in the implicit initial pair of densities.</p>
+<p>Their fundamental tool is their Lemma 1 on proximal operators, i.e.&nbsp;operators that map data to the solution of a regularized least-squares problem. Formally, for a function <img src="https://latex.codecogs.com/png.latex?%5Cvarphi:%5Cmathbb%7BR%7D%5Ed%5Crightarrow%20%5Cmathbb%7BR%7D%5Ccup%5C%7B+%5Cinfty%5C%7D"> that is not identically <img src="https://latex.codecogs.com/png.latex?+%5Cinfty">, define <span id="eq-proximal"><img src="https://latex.codecogs.com/png.latex?%0A%20%20%20%20%5Cmathrm%7Bprox%7D_%5Cphi(y)%20:=%20%5Carg%5Cmin_%7Bx%5Cin%5Cmathbb%7BR%7D%5Ed%7D%20%5Cfrac12%5CVert%20y-x%5CVert%5E2%20+%20%5Cvarphi(x).%0A%5Ctag%7B3%7D"></span> Proximal operators are a key notion in optimization of non-differentiable functions, as solving a regularized least squares problem can intuitively replace a gradient descent step. In a companion <a href="https://arxiv.org/abs/1807.04014">paper</a>, Gribonval and Nikolova had found a characterization of proximal operators, and they apply it here to posterior means: under (stringent) conditions on the initial likelihood-prior pairs, the mean of the posterior can be rewritten as a MAP for a different likelihood-prior pair. They give many examples of the resulting MAP reformulations. To cite only one, their Proposition 1 states that if <img src="https://latex.codecogs.com/png.latex?Y%5Cvert%20X"> is a Poisson law, and the prior on <img src="https://latex.codecogs.com/png.latex?X"> is whatever you want, then there exists a function <img src="https://latex.codecogs.com/png.latex?%5Ctilde%5Cvarphi"> on the positive reals such that <img src="https://latex.codecogs.com/png.latex?%0A%20%20%20%20%5Cmathbb%7BE%7D(X%5Cvert%20Y=n)%20=%20%5Carg%5Cmin_x%20%5Cfrac12%5Cvert%20n%20-%20x%5Cvert%5E2%20+%20%5Ctilde%5Cvarphi(x).%0A"> Otherly put, the posterior mean for a model with Poisson noise has a MAP formulation as in Equation&nbsp;1, for a computational likelihood that looks like a Gaussian!</p>
+<p>Overall, a MAP can hide a Bayes estimator, at the price of either a data-dependent loss function or because your MAP problem is the proximal rewriting of a posterior mean corresponding to a different likelihood-prior pair! Note that I’ve only scratched the surface of the papers I mention, and they all contain more nuggets than what I dug out.</p>
+
+
+
+ ]]></description>
+  <category>inference</category>
+  <category>inverse problems</category>
+  <category>foundations</category>
+  <guid>https://statisfaction-blog.github.io/posts/25-11-2025-the-MAP-is-not-the-territory/the-map-is-not-the-territory.html</guid>
+  <pubDate>Mon, 24 Nov 2025 23:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Testing the RSS feed</title>
   <dc:creator>Nicolas Chopin</dc:creator>
-  <link>https://statisfaction-blog.github.io/posts/04-10-2025-test/</link>
+  <link>https://statisfaction-blog.github.io/posts/04-10-2025-test/index.html</link>
   <description><![CDATA[ 
-
 
 
 
@@ -28,15 +62,14 @@
  ]]></description>
   <category>test</category>
   <category>sorry</category>
-  <guid>https://statisfaction-blog.github.io/posts/04-10-2025-test/</guid>
+  <guid>https://statisfaction-blog.github.io/posts/04-10-2025-test/index.html</guid>
   <pubDate>Fri, 03 Oct 2025 22:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Nested sampling and SMC: numerical experiments</title>
   <dc:creator>Nicolas Chopin</dc:creator>
-  <link>https://statisfaction-blog.github.io/posts/30-06-2025-nested-sampling-experiments/</link>
+  <link>https://statisfaction-blog.github.io/posts/30-06-2025-nested-sampling-experiments/index.html</link>
   <description><![CDATA[ 
-
 
 
 
@@ -53,13 +86,13 @@
 <p>I consider the sonar dataset (dim=61). The plot below show how the MSE (over 100 runs) of the log-marginal likelihood evolves as a function of <img src="https://latex.codecogs.com/png.latex?%5Calpha"> for both algorithms; considered values for <img src="https://latex.codecogs.com/png.latex?%5Calpha"> are <img src="https://latex.codecogs.com/png.latex?0.05,%200.10,%20%5Cdots,%200.95">. This plot is a bit misleading, because, when <img src="https://latex.codecogs.com/png.latex?%5Calpha"> changes, the CPU cost changes as well: the large <img src="https://latex.codecogs.com/png.latex?%5Calpha"> is, the larger is the number of intermediate distributions.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://statisfaction-blog.github.io/posts/30-06-2025-nested-sampling-experiments/sonar_nested_vs_tempering_mse.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
+<p><img src="https://statisfaction-blog.github.io/posts/30-06-2025-nested-sampling-experiments/sonar_nested_vs_tempering_mse.png" class="img-fluid figure-img" style="width:60.0%"></p>
 </figure>
 </div>
 <p>So let’s do a second plot, where the <img src="https://latex.codecogs.com/png.latex?y-">axis is the work-normalised MSE; that is, MSE times number of total evaluations of the likelihood (which is a good proxy for overall CPU cost). See below.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://statisfaction-blog.github.io/posts/30-06-2025-nested-sampling-experiments/sonar_nested_vs_tempering_work_normalised.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
+<p><img src="https://statisfaction-blog.github.io/posts/30-06-2025-nested-sampling-experiments/sonar_nested_vs_tempering_work_normalised.png" class="img-fluid figure-img" style="width:60.0%"></p>
 </figure>
 </div>
 <p>Both variants seems to lead to the same level of performance (i.e.&nbsp;CPU vs error trade-off). One point to note is that the best performance for NS is obtained by taking <img src="https://latex.codecogs.com/png.latex?%5Calpha"> small.</p>
@@ -71,7 +104,7 @@
 <p>This plot suggests that NS may be biased if <img src="https://latex.codecogs.com/png.latex?k"> is too small. I am not sure why this is happening. This may be because NS is valid only when <img src="https://latex.codecogs.com/png.latex?k%5Cto%20%5Cinfty">. Or maybe because of the adaptive MCMC strategy I’m using: as in the previous section, I use random walk Metropolis, and I recursively adapt the proposal covariance to the empirical covariance matrix of the <img src="https://latex.codecogs.com/png.latex?N"> particles.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://statisfaction-blog.github.io/posts/30-06-2025-nested-sampling-experiments/pima_bias_vanilla.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
+<p><img src="https://statisfaction-blog.github.io/posts/30-06-2025-nested-sampling-experiments/pima_bias_vanilla.png" class="img-fluid figure-img" style="width:60.0%"></p>
 </figure>
 </div>
 </section>
@@ -86,7 +119,7 @@
   <category>Nested sampling</category>
   <category>SMC</category>
   <category>numerics</category>
-  <guid>https://statisfaction-blog.github.io/posts/30-06-2025-nested-sampling-experiments/</guid>
+  <guid>https://statisfaction-blog.github.io/posts/30-06-2025-nested-sampling-experiments/index.html</guid>
   <pubDate>Sun, 29 Jun 2025 22:00:00 GMT</pubDate>
 </item>
 <item>
@@ -94,7 +127,6 @@
   <dc:creator>Nicolas Chopin</dc:creator>
   <link>https://statisfaction-blog.github.io/posts/04-06-2025-simpler-nested-sampling-identity/nested.html</link>
   <description><![CDATA[ 
-
 
 
 
@@ -108,7 +140,7 @@
 <h1>Set up</h1>
 <p>Consider a model with parameter <img src="https://latex.codecogs.com/png.latex?x">, prior <img src="https://latex.codecogs.com/png.latex?p(x)">, and likelihood <img src="https://latex.codecogs.com/png.latex?L(x)">. The posterior is then <img src="https://latex.codecogs.com/png.latex?%5Cpi(x)%20=%20%5Cfrac%7Bp(x)L(x)%7D%7BZ%7D,%5Cquad%20Z%20=%20%5Cint%20p(x)L(x)dx."> (The Bayesian interpretation is not essential. More generally, <img src="https://latex.codecogs.com/png.latex?p"> could be a proposal distribution, <img src="https://latex.codecogs.com/png.latex?%5Cpi"> a target distribution, and <img src="https://latex.codecogs.com/png.latex?L"> a function proportional to <img src="https://latex.codecogs.com/png.latex?%5Cpi/p">.)</p>
 <p>Let’s now introduce the following family of distributions: <img src="https://latex.codecogs.com/png.latex?%5Cpi_%5Clambda(x)%20=%20%5Cfrac%7Bp(x)%20%5Cind%5C%7B%20L(x)%20%3E%20%5Clambda%5C%7D%7D%7BZ(%5Clambda)%7D,%5Cquad%0AZ(%5Clambda)%20=%20%5Cmathbb%7BP%7D_%5Cmathrm%7Bprior%7D(L(X)%20%3E%20%5Clambda)."> In words, <img src="https://latex.codecogs.com/png.latex?%5Cpi_%5Clambda"> is the prior truncated to the region <img src="https://latex.codecogs.com/png.latex?%5C%7Bx:%20L(x)%20%3E%20%5Clambda%5C%7D">, and the normalising constant <img src="https://latex.codecogs.com/png.latex?Z(%5Clambda)"> is the prior probability that <img src="https://latex.codecogs.com/png.latex?L(X)%3E%5Clambda">.</p>
-<p>If we introduce a sequence <img src="https://latex.codecogs.com/png.latex?0=%5Clambda_%7B0%7D%20%3C%20%5Clambda_1%20%3C%20%5Cdots%20%3C%20%5Clambda_%7BT+1%7D%20=%0A%5Cinfty">, we can use a SMC sampler to approximate recursively <img src="https://latex.codecogs.com/png.latex?%5Cpi_%7B%5Clambda_t%7D"> and its normalising constant <img src="https://latex.codecogs.com/png.latex?Z(%5Clambda_t)">. Note that the particle weights at each time will be 0 or 1 in this particular SMC sampler, since: <img src="https://latex.codecogs.com/png.latex?%20%5Cfrac%7B%5Cpi_%7B%5Clambda_t%7D(x)%7D%7B%5Cpi_%7B%5Clambda_%7Bt-1%7D%7D(x)%7D%20%5Cpropto%20%5Cind%5C%7BL(x)%20%3E%0A%5Clambda_t%5C%7D.%0A"></p>
+<p>If we introduce a sequence <img src="https://latex.codecogs.com/png.latex?0=%5Clambda_%7B0%7D%20%3C%20%5Clambda_1%20%3C%20%5Cdots%20%3C%20%5Clambda_%7BT+1%7D%20=%20%5Cinfty">, we can use a SMC sampler to approximate recursively <img src="https://latex.codecogs.com/png.latex?%5Cpi_%7B%5Clambda_t%7D"> and its normalising constant <img src="https://latex.codecogs.com/png.latex?Z(%5Clambda_t)">. Note that the particle weights at each time will be 0 or 1 in this particular SMC sampler, since: <img src="https://latex.codecogs.com/png.latex?%20%5Cfrac%7B%5Cpi_%7B%5Clambda_t%7D(x)%7D%7B%5Cpi_%7B%5Clambda_%7Bt-1%7D%7D(x)%7D%20%5Cpropto%20%5Cind%5C%7BL(x)%20%3E%0A%5Clambda_t%5C%7D.%0A"></p>
 </section>
 <section id="the-simpler-ns-identity" class="level1">
 <h1>The simpler NS identity</h1>
@@ -122,10 +154,10 @@
 </section>
 <section id="vanilla-ns-as-a-particular-waste-free-smc-sampler" class="level1">
 <h1>Vanilla NS as a particular waste-free SMC sampler</h1>
-<p>Now assume that, in your adaptive NS-SMC sampler, you set <img src="https://latex.codecogs.com/png.latex?%5Calpha=(1%20-%20%5Cfrac%201%0AN)"> (or equivalently, <img src="https://latex.codecogs.com/png.latex?%5Clambda_%7Bt+1%7D=%5Cmin_n%20L(X_%7Bt+1%7D%5En)">); that is, you discard only <em>one</em> particle, the one with smallest likelihood. In other words, you decide to move as slowly as possible up the likelihood function.</p>
+<p>Now assume that, in your adaptive NS-SMC sampler, you set <img src="https://latex.codecogs.com/png.latex?%5Calpha=(1%20-%20%5Cfrac%201%20N)"> (or equivalently, <img src="https://latex.codecogs.com/png.latex?%5Clambda_%7Bt+1%7D=%5Cmin_n%20L(X_%7Bt+1%7D%5En)">); that is, you discard only <em>one</em> particle, the one with smallest likelihood. In other words, you decide to move as slowly as possible up the likelihood function.</p>
 <p>If you’d resample the <img src="https://latex.codecogs.com/png.latex?N-1"> surviving particles, and apply <img src="https://latex.codecogs.com/png.latex?k"> MCMC step to each of them, you would get a very expensive sampler: increasing <img src="https://latex.codecogs.com/png.latex?N"> means you both increase the cost of a single iteration, and the total number of iterations (since it makes <img src="https://latex.codecogs.com/png.latex?%5Calpha"> larger).</p>
 <p>A cheaper alternative is to choose randomly one of the <img src="https://latex.codecogs.com/png.latex?N-1"> surviving particles, apply it a MCMC step, and takes the output as your new <img src="https://latex.codecogs.com/png.latex?N-">th particle. Then, you get an algorithm which is very close to the original NS one. In particular, your estimate of <img src="https://latex.codecogs.com/png.latex?Z=%5Cgamma(1)"> becomes: <img src="https://latex.codecogs.com/png.latex?%0A%5Cwidehat%7B%5Cgamma%7D(1)%0A%20%20%20%20%20=%20%5Csum_%7Bt=0%7D%5E%7BT-1%7D%20%5Cfrac%7B1%7D%7BN%7D%20(1-%20%5Cfrac%201%20N)%5Et%20L_%7Bt+1%7D%20+%20%5Cdots%0A"> with <img src="https://latex.codecogs.com/png.latex?L_%7Bt+1%7D%20=%20%5Cmin_n%20L(X_%7Bt+1%7D%5En)">. (The original NS estimate has <img src="https://latex.codecogs.com/png.latex?(1-1/N)%5Et/N"> replaced by <img src="https://latex.codecogs.com/png.latex?%5Cexp(-t/N)%20-%20%5Cexp(-(t+1)/N)">, which should be very close numerically for large <img src="https://latex.codecogs.com/png.latex?N">.)</p>
-<p>This idea of resampling <img src="https://latex.codecogs.com/png.latex?N-1"> particles, and move only one of them is reminiscent of <a href="https://arxiv.org/abs/2011.02328">waste-free SMC</a>. In waste-free SMC, you resample only <img src="https://latex.codecogs.com/png.latex?M"> particles out of <img src="https://latex.codecogs.com/png.latex?N">, <img src="https://latex.codecogs.com/png.latex?M%3CN">. Then, assuming <img src="https://latex.codecogs.com/png.latex?M"> divides <img src="https://latex.codecogs.com/png.latex?N">, i.e., <img src="https://latex.codecogs.com/png.latex?N=M%5Ctimes%20P"> for some <img src="https://latex.codecogs.com/png.latex?P%5Cgeq%202">, you apply to each resampled particle <img src="https://latex.codecogs.com/png.latex?(P-1)"> MCMC steps, and gather the resulting <img src="https://latex.codecogs.com/png.latex?M%5Ctimes%0AP"> states to form a new particle sample of size <img src="https://latex.codecogs.com/png.latex?N">. What if <img src="https://latex.codecogs.com/png.latex?M"> does not divide <img src="https://latex.codecogs.com/png.latex?N">, i.e.&nbsp;<img src="https://latex.codecogs.com/png.latex?N=M%20%5Ctimes%20k%20+r">, <img src="https://latex.codecogs.com/png.latex?0%3Cr%3CM">? Then it makes sense to generate <img src="https://latex.codecogs.com/png.latex?r"> MCMC chains of length <img src="https://latex.codecogs.com/png.latex?k+1">, and <img src="https://latex.codecogs.com/png.latex?M-r"> chains of length <img src="https://latex.codecogs.com/png.latex?k">. This is what happens here, with <img src="https://latex.codecogs.com/png.latex?M=N-1">, <img src="https://latex.codecogs.com/png.latex?r=1">.</p>
+<p>This idea of resampling <img src="https://latex.codecogs.com/png.latex?N-1"> particles, and move only one of them is reminiscent of <a href="https://arxiv.org/abs/2011.02328">waste-free SMC</a>. In waste-free SMC, you resample only <img src="https://latex.codecogs.com/png.latex?M"> particles out of <img src="https://latex.codecogs.com/png.latex?N">, <img src="https://latex.codecogs.com/png.latex?M%3CN">. Then, assuming <img src="https://latex.codecogs.com/png.latex?M"> divides <img src="https://latex.codecogs.com/png.latex?N">, i.e., <img src="https://latex.codecogs.com/png.latex?N=M%5Ctimes%20P"> for some <img src="https://latex.codecogs.com/png.latex?P%5Cgeq%202">, you apply to each resampled particle <img src="https://latex.codecogs.com/png.latex?(P-1)"> MCMC steps, and gather the resulting <img src="https://latex.codecogs.com/png.latex?M%5Ctimes%20P"> states to form a new particle sample of size <img src="https://latex.codecogs.com/png.latex?N">. What if <img src="https://latex.codecogs.com/png.latex?M"> does not divide <img src="https://latex.codecogs.com/png.latex?N">, i.e.&nbsp;<img src="https://latex.codecogs.com/png.latex?N=M%20%5Ctimes%20k%20+r">, <img src="https://latex.codecogs.com/png.latex?0%3Cr%3CM">? Then it makes sense to generate <img src="https://latex.codecogs.com/png.latex?r"> MCMC chains of length <img src="https://latex.codecogs.com/png.latex?k+1">, and <img src="https://latex.codecogs.com/png.latex?M-r"> chains of length <img src="https://latex.codecogs.com/png.latex?k">. This is what happens here, with <img src="https://latex.codecogs.com/png.latex?M=N-1">, <img src="https://latex.codecogs.com/png.latex?r=1">.</p>
 </section>
 <section id="why-did-i-say-we-get-a-simpler-identity" class="level1">
 <h1>Why did I say we get a “simpler” identity?</h1>
@@ -159,12 +191,11 @@
 
 
 
-
 <p>I swear, the title is kind of funny in French (try to figure out why). Anyway, in this post I wanted to dispel a misconception I had until recently on python, numpy and multi-processing, and which led me to say something silly in our SMC book.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://statisfaction-blog.github.io/posts/25-04-2024-numpy-broke-my-heart/python_broke_my_heart.jpg" class="img-fluid figure-img"></p>
-<figcaption>no comment</figcaption>
+<figcaption class="figure-caption">no comment</figcaption>
 </figure>
 </div>
 <section id="python-and-multi-processing" class="level1">
@@ -194,7 +225,7 @@
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://statisfaction-blog.github.io/posts/25-04-2024-numpy-broke-my-heart/Alice_looking_down_cpu_cores.jpg" class="img-fluid figure-img"></p>
-<figcaption>Alice decided to better understand multiprocessing in Python</figcaption>
+<figcaption class="figure-caption">Alice decided to better understand multiprocessing in Python</figcaption>
 </figure>
 </div>
 </section>
@@ -233,17 +264,12 @@
 
 
 
-
 <p>TL;DR: A quantum computer lets you provably build more general Bernoulli factories than your laptop.</p>
 <p>I have grown an interest for quantum computing, both for fun and because it naturally applies to sampling my favourite distribution, <a href="https://arxiv.org/abs/2305.15851">determinantal point processes</a>. One of the natural (and still quite open) big questions in quantum computing is, for a given computational task such as solving a linear system, whether having access to a quantum computer gives you any <em>advantage</em> over using your laptop in the smartest way possible. Maybe the quantum computer lets you solve part of your problem faster, or maybe it allows you to solve a more general class of problems. <a href="https://www.nature.com/articles/ncomms9203">Dale, Jennings, and Rudolph (2015)</a> prove a quantum advantage of the latter kind, for a task that appeals to a computational statistician: a quantum computer gives you access to strictly more Bernoulli factories than your laptop does. In this post, I discuss one of their examples.</p>
-<div id="fig-smbc" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-smbc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="https://statisfaction-blog.github.io/posts/14-02-2024-quantum-bernoulli-factories/smbc.png" class="img-fluid figure-img">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-smbc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: An excerpt from an excellent <a href="https://www.smbc-comics.com/comic/the-talk-3">comic strip</a> by Scott Aaronson and Zach Weinersmith.
-</figcaption>
+<div id="fig-smbc" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="https://statisfaction-blog.github.io/posts/14-02-2024-quantum-bernoulli-factories/smbc.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;1: An excerpt from an excellent <a href="https://www.smbc-comics.com/comic/the-talk-3">comic strip</a> by Scott Aaronson and Zach Weinersmith.</figcaption>
 </figure>
 </div>
 <section id="bernoulli-factories" class="level2">
@@ -293,43 +319,30 @@ Figure&nbsp;1: An excerpt from an excellent <a href="https://www.smbc-comics.com
 
 
 
-
 <p>… Well, it does rhyme if you read the title aloud with a French accent, hon hon hon.</p>
 <p>To paraphrase Nicolas’s previous <a href="https://statisfaction.wordpress.com/2022/12/22/how-to-beat-monte-carlo-no-qmc/">post</a>, say I want to approximate the integral <img src="https://latex.codecogs.com/png.latex?%0A%20%20%20%20I(f)%20:=%20%5Cint_%7BS%7D%20f(u)%20du,%0A"> where <img src="https://latex.codecogs.com/png.latex?S"> is a compact set of <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BR%7D%5Ed">. I could use plain old Monte Carlo with <img src="https://latex.codecogs.com/png.latex?N"> nodes, <span id="eq-mc"><img src="https://latex.codecogs.com/png.latex?%0A%20%20%20%20%5Chat%7BI%7D(f)%20=%20%5Cfrac%201%20N%20%5Csum_%7Bi=1%7D%5EN%20f(U_i),%20%20%20%5Cquad%20U_i%20%5Csim%20%5Cmathrm%7BU%7D(S).%0A%5Ctag%7B1%7D"></span> Intuitively, an i.i.d. uniform sample of quadrature nodes <img src="https://latex.codecogs.com/png.latex?U_1,%20%5Cdots,%20U_N"> will however leave “holes”; see Figure&nbsp;1 (a). In words, given a realization of the nodes, it is possible to insert a few large balls in <img src="https://latex.codecogs.com/png.latex?S"> that do not contain any <img src="https://latex.codecogs.com/png.latex?U_i">. These holes may make us miss some large variations of <img src="https://latex.codecogs.com/png.latex?f">. Part of the variance of the Monte Carlo estimator in Equation&nbsp;1 could intuitively be removed if we managed to fill these holes, using some of the nodes that got lumped together by chance.</p>
 <p>Many sampling algorithms, such as randomized quasi-Monte Carlo, impose similar space-filling constraints, yielding a random sample with guarantees of “well-spreadedness”. In the <a href="https://arxiv.org/abs/2308.04825">paper</a> I describe in this post, <a href="https://dhawat.github.io/">Diala Hawat</a> and her two advisors (Raphaël Lachièze-Rey and myself) obtained variance reduction by explicitly trying to fill the holes left by a realization of <img src="https://latex.codecogs.com/png.latex?U_1,%20%5Cdots,%20U_N">. In the remainder of the post, I will describe Diala’s main theoretical result.</p>
 <div id="fig-samples" class="quarto-layout-panel">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-samples-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-samples" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-poisson" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-poisson-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<embed src="poisson.pdf" class="img-fluid" data-ref-parent="fig-samples">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-poisson-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(a) A Poisson sample
-</figcaption>
+<figure class="figure">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-poisson" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><embed src="poisson.pdf" class="img-fluid" data-ref-parent="fig-samples"></p>
+<figcaption class="figure-caption">(a) A Poisson sample</figcaption>
 </figure>
 </div>
 </div>
-<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-samples" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-repelled" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-repelled-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<embed src="repelled.pdf" class="img-fluid" data-ref-parent="fig-samples">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-repelled-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(b) The same sample after repulsion
-</figcaption>
+<div class="quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-repelled" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><embed src="repelled.pdf" class="img-fluid" data-ref-parent="fig-samples"></p>
+<figcaption class="figure-caption">(b) The same sample after repulsion</figcaption>
 </figure>
 </div>
 </div>
 </div>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-samples-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Note how the repelled sample has fewer visible “holes” and “lumps”. The details of how we implemented the repulsion are interesting in themselves, and can be found in the <a href="https://arxiv.org/abs/2308.04825">paper</a> and the associated <a href="https://github.com/dhawat/MCRPPy">code</a>.
-</figcaption>
+<p></p><figcaption class="figure-caption">Figure&nbsp;1: Note how the repelled sample has fewer visible “holes” and “lumps”. The details of how we implemented the repulsion are interesting in themselves, and can be found in the <a href="https://arxiv.org/abs/2308.04825">paper</a> and the associated <a href="https://github.com/dhawat/MCRPPy">code</a>.</figcaption><p></p>
 </figure>
 </div>
 <p>The basic intuition is to imagine the quadrature nodes <img src="https://latex.codecogs.com/png.latex?U_1,%20%5Cdots,%20U_N"> as electrons. In physics, electrons (like all charged particles) are subject to the <a href="https://en.wikipedia.org/wiki/Coulomb%27s_law">Coulomb force</a>. The Coulomb force exerted by one electron onto another points away from the first electron, with a magnitude that is inversely proportional to the <img src="https://latex.codecogs.com/png.latex?d-1">th power of the Euclidean distance between the two. As a result, electrons tend to repel each other, and electrons close to you will push you away harder than electrons at the other side of the support of <img src="https://latex.codecogs.com/png.latex?f">. This is the behaviour that we would like to emulate, so that our quadrature nodes avoid lumping together and rather go and fill holes where no particle causes any repulsion.</p>
@@ -348,9 +361,8 @@ Figure&nbsp;1: Note how the repelled sample has fewer visible “holes” and �
 <item>
   <title>particles version 0.4: single-run variance estimates, FFBS variants, nested sampling</title>
   <dc:creator>Nicolas Chopin</dc:creator>
-  <link>https://statisfaction-blog.github.io/posts/01-09-2023-particles-v0.4/</link>
+  <link>https://statisfaction-blog.github.io/posts/01-09-2023-particles-v0.4/index.html</link>
   <description><![CDATA[ 
-
 
 
 
@@ -358,16 +370,16 @@ Figure&nbsp;1: Note how the repelled sample has fewer visible “holes” and �
 <p>Version 0.4 of <a href="https://github.com/nchopin/particles">particles</a> have just been released. Here are the main changes:</p>
 <section id="single-run-variance-estimation-for-waste-free-smc" class="level1">
 <h1>Single-run variance estimation for waste-free SMC</h1>
-<p>Waste-free SMC <a href="https://academic.oup.com/jrsssb/article/84/1/114/7056097">(Dau &amp; Chopin, 2020)</a> was already implemented in particles (since version 0.3), and even proposed by default. This is a variant of SMC samplers where you resample only <img src="https://latex.codecogs.com/png.latex?M%20%5Cll%0AN"> particles, apply to each resampled particle <img src="https://latex.codecogs.com/png.latex?P-1"> MCMC steps, and then gather these <img src="https://latex.codecogs.com/png.latex?M%5Ctimes%20P"> states to form the next particle sample; see the paper if you want to know why this is a good idea (short version: this tends to perform better than standard SMC samplers, and to be more robust to the choice of the number of MCMC steps).</p>
+<p>Waste-free SMC <a href="https://academic.oup.com/jrsssb/article/84/1/114/7056097">(Dau &amp; Chopin, 2020)</a> was already implemented in particles (since version 0.3), and even proposed by default. This is a variant of SMC samplers where you resample only <img src="https://latex.codecogs.com/png.latex?M%20%5Cll%20N"> particles, apply to each resampled particle <img src="https://latex.codecogs.com/png.latex?P-1"> MCMC steps, and then gather these <img src="https://latex.codecogs.com/png.latex?M%5Ctimes%20P"> states to form the next particle sample; see the paper if you want to know why this is a good idea (short version: this tends to perform better than standard SMC samplers, and to be more robust to the choice of the number of MCMC steps).</p>
 <p>What was not yet implemented (but is, in this version) is the <strong>single-run</strong> variance estimates proposed in the same paper. Here is a simple illustration:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://statisfaction-blog.github.io/posts/01-09-2023-particles-v0.4/ibis_pima_var_post.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
+<p><img src="https://statisfaction-blog.github.io/posts/01-09-2023-particles-v0.4/ibis_pima_var_post.png" class="img-fluid figure-img" style="width:60.0%"></p>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://statisfaction-blog.github.io/posts/01-09-2023-particles-v0.4/ibis_pima_var_logLt.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
+<p><img src="https://statisfaction-blog.github.io/posts/01-09-2023-particles-v0.4/ibis_pima_var_logLt.png" class="img-fluid figure-img" style="width:60.0%"></p>
 </figure>
 </div>
 <p>Both plots were obtained from <img src="https://latex.codecogs.com/png.latex?10%5E3"> runs of waste-free IBIS (i.e.&nbsp;target at time <img src="https://latex.codecogs.com/png.latex?t"> is the posterior based on the first <img src="https://latex.codecogs.com/png.latex?t+1"> observations, <img src="https://latex.codecogs.com/png.latex?p(%5Ctheta%7Cy_%7B0:t%7D)">) applied to Bayesian logistic regression and the Pima Indians dataset. The red line is the empirical variance of the output, and, since the number of runs is large, it should be close to the true variance. The lower (resp. upper) limit of the grey area is the <img src="https://latex.codecogs.com/png.latex?5%5C%25"> (resp. <img src="https://latex.codecogs.com/png.latex?95%5C%25">) quantile of the single-run variance estimates obtained from these <img src="https://latex.codecogs.com/png.latex?10%5E3"> runs. The considered output is either the posterior mean of the intercept (top) or the log marginal likelihood (bottom).</p>
@@ -414,7 +426,7 @@ Figure&nbsp;1: Note how the repelled sample has fewer visible “holes” and �
   <category>news</category>
   <category>particles</category>
   <category>SMC</category>
-  <guid>https://statisfaction-blog.github.io/posts/01-09-2023-particles-v0.4/</guid>
+  <guid>https://statisfaction-blog.github.io/posts/01-09-2023-particles-v0.4/index.html</guid>
   <pubDate>Thu, 31 Aug 2023 22:00:00 GMT</pubDate>
 </item>
 <item>
@@ -422,7 +434,6 @@ Figure&nbsp;1: Note how the repelled sample has fewer visible “holes” and �
   <dc:creator>Nicolas Chopin</dc:creator>
   <link>https://statisfaction-blog.github.io/posts/22-08-2023-monte-carlo-rates/monte_carlo_rates.html</link>
   <description><![CDATA[ 
-
 
 
 
@@ -448,14 +459,13 @@ Figure&nbsp;1: Note how the repelled sample has fewer visible “holes” and �
 <item>
   <title>Welcome to the new, quarto-based version of Statisfaction</title>
   <dc:creator>Nicolas Chopin</dc:creator>
-  <link>https://statisfaction-blog.github.io/posts/welcome/</link>
+  <link>https://statisfaction-blog.github.io/posts/welcome/index.html</link>
   <description><![CDATA[ 
 
 
 
 
-
-<p>Hey! We have just moved this blog from Wordpress to github. The old version is still available <a href="https://statisfaction.wordpress.com/">here</a>. The new version is based on <a href="https://quarto.org/">quarto</a>, which will make it much easier to write mathematics, e.g.&nbsp;<img src="https://latex.codecogs.com/png.latex?%5Cpi(%5Ctheta%7Cx)%20%5Cpropto%20%5Cpi(%5Ctheta)%0AL(x%7C%5Ctheta)">, and code, e.g.&nbsp;</p>
+<p>Hey! We have just moved this blog from Wordpress to github. The old version is still available <a href="https://statisfaction.wordpress.com/">here</a>. The new version is based on <a href="https://quarto.org/">quarto</a>, which will make it much easier to write mathematics, e.g.&nbsp;<img src="https://latex.codecogs.com/png.latex?%5Cpi(%5Ctheta%7Cx)%20%5Cpropto%20%5Cpi(%5Ctheta)%20L(x%7C%5Ctheta)">, and code, e.g.&nbsp;</p>
 <div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
@@ -464,11 +474,9 @@ font-style: inherit;">as</span> np</span>
 <span id="cb1-2"></span>
 <span id="cb1-3"><span class="kw" style="color: #003B4F;
 background-color: null;
-font-weight: bold;
 font-style: inherit;">def</span> fact(n):</span>
 <span id="cb1-4">    <span class="cf" style="color: #003B4F;
 background-color: null;
-font-weight: bold;
 font-style: inherit;">return</span> np.prod(<span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
@@ -483,7 +491,7 @@ font-style: inherit;">1</span>))</span></code></pre></div>
 
  ]]></description>
   <category>news</category>
-  <guid>https://statisfaction-blog.github.io/posts/welcome/</guid>
+  <guid>https://statisfaction-blog.github.io/posts/welcome/index.html</guid>
   <pubDate>Fri, 18 Aug 2023 22:00:00 GMT</pubDate>
 </item>
 </channel>
